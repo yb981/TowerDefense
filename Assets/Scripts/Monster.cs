@@ -40,7 +40,6 @@ public class Monster : MonoBehaviour
 
     private void Move()
     {
-        Debug.Log("moving");
         Vector3 dir = goal.position-transform.position;
 
         transform.Translate(dir.normalized * Time.deltaTime * currentMovementSpeed);

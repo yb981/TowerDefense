@@ -215,6 +215,7 @@ GameObject:
   - component: {fileID: 2764613874000594079}
   - component: {fileID: 7362388665937026327}
   - component: {fileID: -941785521197295909}
+  - component: {fileID: 5560534505928417354}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -264,6 +265,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+--- !u!58 &5560534505928417354
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816974373530754609}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &5108372678430454861
 GameObject:
   m_ObjectHideFlags: 0
