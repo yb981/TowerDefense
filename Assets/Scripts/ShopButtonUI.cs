@@ -47,7 +47,7 @@ public class ShopButtonUI : MonoBehaviour
 
     private void UpdateMoneyControlVariable()
     {
-        if(gridBuildingSystem.GetCredits() < monsterSO.GetCost())
+        if(PlayerStats.Instance.GetCredits() < monsterSO.GetCost())
         {
             enoughMoney = false;
         }else{

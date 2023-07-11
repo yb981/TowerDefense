@@ -20,8 +20,6 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private Transform ghost;
     private SpriteRenderer ghostRenderer;
 
-    private int credits = 100;
-
     void Awake()
     {
         monsterGrid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, transform.position, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y));
@@ -65,7 +63,7 @@ public class GridBuildingSystem : MonoBehaviour
         Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
         monsterGrid.GetXY(mousePos, out int x, out int y);
         GridObject gridObject = monsterGrid.GetGridObject(x,y);
-        if(gridObject != null)
+        if(gridObject != null && currentBlueprint != null)
         {
             ghostRenderer.sprite = currentBlueprint.GetTransform().GetComponentInChildren<SpriteRenderer>().sprite;
             ghost.transform.position = monsterGrid.GetCellCenter(x,y);
@@ -92,7 +90,8 @@ public class GridBuildingSystem : MonoBehaviour
                 Transform monster = Instantiate(currentBlueprint.GetTransform(), monsterGrid.GetCellCenter(x, y), Quaternion.identity);
                 gridObject.SetTransfrom(monster);
 
-                credits -= currentBlueprint.GetCost();
+                DoPayment();
+                
                 OnBuilt?.Invoke();
                 StopBuilding();
             }
@@ -101,6 +100,13 @@ public class GridBuildingSystem : MonoBehaviour
                 UtilsClass.CreateWorldTextPopup("Can't bulid here", mousePos);
             }
         }
+    }
+
+    private void DoPayment()
+    {
+        int oldCredits = PlayerStats.Instance.GetCredits();
+        oldCredits -= currentBlueprint.GetCost();
+        PlayerStats.Instance.SetCredits(oldCredits);
     }
 
     public void StartBuilding(KnightBluePrintSO blueprint)
@@ -122,11 +128,6 @@ public class GridBuildingSystem : MonoBehaviour
         ghostRenderer.enabled = false;
         ghost.position = Vector3.zero;
         ghostRenderer.sprite = null;
-    }
-
-    public int GetCredits()
-    {
-        return credits;
     }
 
     public class GridObject

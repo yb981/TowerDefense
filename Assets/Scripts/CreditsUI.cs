@@ -7,30 +7,29 @@ using UnityEngine;
 public class CreditsUI : MonoBehaviour
 {
     private TextMeshProUGUI TMPcredits;
-    private GridBuildingSystem gridBuildingSystem;
 
     private String text = "Credits: ";
 
     private void Awake() 
     {
         TMPcredits = GetComponent<TextMeshProUGUI>();
+        PlayerStats.OnCreditsChanged += PlayerStats_OnCreditsChanged;
     }
 
     private void Start() 
     {
-        gridBuildingSystem = FindObjectOfType<GridBuildingSystem>();
-        gridBuildingSystem.OnBuilt += GridBuildingSystem_OnBuilt;
+
         UpdateText();
     }
-
-    private void GridBuildingSystem_OnBuilt()
+    
+    private void PlayerStats_OnCreditsChanged()
     {
         UpdateText();
     }
 
     private void UpdateText()
     {
-        text = "Credits: "+ gridBuildingSystem.GetCredits();
+        text = "Credits: "+ PlayerStats.Instance.GetCredits();
         TMPcredits.text = text;
     }
 }

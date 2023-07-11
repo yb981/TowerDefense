@@ -26,7 +26,6 @@ public class HealthUI : MonoBehaviour
 
     private void UpdateHpBar()
     {
-        hpBar.value = health.GetHealth()/health.GetMaxHealth();
+        hpBar.value = health.GetHealth()/(float) health.GetMaxHealth();
     }
-
 }

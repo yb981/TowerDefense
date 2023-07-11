@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
 
     public event Action OnLevelPhasePlay;
     public event Action OnLevelPhaseBuild;
+    public event Action OnLevelPhasePostPlay;
 
     public enum LevelPhase 
     {
@@ -27,10 +28,12 @@ public class LevelManager : MonoBehaviour
 
     private void ChangeLevelPhase(LevelPhase newPhase)
     {
+        levelPhase = newPhase;
         switch(newPhase)
         {
             case LevelPhase.build: OnLevelPhaseBuild?.Invoke(); break;
             case LevelPhase.play: OnLevelPhasePlay?.Invoke(); break;
+            case LevelPhase.postplay: OnLevelPhasePostPlay?.Invoke(); break;
             default: break;
         }
     }
@@ -42,6 +45,23 @@ public class LevelManager : MonoBehaviour
 
     public void StartWave()
     {
-        ChangeLevelPhase(LevelPhase.play);
+        if(levelPhase == LevelPhase.build)     ChangeLevelPhase(LevelPhase.play);
+    }
+
+    public void EndWave()
+    {
+        ChangeLevelPhase(LevelPhase.postplay);
+        ResetWaveForNextBuildPhase();
+    }
+
+    private void ResetWaveForNextBuildPhase()
+    {
+        StartCoroutine(DelayedBackToBuildingPhase());
+    }
+
+    private IEnumerator DelayedBackToBuildingPhase()
+    {
+        yield return new WaitForSeconds(1f);
+        ChangeLevelPhase(LevelPhase.build);
     }
 }

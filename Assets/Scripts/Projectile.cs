@@ -20,6 +20,7 @@ public class Projectile : MonoBehaviour
             Debug.Log("projectile self desetroy because no target");
             Destroy(gameObject);
             gameObject.SetActive(false);
+            return;
         }
 
         Vector3 dir = target.position - transform.position;
@@ -36,10 +37,8 @@ public class Projectile : MonoBehaviour
         Monster monster = other.GetComponent<Monster>();
         if (monster != null)
         {
-            Debug.Log("on trigger enter");
             monster.GetComponent<Health>().DoDamage(damage);
             Die();
-
         }
     }
 

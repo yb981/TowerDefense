@@ -87,7 +87,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 7362388665937026327}
   - component: {fileID: -941785521197295909}
   - component: {fileID: 5560534505928417354}
+  - component: {fileID: 7817474840794036206}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -252,6 +253,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02810856ae07f1b4eb215ad75ac62e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rewardCreditsOnKill: 2
+  rewardScoreOnKill: 10
+  triggerRange: 20
 --- !u!114 &-941785521197295909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +285,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &7817474840794036206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816974373530754609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4afb0ca7a0f1c46a96897572df2c2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5108372678430454861
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4056604, g: 0.1511659, b: 0.200335, a: 1}
+  m_Color: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

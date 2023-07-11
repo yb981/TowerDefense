@@ -40,15 +40,9 @@ public class Health : MonoBehaviour
         if(health - damage <= 0)
         {
             health = 0;
-            Die();
         }else{
             health -= damage;
         }
         OnHealthChanged?.Invoke();
-    }
-
-    public void Die()
-    {
-        Destroy(gameObject);
     }
 }
