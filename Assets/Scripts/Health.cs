@@ -18,6 +18,7 @@ public class Health : MonoBehaviour
     public void SetHealth(int newHealth)
     {
         health = newHealth;
+        OnHealthChanged?.Invoke();
     }
 
     public int GetHealth()
@@ -33,6 +34,7 @@ public class Health : MonoBehaviour
     public void SetMaxHealth(int value)
     {
         maxHealth = value;
+        OnHealthChanged?.Invoke();
     }
 
     public void DoDamage(int damage)

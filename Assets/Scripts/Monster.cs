@@ -43,6 +43,8 @@ public class Monster : MonoBehaviour
         health.OnHealthChanged += Health_OnHealthChanged;
 
         king = FindObjectOfType<King>().GetComponent<Transform>();
+
+        // Init variables
         state = EnemyState.walk;
         playing = true;
 
@@ -53,6 +55,10 @@ public class Monster : MonoBehaviour
     {
         if(playing && isAlive)
         {
+
+            // increase attack timer (so does not have to wait during attack)
+            attackTimer += Time.deltaTime;
+
             switch(state)
             {
                 case EnemyState.walk:
@@ -76,7 +82,6 @@ public class Monster : MonoBehaviour
     {
         if(target != null)
         {
-            attackTimer += Time.deltaTime;
             if(attackTimer > attackSpeed)
             {
                 target.GetComponent<Health>().DoDamage(attackDamage);
