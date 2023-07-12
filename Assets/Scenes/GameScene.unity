@@ -3075,14 +3075,17 @@ MonoBehaviour:
     width: 2
     height: 5
     cellSize: 1
+    type: 1
   - origin: {fileID: 1655302989}
     width: 5
     height: 3
     cellSize: 1
+    type: 0
   - origin: {fileID: 1675138777}
     width: 2
     height: 5
     cellSize: 1
+    type: 1
   ghost: {fileID: 1195817591}
 --- !u!4 &2103034131
 Transform:

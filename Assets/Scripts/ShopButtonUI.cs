@@ -20,15 +20,20 @@ public class ShopButtonUI : MonoBehaviour
     private void Start() 
     {
         gridBuildingSystem = FindObjectOfType<GridBuildingSystem>();
+        gridBuildingSystem.OnBuilt += GridBuildingSystem_OnBuilt;
         LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;
         LevelManager.instance.OnLevelPhasePlay += LevelManager_OnLevelPhasePlay;
-        gridBuildingSystem.OnBuilt += GridBuildingSystem_OnBuilt;
+        PlayerStats.OnCreditsChanged += PlayerStats_OnCreditsChanged;
+        UpdateMoneyControlVariable();
+    }
+
+    private void PlayerStats_OnCreditsChanged()
+    {
         UpdateMoneyControlVariable();
     }
 
     private void GridBuildingSystem_OnBuilt()
     {
-        UpdateMoneyControlVariable();
         if(!enoughMoney)
         {
             button.interactable = false;
