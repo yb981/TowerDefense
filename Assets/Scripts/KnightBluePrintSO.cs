@@ -6,6 +6,7 @@ using UnityEngine;
 public class KnightBluePrintSO : ScriptableObject
 {
     [SerializeField] private Transform prefab;
+    [SerializeField] private GridBuildingSystem.FieldType type;
     [SerializeField] private int health;
     [SerializeField] private int cost;
     [SerializeField] private float movementSpeed;
@@ -23,5 +24,10 @@ public class KnightBluePrintSO : ScriptableObject
     public float GetMovementSpeed()
     {
         return movementSpeed;
+    }
+
+    public GridBuildingSystem.FieldType GetBuildType()
+    {
+        return type;
     }
 }

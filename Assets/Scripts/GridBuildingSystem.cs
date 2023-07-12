@@ -15,6 +15,14 @@ public class GridBuildingSystem : MonoBehaviour
         public int width;
         public int height;
         public float cellSize;
+        public FieldType type;
+    }
+
+    public enum FieldType
+    {
+        unit,
+        building,
+        all,
     }
 
     [SerializeField] List<GridBluePrint> gridBluePrints = new List<GridBluePrint>();
@@ -32,7 +40,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         foreach (GridBluePrint bluePrint in gridBluePrints)
         {
-            grids.Add(new Grid<GridObject>(bluePrint.width, bluePrint.height, bluePrint.cellSize, bluePrint.origin.position, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y)));
+            grids.Add(new Grid<GridObject>(bluePrint.width, bluePrint.height, bluePrint.cellSize, bluePrint.origin.position, bluePrint.type, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y)));
         }
     }
 
@@ -79,10 +87,16 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void GhostBuildingDisplay(Grid<GridObject> grid)
     {
+        if(currentBlueprint == null) 
+            return;
+
+        if(!CorrectBuildType(grid)) 
+            return;
+
         Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
         grid.GetXY(mousePos, out int x, out int y);
         GridObject gridObject = grid.GetGridObject(x,y);
-        if(gridObject != null && currentBlueprint != null)
+        if(gridObject != null)
         {
             ghostRenderer.sprite = currentBlueprint.GetTransform().GetComponentInChildren<SpriteRenderer>().sprite;
             ghost.transform.position = grid.GetCellCenter(x,y);
@@ -105,9 +119,11 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void TryBuildSelectedGameObject(Grid<GridObject> grid)
     {
+        if(!CorrectBuildType(grid))
+            return;
+
         if (grid.GetGridObject(UtilsClass.GetMouseWorldPosition()) != null)
-        {
-            
+        {       
             Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
 
             grid.GetXY(mousePos, out int x, out int y);
@@ -127,6 +143,20 @@ public class GridBuildingSystem : MonoBehaviour
                 UtilsClass.CreateWorldTextPopup("Can't bulid here", mousePos);
             }
         }
+    }
+
+    private bool CorrectBuildType(Grid<GridObject> grid)
+    {
+        if(currentBlueprint == null)
+            return false;
+
+        if(currentBlueprint.GetBuildType() != FieldType.all && currentBlueprint.GetBuildType() != grid.GetBuildType())
+        {
+            return false;
+        }else{
+            return true;
+        }
+        
     }
 
     private void DoPayment()

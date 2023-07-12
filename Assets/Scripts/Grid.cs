@@ -17,15 +17,17 @@ public class Grid<TGridObject>
     private int width;
     private int height;
     private float cellSize;
+    GridBuildingSystem.FieldType type;
     private TGridObject[,] gridArray;
     private TextMesh[,] debugTextArray;
 
-    public Grid(int width, int height, float cellSize, Vector3 origin, Func<Grid<TGridObject>, int , int , TGridObject> createGridObject)
+    public Grid(int width, int height, float cellSize, Vector3 origin, GridBuildingSystem.FieldType type ,Func<Grid<TGridObject>, int , int , TGridObject> createGridObject)
     {
         this.origin = origin;
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        this.type = type;
 
         gridArray = new TGridObject[width,height];
         debugTextArray = new TextMesh[width,height];
@@ -115,5 +117,10 @@ public class Grid<TGridObject>
         float centerY = origin.y + y * cellSize + cellSize * 0.5f;
 
         return new Vector3(centerX,centerY,0);
+    }
+
+    public GridBuildingSystem.FieldType GetBuildType()
+    {
+        return type;
     }
 }

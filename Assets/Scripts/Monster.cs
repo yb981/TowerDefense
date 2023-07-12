@@ -166,7 +166,6 @@ public class Monster : MonoBehaviour
         for (int i = 0; i < npcs.Length; i++)
         {
             allNPCs[i] = npcs[i].GetComponent<Transform>();
-            Debug.Log(npcs[i]);
         }
     }
 
