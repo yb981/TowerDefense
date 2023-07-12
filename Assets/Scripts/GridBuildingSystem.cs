@@ -6,23 +6,34 @@ using System;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-
     public event Action OnBuilt;
 
-    [SerializeField] private Transform monsterPrefab;
+    [Serializable]
+    public class GridBluePrint
+    {
+        public Transform origin; 
+        public int width;
+        public int height;
+        public float cellSize;
+    }
 
-    private Grid<GridObject> monsterGrid;
-    private int gridWidth = 5;
-    private int gridHeight = 3;
-    private float cellSize = 10f;
+    [SerializeField] List<GridBluePrint> gridBluePrints = new List<GridBluePrint>();
+
+    [Header("Other")]
+    [SerializeField] private Transform ghost;
+
+    private List<Grid<GridObject>> grids = new List<Grid<GridObject>>();
     private bool building = false;
     private KnightBluePrintSO currentBlueprint;
-    [SerializeField] private Transform ghost;
+    
     private SpriteRenderer ghostRenderer;
 
     void Awake()
     {
-        monsterGrid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, transform.position, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y));
+        foreach (GridBluePrint bluePrint in gridBluePrints)
+        {
+            grids.Add(new Grid<GridObject>(bluePrint.width, bluePrint.height, bluePrint.cellSize, bluePrint.origin.position, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y)));
+        }
     }
 
     private void Start()
@@ -49,24 +60,32 @@ public class GridBuildingSystem : MonoBehaviour
         if (building)
         {
             
-            GhostBuildingDisplay();
+            GhostBuildingDisplayAllGrids();
 
             if (Input.GetMouseButtonDown(0))
             {
-                TryBuildSelectedGameObject();
+                TryBuildSelectedGameObjectAllGrids();
             }
         }
     }
 
-    private void GhostBuildingDisplay()
+    private void GhostBuildingDisplayAllGrids()
+    {
+        foreach (Grid<GridObject> grid in grids)
+        {
+            GhostBuildingDisplay(grid);
+        }
+    }
+
+    private void GhostBuildingDisplay(Grid<GridObject> grid)
     {
         Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
-        monsterGrid.GetXY(mousePos, out int x, out int y);
-        GridObject gridObject = monsterGrid.GetGridObject(x,y);
+        grid.GetXY(mousePos, out int x, out int y);
+        GridObject gridObject = grid.GetGridObject(x,y);
         if(gridObject != null && currentBlueprint != null)
         {
             ghostRenderer.sprite = currentBlueprint.GetTransform().GetComponentInChildren<SpriteRenderer>().sprite;
-            ghost.transform.position = monsterGrid.GetCellCenter(x,y);
+            ghost.transform.position = grid.GetCellCenter(x,y);
             if(gridObject.CanBuild())
             {
                 ghostRenderer.color = new Color(1,1,1,0.5f);
@@ -76,18 +95,26 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
-    private void TryBuildSelectedGameObject()
+    private void TryBuildSelectedGameObjectAllGrids()
     {
-        if (monsterGrid.GetGridObject(UtilsClass.GetMouseWorldPosition()) != null)
+        foreach (Grid<GridObject> grid in grids)
+        {
+            TryBuildSelectedGameObject(grid);
+        }
+    }
+
+    private void TryBuildSelectedGameObject(Grid<GridObject> grid)
+    {
+        if (grid.GetGridObject(UtilsClass.GetMouseWorldPosition()) != null)
         {
             
             Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
 
-            monsterGrid.GetXY(mousePos, out int x, out int y);
-            GridObject gridObject = monsterGrid.GetGridObject(x,y);
+            grid.GetXY(mousePos, out int x, out int y);
+            GridObject gridObject = grid.GetGridObject(x,y);
             if (gridObject.CanBuild())
             {
-                Transform monster = Instantiate(currentBlueprint.GetTransform(), monsterGrid.GetCellCenter(x, y), Quaternion.identity);
+                Transform monster = Instantiate(currentBlueprint.GetTransform(), grid.GetCellCenter(x, y), Quaternion.identity);
                 gridObject.SetTransfrom(monster);
 
                 DoPayment();
@@ -144,9 +171,9 @@ public class GridBuildingSystem : MonoBehaviour
             this.y = y;
         }
 
-        public void SetTransfrom(Transform monster)
+        public void SetTransfrom(Transform building)
         {
-            this.transform = monster;
+            this.transform = building;
             grid.TriggerGridObjectChanged(x, y);
         }
 

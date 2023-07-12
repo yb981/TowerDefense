@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float panPadding = 10f;
     [SerializeField] private float scrollSpeed = 20f;
     [SerializeField] private float mousesButtonSpeed = 10f;
+    [SerializeField] private bool borderMovement = false;
     private float MIN_ZOOM = 5f;
     private float MAX_ZOOM = 50f;
     private float defaultZoom;
@@ -60,11 +61,11 @@ public class CameraController : MonoBehaviour
 
     private void Movement()
     {
-        if (Input.GetKey("w") || (Input.mousePosition.y >= Screen.height - panPadding))
+        if (Input.GetKey("w") || ((Input.mousePosition.y >= Screen.height - panPadding) && borderMovement))
         {
             transform.Translate(0, panSpeed * Time.deltaTime, 0);
         }
-        if (Input.GetKey("s") || (Input.mousePosition.y <= panPadding))
+        if (Input.GetKey("s") || ((Input.mousePosition.y <= panPadding) && borderMovement))
         {
             transform.Translate(0, -(panSpeed * Time.deltaTime), 0);
         }

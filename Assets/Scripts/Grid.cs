@@ -46,7 +46,7 @@ public class Grid<TGridObject>
                 {
                     Vector3 cellPos = GetWorldPosition(x,y);
                     Vector3 offset = new Vector3(cellSize,cellSize) * 0.5f;
-                    debugTextArray[x,y] = UtilsClass.CreateWorldText(gridArray[x,y]?.ToString(),null,cellPos + offset,30,Color.white,TextAnchor.MiddleCenter);
+                    debugTextArray[x,y] = UtilsClass.CreateWorldText(gridArray[x,y]?.ToString(),null,cellPos + offset,3,Color.white,TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x,y),GetWorldPosition(x+1,y), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x,y),GetWorldPosition(x,y+1), Color.white, 100f);
                 }

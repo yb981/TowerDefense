@@ -21,7 +21,7 @@ public class Monster : MonoBehaviour
     [SerializeField] private float attackRange = 5f;
     [SerializeField] private float attackSpeed = 3f;
     [SerializeField] private int attackDamage = 1;
-
+    [SerializeField] private float currentMovementSpeed = 2f;
 
     private Transform[] allNPCs;
 
@@ -31,7 +31,7 @@ public class Monster : MonoBehaviour
     private EnemyState state;
     private bool playing;
     private float timer;
-    private float currentMovementSpeed = 10f;
+    
     private bool isAlive = true;
     private float attackTimer;
 

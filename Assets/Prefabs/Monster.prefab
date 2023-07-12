@@ -233,7 +233,7 @@ Transform:
   m_GameObject: {fileID: 4816974373530754609}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2431926979996281512}
@@ -255,7 +255,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rewardCreditsOnKill: 2
   rewardScoreOnKill: 10
-  triggerRange: 20
+  triggerRange: 5
+  attackRange: 0.5
+  attackSpeed: 3
+  attackDamage: 1
+  currentMovementSpeed: 2
 --- !u!114 &-941785521197295909
 MonoBehaviour:
   m_ObjectHideFlags: 0
