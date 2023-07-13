@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2364059717478402209, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.2353
+      objectReference: {fileID: 0}
     - target: {fileID: 2431926979996281512, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.2
