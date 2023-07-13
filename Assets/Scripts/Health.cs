@@ -6,6 +6,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public event Action OnHealthChanged;
+    public event Action OnDamageTaken;
 
     [SerializeField] private int maxHealth;
     private int health;
@@ -46,5 +47,6 @@ public class Health : MonoBehaviour
             health -= damage;
         }
         OnHealthChanged?.Invoke();
+        OnDamageTaken?.Invoke();
     }
 }

@@ -404,6 +404,7 @@ GameObject:
   - component: {fileID: 2764613874000594079}
   - component: {fileID: -3568287280287786262}
   - component: {fileID: 1203706870477684772}
+  - component: {fileID: -7028114207310169946}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -453,6 +454,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+--- !u!114 &-7028114207310169946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816974373530754609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55949a1a2e3719f4e8be23de3e8c8289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagedClip: {fileID: 8300000, guid: 6e66ca0277de4b44babe5f3d5ed7085c, type: 3}
+  attackClip: {fileID: 8300000, guid: 510d639e748e17c4f957d00c7fdc8df0, type: 3}
 --- !u!1 &5108372678430454861
 GameObject:
   m_ObjectHideFlags: 0

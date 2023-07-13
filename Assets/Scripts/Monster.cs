@@ -7,6 +7,7 @@ using CodeMonkey.Utils;
 public class Monster : MonoBehaviour
 {
     public static event Action OnMonsterDied;
+    public event Action OnMonsterAttacked;
 
     enum EnemyState 
     {
@@ -85,6 +86,7 @@ public class Monster : MonoBehaviour
             if(attackTimer > attackSpeed)
             {
                 target.GetComponent<Health>().DoDamage(attackDamage);
+                OnMonsterAttacked?.Invoke();
                 attackTimer = 0;
             }
         }else{
@@ -143,6 +145,9 @@ public class Monster : MonoBehaviour
 
     private void MoveTo(Transform goalPosition)
     {
+        if(goalPosition == null)
+            return;
+
         Vector3 dir = goalPosition.position-transform.position;
 
         transform.Translate(dir.normalized * Time.deltaTime * currentMovementSpeed);

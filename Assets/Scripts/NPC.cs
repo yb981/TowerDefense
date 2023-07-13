@@ -6,6 +6,8 @@ using UnityEngine;
 public class NPC : MonoBehaviour
 {
 
+    public event Action OnAttacked;
+
     enum NPCState 
     {
         idle,
@@ -82,6 +84,7 @@ public class NPC : MonoBehaviour
             {
                 target.GetComponent<Health>()?.DoDamage(attackDamage);
                 attackTimer = 0;
+                OnAttacked?.Invoke();
             }
         }else{
             ChangeState(NPCState.idle);

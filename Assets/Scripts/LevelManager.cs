@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     public event Action OnLevelPhasePlay;
     public event Action OnLevelPhaseBuild;
     public event Action OnLevelPhasePostPlay;
+    public event Action OnGameOver;
 
     public enum LevelPhase 
     {
@@ -18,9 +19,11 @@ public class LevelManager : MonoBehaviour
         postplay,
     }
 
+    [SerializeField] private SceneFader sceneFader;
+
     private int credits;
     private LevelPhase levelPhase;
-
+    
     private void Awake() 
     {
         instance = this;    
@@ -52,6 +55,13 @@ public class LevelManager : MonoBehaviour
     {
         ChangeLevelPhase(LevelPhase.postplay);
         ResetWaveForNextBuildPhase();
+    }
+
+    public void GameOver()
+    {
+        ChangeLevelPhase(LevelPhase.postplay);
+        OnGameOver?.Invoke();
+        sceneFader.FadeToScene(GameConstants.SCENE_HIGHSCORE);
     }
 
     private void ResetWaveForNextBuildPhase()
