@@ -14,6 +14,7 @@ public class Health : MonoBehaviour
     private void Start() 
     {
         health = maxHealth;    
+        OnHealthChanged?.Invoke();
     }
 
     public void SetHealth(int newHealth)

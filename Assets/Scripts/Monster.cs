@@ -164,8 +164,6 @@ public class Monster : MonoBehaviour
     private void RewardPlayer()
     {
         PlayerStats.Instance.AddCredits(rewardCreditsOnKill);
-        UtilsClass.CreateWorldTextPopup(rewardCreditsOnKill.ToString(),transform.position,0.5f);
-        
         PlayerStats.Instance.AddScore(rewardScoreOnKill);
     }
 
@@ -182,6 +180,5 @@ public class Monster : MonoBehaviour
     private void ChangeState(EnemyState newState)
     {
         state = newState;
-        UtilsClass.CreateWorldTextPopup(state.ToString(),transform.position);
     }
 }

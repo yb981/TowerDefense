@@ -34,8 +34,7 @@ public class SceneFader : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene(nextScene);
-        
+        LoadNextScene();
     }
 
     private IEnumerator FadeIn()
@@ -48,5 +47,11 @@ public class SceneFader : MonoBehaviour
             image.color = new Color(image.color.r,image.color.g,image.color.b,fadePercent);
             yield return null;
         }
+    }
+
+    private void LoadNextScene()
+    {
+        PersistenceManager.Instance.LastScene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(nextScene);
     }
 }

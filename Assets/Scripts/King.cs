@@ -15,7 +15,6 @@ public class King : NPC
     }
 
     private Health health;
-
     private Transform target;
     private Vector3 spawnPoint;
     private NPCState state;
@@ -150,7 +149,6 @@ public class King : NPC
         playing = false;
         transform.position = spawnPoint;
     }
-
 
     private void Health_OnHealthChanged()
     {

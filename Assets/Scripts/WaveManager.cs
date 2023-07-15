@@ -7,7 +7,6 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform enemy;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private LevelSO levelSO;
     private int currentWave = 1;
     private int monsterAlive = 0;
 

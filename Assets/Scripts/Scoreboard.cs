@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,39 +10,143 @@ public class Scoreboard : MonoBehaviour
     [SerializeField] private int maxEntries = 10;
     private List<GameObject> scoreboardElements = new List<GameObject>();
 
-    public void AddRandomEntry()
+    [System.Serializable]
+    public class ScoreBoardValues
     {
-        int score = Random.Range(0,99999);
-        TryAddNewScoreBoardEntry(score);
+        public string name;
+        public int score;
+        public int waves;
+        public TimeSpan time;
+
+        public ScoreBoardValues(int score, int waves, TimeSpan time)
+        {
+            this.score = score;
+            this.waves = waves;
+            this.time = time;
+        }
     }
 
-    public void TryAddNewScoreBoardEntry(int score)
+    [System.Serializable]
+    public class SaveObject
     {
-        // add if less than max entries
-        if(scoreboardElements.Count < 10)
-        {
-            AddNewScoreBoardEntry(score);
-        }else{
-            // if max entries, check for lowest score entry
-            if(score > scoreboardElements[maxEntries-1].GetComponent<ScoreBoardElement>().GetScore())
-            {
-                // if bigger, remove lowest and add new one
-                DeleteScoreBoardEntryAt(maxEntries-1);
 
-                AddNewScoreBoardEntry(score);
+        public List<ScoreBoardValues> scoreBoardValues = new List<ScoreBoardValues>();
+
+        public SaveObject(List<GameObject> scoreBoardElements)
+        {
+            foreach (GameObject element in scoreBoardElements)
+            {
+                scoreBoardValues.Add(element.GetComponent<ScoreBoardElement>().GetScoreBoardValues());      
             }
         }
     }
 
-    private void AddNewScoreBoardEntry(int newScore)
+    private void Start()
+    {
+        LoadScoreBoard();
+
+        if(PersistenceManager.Instance.LastScene == GameConstants.SCENE_GAME)
+        {
+            ScoreBoardValues values = new ScoreBoardValues(PersistenceManager.Instance.LoadScore(),PersistenceManager.Instance.GetWaveCount(),PersistenceManager.Instance.GetPlayTime());
+            TryAddNewScoreBoardEntry(values);
+        }
+    }
+
+    public void AddRandomEntry()
+    {
+        int score = UnityEngine.Random.Range(0,99999);
+        ScoreBoardValues randomValues = new ScoreBoardValues(score,1,TimeSpan.FromSeconds(30f));
+        TryAddNewScoreBoardEntry(randomValues);
+    }
+
+    private void TryAddNewScoreBoardEntry(ScoreBoardValues values)
+    {
+        // add if less than max entries
+        if(scoreboardElements.Count < 10)
+        {
+            AddNewScoreBoardEntry(values);
+        }else{
+            // if max entries, check for lowest score entry
+            if(values.score > scoreboardElements[maxEntries-1].GetComponent<ScoreBoardElement>().GetScore())
+            {
+                // if bigger, remove lowest and add new one
+                DeleteScoreBoardEntryAt(maxEntries-1);
+
+                AddNewScoreBoardEntry(values);
+            }
+        }
+    }
+
+    private void AddNewScoreBoardEntry(ScoreBoardValues values)
     {
         GameObject newElement = Instantiate(scoreboardElementPrefab,new Vector3(0,0,0),Quaternion.identity);
         ScoreBoardElement scoreBoardOfNewElement = newElement.GetComponent<ScoreBoardElement>();
-        scoreBoardOfNewElement.SetScore(newScore);
+        scoreBoardOfNewElement.SetStats(values);
         scoreboardElements.Add(newElement);
         newElement.transform.SetParent(components.transform);
         quickSort(scoreboardElements,0,scoreboardElements.Count-1);
         StartCoroutine(RefreshRanks());
+        SaveScoreBoard();
+    }
+
+    private void AddNewScoreBoardEntryNoSave(ScoreBoardValues values)
+    {
+        GameObject newElement = Instantiate(scoreboardElementPrefab,new Vector3(0,0,0),Quaternion.identity);
+        ScoreBoardElement scoreBoardOfNewElement = newElement.GetComponent<ScoreBoardElement>();
+        scoreBoardOfNewElement.SetStats(values);
+        scoreboardElements.Add(newElement);
+        newElement.transform.SetParent(components.transform);
+        quickSort(scoreboardElements,0,scoreboardElements.Count-1);
+        StartCoroutine(RefreshRanks());
+    }
+
+    private void SaveScoreBoard()
+    {
+        SaveObject newSave = new SaveObject(scoreboardElements);
+
+        string json = JsonUtility.ToJson(newSave);
+
+        string filePath = Application.dataPath + "/scoreboardData.json";
+        System.IO.File.WriteAllText(filePath,json);
+    }
+
+    private void LoadScoreBoard()
+    {
+        string filePath = Application.dataPath + "/scoreboardData.json";
+        if(System.IO.File.Exists(filePath))
+        {
+            string json = System.IO.File.ReadAllText(filePath);
+            SaveObject loadedSave = JsonUtility.FromJson<SaveObject>(json);
+
+            ClearScoreBoard();
+
+            foreach (ScoreBoardValues values in loadedSave.scoreBoardValues)
+            {
+                AddNewScoreBoardEntryNoSave(values);
+            }
+        }else{
+            Debug.Log("no file found");
+        }
+    }
+
+    public void DeleteScoreBoard()
+    {
+        string filePath = Application.dataPath + "/scoreboardData.json";
+        if(System.IO.File.Exists(filePath))
+        {
+            System.IO.File.Delete(filePath);
+        }
+        ClearScoreBoard();
+    }
+
+    private void ClearScoreBoard()
+    {
+        foreach (GameObject element in scoreboardElements)
+        {
+            Destroy(element);
+        }
+
+        scoreboardElements.Clear();
     }
 
     private IEnumerator RefreshRanks()

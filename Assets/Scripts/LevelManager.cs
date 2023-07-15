@@ -21,7 +21,6 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private SceneFader sceneFader;
 
-    private int credits;
     private LevelPhase levelPhase;
     
     private void Awake() 
@@ -61,7 +60,15 @@ public class LevelManager : MonoBehaviour
     {
         ChangeLevelPhase(LevelPhase.postplay);
         OnGameOver?.Invoke();
+        PersistData();
         sceneFader.FadeToScene(GameConstants.SCENE_HIGHSCORE);
+    }
+
+    private void PersistData()
+    {
+        PersistenceManager.Instance.SaveScore(PlayerStats.Instance.GetScore());
+        PersistenceManager.Instance.SetWaveCount(GetComponent<WaveManager>().GetCurrentWave());
+        PersistenceManager.Instance.SetPlayTime(GetComponent<PlayTimer>().GetPlayTime());
     }
 
     private void ResetWaveForNextBuildPhase()

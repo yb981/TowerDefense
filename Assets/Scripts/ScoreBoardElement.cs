@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,14 +11,29 @@ public class ScoreBoardElement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tmpTime;
     [SerializeField] private TextMeshProUGUI tmpWave;
     [SerializeField] private TextMeshProUGUI tmpScore;
+    private TimeSpan time;
 
-    public void SetStats(int rank, string name, string time, int wave, int score)
+    public void SetStats(Scoreboard.ScoreBoardValues values)
     {
-        tmpRank.text = rank.ToString();
-        tmpRank.text = name;
-        tmpRank.text = time;
-        tmpRank.text = wave.ToString();
-        tmpRank.text = score.ToString();
+        time = values.time;
+        string timeString = $"{values.time.Minutes:00}:{values.time.Seconds:00}";
+        tmpTime.text = timeString;
+        tmpWave.text = values.waves.ToString();
+        tmpScore.text = values.score.ToString();
+    }
+
+    public void SetStats(string time, int wave, int score)
+    {
+        tmpTime.text = time;
+        tmpWave.text = wave.ToString();
+        tmpScore.text = score.ToString();
+    }
+
+    public Scoreboard.ScoreBoardValues GetScoreBoardValues()
+    {
+        Scoreboard.ScoreBoardValues values = new Scoreboard.ScoreBoardValues(GetScore(),GetWaves(),time);
+        values.name = tmpName.name;
+        return values;
     }
 
     public void SetRank(int rank)
@@ -39,6 +55,18 @@ public class ScoreBoardElement : MonoBehaviour
         string onlyNumber = tmpRank.text.Substring(0,1);
         int.TryParse(onlyNumber, out rank);
         return rank;
+    }
+
+    public int GetWaves()
+    {
+        int waves = 0;
+        int.TryParse(tmpWave.text, out waves);
+        return waves;
+    }
+
+    public TimeSpan GetTime()
+    {
+        return time;
     }
 
     public int GetScore()
