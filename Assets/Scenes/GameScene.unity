@@ -3110,6 +3110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 2764613874000594079, guid: 849d61f2da1174b4d91a688007374227, type: 3}
+  enemyRange: {fileID: 2931168741333544322, guid: e19d178699194984b8a08e57de58266f, type: 3}
   spawnPoint: {fileID: 1331131789}
 --- !u!114 &1250279304
 MonoBehaviour:

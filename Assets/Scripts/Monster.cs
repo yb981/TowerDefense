@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CodeMonkey.Utils;
 
 public class Monster : MonoBehaviour
 {
@@ -16,13 +15,15 @@ public class Monster : MonoBehaviour
         attack,
     }
 
-    [SerializeField] private int rewardCreditsOnKill;
-    [SerializeField] private int rewardScoreOnKill;
-    [SerializeField] private float triggerRange = 50f;
-    [SerializeField] private float attackRange = 5f;
-    [SerializeField] private float attackSpeed = 3f;
-    [SerializeField] private int attackDamage = 1;
-    [SerializeField] private float currentMovementSpeed = 2f;
+    [SerializeField] private MonsterStatsSO monsterStatsSO;
+
+    private int rewardCreditsOnKill;
+    private int rewardScoreOnKill;
+    private float triggerRange;
+    private float attackRange;
+    private float attackSpeed;
+    private int attackDamage;
+    private float currentMovementSpeed;
 
     private Transform[] allNPCs;
 
@@ -50,6 +51,18 @@ public class Monster : MonoBehaviour
         playing = true;
 
         GetAllNPCs();
+        SetStatsFromMonsterStatsSO();
+    }
+
+    protected virtual void SetStatsFromMonsterStatsSO()
+    {
+        rewardCreditsOnKill = monsterStatsSO.rewardCreditsOnKill;
+        rewardScoreOnKill = monsterStatsSO.rewardScoreOnKill;
+        triggerRange = monsterStatsSO.triggerRange;
+        attackRange = monsterStatsSO.attackRange;
+        attackSpeed = monsterStatsSO.attackSpeed;
+        attackDamage = monsterStatsSO.attackDamage;
+        currentMovementSpeed = monsterStatsSO.currentMovementSpeed;
     }
 
     private void Update() 
@@ -79,7 +92,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void AttackTarget()
+    protected virtual void AttackTarget()
     {
         if(target != null)
         {
@@ -94,7 +107,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void ChaseTarget()
+    protected virtual void ChaseTarget()
     {
         if(target != null)
         {
@@ -110,7 +123,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void FindTargets()
+    protected virtual void FindTargets()
     {
         // find closest enemy
         float closest = triggerRange;
@@ -135,7 +148,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void Health_OnHealthChanged()
+    protected virtual void Health_OnHealthChanged()
     {
         if(health.GetHealth() <= 0)
         {
@@ -153,7 +166,7 @@ public class Monster : MonoBehaviour
         transform.Translate(dir.normalized * Time.deltaTime * currentMovementSpeed);
     }
 
-    public void Die()
+    protected virtual void Die()
     {
         isAlive = false;
         OnMonsterDied?.Invoke();

@@ -117,9 +117,9 @@ public class NPC : MonoBehaviour
         if(findTimer < findFrequency)
             return;
 
-        Monster[] monsters = FindObjectsOfType<Monster>();
+        NormalMonster[] monsters = FindObjectsOfType<NormalMonster>();
         float closestDistance = triggerRange;
-        foreach (Monster monster in monsters)
+        foreach (NormalMonster monster in monsters)
         {
             float rangeToEnemy = Vector3.Distance(monster.transform.position, transform.position);
             if(monster != null && rangeToEnemy < closestDistance)

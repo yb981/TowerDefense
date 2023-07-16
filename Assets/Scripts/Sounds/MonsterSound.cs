@@ -12,7 +12,7 @@ public class MonsterSound : MonoBehaviour
     private void Start() 
     {
         GetComponent<Health>().OnHealthChanged += Health_OnHealthChanged;
-        GetComponent<Monster>().OnMonsterAttacked += Monster_OnMonsterAttacked;
+        GetComponent<NormalMonster>().OnMonsterAttacked += Monster_OnMonsterAttacked;
     }
 
     private void Monster_OnMonsterAttacked()

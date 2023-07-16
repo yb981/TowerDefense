@@ -254,13 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02810856ae07f1b4eb215ad75ac62e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewardCreditsOnKill: 2
-  rewardScoreOnKill: 10
-  triggerRange: 5
-  attackRange: 0.5
-  attackSpeed: 3
-  attackDamage: 1
-  currentMovementSpeed: 2
+  monsterStatsSO: {fileID: 11400000, guid: 088086b81ab37f642b275f02a6258f59, type: 2}
 --- !u!114 &-941785521197295909
 MonoBehaviour:
   m_ObjectHideFlags: 0

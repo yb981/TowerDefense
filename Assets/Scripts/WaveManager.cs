@@ -6,6 +6,7 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform enemy;
+    [SerializeField] private Transform enemyRange;
     [SerializeField] private Transform spawnPoint;
     private int currentWave = 1;
     private int monsterAlive = 0;
@@ -14,7 +15,7 @@ public class WaveManager : MonoBehaviour
     void Start()
     {
         LevelManager.instance.OnLevelPhasePlay += LevelManager_OnLevelPhasePlay;
-        Monster.OnMonsterDied += Monster_OnMonsterDied;
+        NormalMonster.OnMonsterDied += Monster_OnMonsterDied;
     }
 
     private void Monster_OnMonsterDied()
@@ -42,7 +43,14 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < currentWave; i++)
         {
-            Instantiate(enemy,spawnPoint.position,Quaternion.identity);
+            if(i % 2 == 0)
+            {
+                Instantiate(enemy,spawnPoint.position,Quaternion.identity);
+            }else{
+                Instantiate(enemyRange,spawnPoint.position,Quaternion.identity);
+            }
+            
+            
             yield return new WaitForSeconds(1f);
         }
         

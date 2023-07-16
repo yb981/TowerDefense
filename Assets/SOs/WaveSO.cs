@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu]
 public class WaveSO : ScriptableObject
 {
-    [SerializeField] private List<Monster> monsters;
+    [SerializeField] private List<NormalMonster> monsters;
 }

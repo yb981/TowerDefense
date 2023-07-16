@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Monster monster = other.GetComponent<Monster>();
+        NormalMonster monster = other.GetComponent<NormalMonster>();
         if (monster != null)
         {
             monster.GetComponent<Health>().DoDamage(damage);
