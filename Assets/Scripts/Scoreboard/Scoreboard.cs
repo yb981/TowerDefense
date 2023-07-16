@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Scoreboard : MonoBehaviour
 {
+    [SerializeField] private ScoreBoardFieldName nameField;
     [SerializeField] private GameObject scoreboardElementPrefab;
     [SerializeField] private GameObject components;
     [SerializeField] private int maxEntries = 10;
     private List<GameObject> scoreboardElements = new List<GameObject>();
+    private GameObject currentEntry;
 
     [System.Serializable]
     public class ScoreBoardValues
@@ -18,8 +20,9 @@ public class Scoreboard : MonoBehaviour
         public int waves;
         public TimeSpan time;
 
-        public ScoreBoardValues(int score, int waves, TimeSpan time)
+        public ScoreBoardValues(string name, int score, int waves, TimeSpan time)
         {
+            this.name = name;
             this.score = score;
             this.waves = waves;
             this.time = time;
@@ -47,15 +50,27 @@ public class Scoreboard : MonoBehaviour
 
         if(PersistenceManager.Instance.LastScene == GameConstants.SCENE_GAME)
         {
-            ScoreBoardValues values = new ScoreBoardValues(PersistenceManager.Instance.LoadScore(),PersistenceManager.Instance.GetWaveCount(),PersistenceManager.Instance.GetPlayTime());
+            ScoreBoardValues values = new ScoreBoardValues("???",PersistenceManager.Instance.LoadScore(),PersistenceManager.Instance.GetWaveCount(),PersistenceManager.Instance.GetPlayTime());
             TryAddNewScoreBoardEntry(values);
         }
     }
 
+    public void SetPlayerName(string name)
+    {
+        currentEntry.GetComponent<ScoreBoardElement>().SetName(name);
+        foreach (GameObject item in scoreboardElements)
+        {
+            Debug.Log(item.GetComponent<ScoreBoardElement>().GetName());
+        }
+        SaveScoreBoard();
+    }
+
     public void AddRandomEntry()
     {
-        int score = UnityEngine.Random.Range(0,99999);
-        ScoreBoardValues randomValues = new ScoreBoardValues(score,1,TimeSpan.FromSeconds(30f));
+        int randomScore = UnityEngine.Random.Range(0,99999);
+        int randomWave = UnityEngine.Random.Range(0,99);
+        float randomTime = UnityEngine.Random.Range(0f,1000f);
+        ScoreBoardValues randomValues = new ScoreBoardValues("Rndm",randomScore,randomWave,TimeSpan.FromSeconds(randomTime));
         TryAddNewScoreBoardEntry(randomValues);
     }
 
@@ -64,7 +79,7 @@ public class Scoreboard : MonoBehaviour
         // add if less than max entries
         if(scoreboardElements.Count < 10)
         {
-            AddNewScoreBoardEntry(values);
+            AddNewScoreBoardEntryAndSave(values);
         }else{
             // if max entries, check for lowest score entry
             if(values.score > scoreboardElements[maxEntries-1].GetComponent<ScoreBoardElement>().GetScore())
@@ -72,32 +87,34 @@ public class Scoreboard : MonoBehaviour
                 // if bigger, remove lowest and add new one
                 DeleteScoreBoardEntryAt(maxEntries-1);
 
-                AddNewScoreBoardEntry(values);
+                AddNewScoreBoardEntryAndSave(values);
             }
         }
     }
 
-    private void AddNewScoreBoardEntry(ScoreBoardValues values)
+    private void AddNewScoreBoardEntryAndSave(ScoreBoardValues values)
     {
-        GameObject newElement = Instantiate(scoreboardElementPrefab,new Vector3(0,0,0),Quaternion.identity);
-        ScoreBoardElement scoreBoardOfNewElement = newElement.GetComponent<ScoreBoardElement>();
-        scoreBoardOfNewElement.SetStats(values);
-        scoreboardElements.Add(newElement);
-        newElement.transform.SetParent(components.transform);
-        quickSort(scoreboardElements,0,scoreboardElements.Count-1);
-        StartCoroutine(RefreshRanks());
+        AddNewScoreBoardEntryNoSave(values);
         SaveScoreBoard();
+        NameInput();
+        currentEntry.GetComponent<ScoreBoardElement>().SetAsActive();
     }
 
     private void AddNewScoreBoardEntryNoSave(ScoreBoardValues values)
     {
         GameObject newElement = Instantiate(scoreboardElementPrefab,new Vector3(0,0,0),Quaternion.identity);
         ScoreBoardElement scoreBoardOfNewElement = newElement.GetComponent<ScoreBoardElement>();
+        currentEntry = newElement;
         scoreBoardOfNewElement.SetStats(values);
         scoreboardElements.Add(newElement);
         newElement.transform.SetParent(components.transform);
         quickSort(scoreboardElements,0,scoreboardElements.Count-1);
-        StartCoroutine(RefreshRanks());
+        StartCoroutine(RefreshRanks());   
+    }
+
+    private void NameInput()
+    {
+        nameField.Show();
     }
 
     private void SaveScoreBoard()
@@ -105,6 +122,7 @@ public class Scoreboard : MonoBehaviour
         SaveObject newSave = new SaveObject(scoreboardElements);
 
         string json = JsonUtility.ToJson(newSave);
+        Debug.Log(json);
 
         string filePath = Application.dataPath + "/scoreboardData.json";
         System.IO.File.WriteAllText(filePath,json);

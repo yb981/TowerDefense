@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreBoardElement : MonoBehaviour
 {
+    [SerializeField] private Image image;
+    [SerializeField] private Color currentEntryColor;
     [SerializeField] private TextMeshProUGUI tmpRank;
     [SerializeField] private TextMeshProUGUI tmpName;
     [SerializeField] private TextMeshProUGUI tmpTime;
@@ -20,6 +23,7 @@ public class ScoreBoardElement : MonoBehaviour
         tmpTime.text = timeString;
         tmpWave.text = values.waves.ToString();
         tmpScore.text = values.score.ToString();
+        tmpName.text = values.name;
     }
 
     public void SetStats(string time, int wave, int score)
@@ -31,9 +35,13 @@ public class ScoreBoardElement : MonoBehaviour
 
     public Scoreboard.ScoreBoardValues GetScoreBoardValues()
     {
-        Scoreboard.ScoreBoardValues values = new Scoreboard.ScoreBoardValues(GetScore(),GetWaves(),time);
-        values.name = tmpName.name;
+        Scoreboard.ScoreBoardValues values = new Scoreboard.ScoreBoardValues(GetName(),GetScore(),GetWaves(),time);
         return values;
+    }
+
+    public void SetAsActive()
+    {
+        image.color = currentEntryColor;
     }
 
     public void SetRank(int rank)
@@ -79,5 +87,15 @@ public class ScoreBoardElement : MonoBehaviour
     public void SetScore(int value)
     {
         tmpScore.text = value.ToString();
+    }
+
+    public void SetName(string name) 
+    {
+        tmpName.text = name;
+    }
+
+    public string GetName()
+    {
+        return tmpName.text;
     }
 }
