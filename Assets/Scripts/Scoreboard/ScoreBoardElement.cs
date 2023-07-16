@@ -18,8 +18,7 @@ public class ScoreBoardElement : MonoBehaviour
 
     public void SetStats(Scoreboard.ScoreBoardValues values)
     {
-        time = values.time;
-        string timeString = $"{values.time.Minutes:00}:{values.time.Seconds:00}";
+        string timeString =  values.time;
         tmpTime.text = timeString;
         tmpWave.text = values.waves.ToString();
         tmpScore.text = values.score.ToString();
@@ -35,7 +34,7 @@ public class ScoreBoardElement : MonoBehaviour
 
     public Scoreboard.ScoreBoardValues GetScoreBoardValues()
     {
-        Scoreboard.ScoreBoardValues values = new Scoreboard.ScoreBoardValues(GetName(),GetScore(),GetWaves(),time);
+        Scoreboard.ScoreBoardValues values = new Scoreboard.ScoreBoardValues(GetName(),GetScore(),GetWaves(),GetTime());
         return values;
     }
 
@@ -72,9 +71,9 @@ public class ScoreBoardElement : MonoBehaviour
         return waves;
     }
 
-    public TimeSpan GetTime()
+    public string GetTime()
     {
-        return time;
+        return tmpTime.text;
     }
 
     public int GetScore()

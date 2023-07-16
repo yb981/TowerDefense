@@ -18,9 +18,9 @@ public class Scoreboard : MonoBehaviour
         public string name;
         public int score;
         public int waves;
-        public TimeSpan time;
+        public string time;
 
-        public ScoreBoardValues(string name, int score, int waves, TimeSpan time)
+        public ScoreBoardValues(string name, int score, int waves, string time)
         {
             this.name = name;
             this.score = score;
@@ -29,28 +29,32 @@ public class Scoreboard : MonoBehaviour
         }
     }
 
+    // Because cant json lists
     [System.Serializable]
     public class SaveObject
     {
-
         public List<ScoreBoardValues> scoreBoardValues = new List<ScoreBoardValues>();
 
         public SaveObject(List<GameObject> scoreBoardElements)
         {
             foreach (GameObject element in scoreBoardElements)
             {
-                scoreBoardValues.Add(element.GetComponent<ScoreBoardElement>().GetScoreBoardValues());      
+                scoreBoardValues.Add(element.GetComponent<ScoreBoardElement>().GetScoreBoardValues());
             }
         }
     }
 
     private void Start()
     {
-        LoadScoreBoard();
+        InitScoreBoard();
 
-        if(PersistenceManager.Instance.LastScene == GameConstants.SCENE_GAME)
+        if (PersistenceManager.Instance.LastScene == GameConstants.SCENE_GAME)
         {
-            ScoreBoardValues values = new ScoreBoardValues("???",PersistenceManager.Instance.LoadScore(),PersistenceManager.Instance.GetWaveCount(),PersistenceManager.Instance.GetPlayTime());
+            // change from timepsan to string
+            TimeSpan timeSpan = PersistenceManager.Instance.GetPlayTime();
+            string time = $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
+
+            ScoreBoardValues values = new ScoreBoardValues("???", PersistenceManager.Instance.LoadScore(), PersistenceManager.Instance.GetWaveCount(), time);
             TryAddNewScoreBoardEntry(values);
         }
     }
@@ -62,30 +66,33 @@ public class Scoreboard : MonoBehaviour
         {
             Debug.Log(item.GetComponent<ScoreBoardElement>().GetName());
         }
-        SaveScoreBoard();
+        ScoreBoardSaveLoad.SaveScoreBoard(scoreboardElements);
     }
 
     public void AddRandomEntry()
     {
-        int randomScore = UnityEngine.Random.Range(0,99999);
-        int randomWave = UnityEngine.Random.Range(0,99);
-        float randomTime = UnityEngine.Random.Range(0f,1000f);
-        ScoreBoardValues randomValues = new ScoreBoardValues("Rndm",randomScore,randomWave,TimeSpan.FromSeconds(randomTime));
+        int randomScore = UnityEngine.Random.Range(0, 99999);
+        int randomWave = UnityEngine.Random.Range(0, 99);
+        float randomTime = UnityEngine.Random.Range(0f, 1000f);
+        TimeSpan timeSpan = TimeSpan.FromSeconds(randomTime);
+        ScoreBoardValues randomValues = new ScoreBoardValues("Rndm", randomScore, randomWave, $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}");
         TryAddNewScoreBoardEntry(randomValues);
     }
 
     private void TryAddNewScoreBoardEntry(ScoreBoardValues values)
     {
         // add if less than max entries
-        if(scoreboardElements.Count < 10)
+        if (scoreboardElements.Count < 10)
         {
             AddNewScoreBoardEntryAndSave(values);
-        }else{
+        }
+        else
+        {
             // if max entries, check for lowest score entry
-            if(values.score > scoreboardElements[maxEntries-1].GetComponent<ScoreBoardElement>().GetScore())
+            if (values.score > scoreboardElements[maxEntries - 1].GetComponent<ScoreBoardElement>().GetScore())
             {
                 // if bigger, remove lowest and add new one
-                DeleteScoreBoardEntryAt(maxEntries-1);
+                DeleteScoreBoardEntryAt(maxEntries - 1);
 
                 AddNewScoreBoardEntryAndSave(values);
             }
@@ -95,21 +102,21 @@ public class Scoreboard : MonoBehaviour
     private void AddNewScoreBoardEntryAndSave(ScoreBoardValues values)
     {
         AddNewScoreBoardEntryNoSave(values);
-        SaveScoreBoard();
+        ScoreBoardSaveLoad.SaveScoreBoard(scoreboardElements);
         NameInput();
         currentEntry.GetComponent<ScoreBoardElement>().SetAsActive();
     }
 
     private void AddNewScoreBoardEntryNoSave(ScoreBoardValues values)
     {
-        GameObject newElement = Instantiate(scoreboardElementPrefab,new Vector3(0,0,0),Quaternion.identity);
+        GameObject newElement = Instantiate(scoreboardElementPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         ScoreBoardElement scoreBoardOfNewElement = newElement.GetComponent<ScoreBoardElement>();
         currentEntry = newElement;
         scoreBoardOfNewElement.SetStats(values);
         scoreboardElements.Add(newElement);
         newElement.transform.SetParent(components.transform);
-        quickSort(scoreboardElements,0,scoreboardElements.Count-1);
-        StartCoroutine(RefreshRanks());   
+        ScoreBoardSorting.quickSort(scoreboardElements, 0, scoreboardElements.Count - 1);
+        StartCoroutine(RefreshRanks());
     }
 
     private void NameInput()
@@ -117,43 +124,22 @@ public class Scoreboard : MonoBehaviour
         nameField.Show();
     }
 
-    private void SaveScoreBoard()
+    private void InitScoreBoard()
     {
-        SaveObject newSave = new SaveObject(scoreboardElements);
+        SaveObject loadedSave = ScoreBoardSaveLoad.LoadScoreBoard();
+        ClearScoreBoard();
 
-        string json = JsonUtility.ToJson(newSave);
-        Debug.Log(json);
+        if (loadedSave == null) return;
 
-        string filePath = Application.dataPath + "/scoreboardData.json";
-        System.IO.File.WriteAllText(filePath,json);
-    }
-
-    private void LoadScoreBoard()
-    {
-        string filePath = Application.dataPath + "/scoreboardData.json";
-        if(System.IO.File.Exists(filePath))
+        foreach (ScoreBoardValues values in loadedSave.scoreBoardValues)
         {
-            string json = System.IO.File.ReadAllText(filePath);
-            SaveObject loadedSave = JsonUtility.FromJson<SaveObject>(json);
-
-            ClearScoreBoard();
-
-            foreach (ScoreBoardValues values in loadedSave.scoreBoardValues)
-            {
-                AddNewScoreBoardEntryNoSave(values);
-            }
-        }else{
-            Debug.Log("no file found");
+            AddNewScoreBoardEntryNoSave(values);
         }
     }
 
     public void DeleteScoreBoard()
     {
-        string filePath = Application.dataPath + "/scoreboardData.json";
-        if(System.IO.File.Exists(filePath))
-        {
-            System.IO.File.Delete(filePath);
-        }
+        ScoreBoardSaveLoad.DeleteScoreBoard();
         ClearScoreBoard();
     }
 
@@ -177,67 +163,11 @@ public class Scoreboard : MonoBehaviour
             scoreBoardElement.SetRank(entry.transform.GetSiblingIndex());
         }
     }
-    
+
     private void DeleteScoreBoardEntryAt(int position)
     {
         GameObject gameobjectToDestroy = scoreboardElements[position];
         scoreboardElements.RemoveAt(position);
         Destroy(gameobjectToDestroy);
-    }
- 
-    private int partition(List<GameObject> list, int startIndex, int endIndex)
-    {
-        // Choosing the pivot
-        GameObject pivot = list[endIndex];
- 
-        // Index of smaller element and indicates
-        // the right position of pivot found so far
-        int i = (startIndex - 1);
- 
-        for (int j = startIndex; j <= endIndex - 1; j++) {
- 
-            // If current element is smaller than the pivot
-            if (list[j].GetComponent<ScoreBoardElement>().GetScore() > pivot.GetComponent<ScoreBoardElement>().GetScore()) {
- 
-                // Increment index of smaller element
-                i++;
-                SwapElements(list, i, j);
-            }
-        }
-        SwapElements(list, i + 1, endIndex);
-        return (i + 1);
-    }
- 
-    // The main function that implements QuickSort
-    // arr[] --> Array to be sorted,
-    // low --> Starting index,
-    // high --> Ending index
-    private void quickSort(List<GameObject> list, int startIndex, int lastIndex)
-    {
-        if (startIndex < lastIndex) {
- 
-            // pi is partitioning index, arr[p]
-            // is now at right place
-            int pi = partition(list, startIndex, lastIndex);
- 
-            // Separately sort elements before
-            // and after partition index
-            quickSort(list, startIndex, pi - 1);
-            quickSort(list, pi + 1, lastIndex);
-        }
-    }
-
-    private void SwapElements(List<GameObject> list, int firstElement, int secondElement)
-    {
-        GameObject first = list[firstElement];
-        // sibling index
-        int firstSiblingIndex = first.transform.GetSiblingIndex();
-        int secondSiblingIndex = list[secondElement].transform.GetSiblingIndex();
-
-        list[secondElement].transform.SetSiblingIndex(firstSiblingIndex);
-        list[firstElement] = list[secondElement];
-
-        list[secondElement] = first;
-        list[secondElement].transform.SetSiblingIndex(secondSiblingIndex);
     }
 }
