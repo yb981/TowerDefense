@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,20 @@ public class SoundManager : MonoBehaviour
     private void Awake() 
     {
         HandleSingleton();
+    }
+
+    private void Start() 
+    {
+        LoadPlayerPrefs();    
+    }
+
+    private void LoadPlayerPrefs()
+    {
+        if(PlayerPrefs.HasKey(GameConstants.MUSIC_VOLUME))
+        {
+            ChangeMusicVolume(PlayerPrefs.GetFloat(GameConstants.MUSIC_VOLUME));
+            ChangeEffectsVolume(PlayerPrefs.GetFloat(GameConstants.EFFECTS_VOLUME));
+        }
     }
 
     public void PlaySound(AudioClip clip)
@@ -27,6 +42,26 @@ public class SoundManager : MonoBehaviour
     public void ChangeMasterVolume(float value)
     {
         AudioListener.volume = value;
+    }
+
+    public void ChangeMusicVolume(float value)
+    {
+        musicSource.volume = value;
+    }
+
+    public void ChangeEffectsVolume(float value)
+    {
+        effectSource.volume = value;
+    }
+
+    public float GetMusicVolume()
+    {
+        return musicSource.volume;
+    }
+
+    public float GetEffectsVolume()
+    {
+        return effectSource.volume;
     }
 
     private void HandleSingleton()
