@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: -3568287280287786262}
   - component: {fileID: 1203706870477684772}
   - component: {fileID: -7028114207310169946}
+  - component: {fileID: 379738877463208505}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -468,6 +469,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagedClip: {fileID: 8300000, guid: 6e66ca0277de4b44babe5f3d5ed7085c, type: 3}
   attackClip: {fileID: 8300000, guid: 510d639e748e17c4f957d00c7fdc8df0, type: 3}
+--- !u!95 &379738877463208505
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816974373530754609}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0457e73938e3af042a0a2a61c5fc2427, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5108372678430454861
 GameObject:
   m_ObjectHideFlags: 0

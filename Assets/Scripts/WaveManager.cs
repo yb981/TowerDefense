@@ -7,7 +7,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform enemy;
     [SerializeField] private Transform enemyRange;
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Spawner spawner;
     private int currentWave = 1;
     private int monsterAlive = 0;
 
@@ -45,11 +45,10 @@ public class WaveManager : MonoBehaviour
         {
             if(i % 2 == 0)
             {
-                Instantiate(enemy,spawnPoint.position,Quaternion.identity);
+                spawner.SpawnEnemy(enemy.gameObject);
             }else{
-                Instantiate(enemyRange,spawnPoint.position,Quaternion.identity);
+                spawner.SpawnEnemy(enemyRange.gameObject);
             }
-            
             
             yield return new WaitForSeconds(1f);
         }
