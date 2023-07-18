@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b7e4554a9132144fb39b0dee5a5486d, type: 3}
-  m_Name: GreenMonster
+  m_Name: RangeMinionBP
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2764613874000594079, guid: f53bbd40822d7e7409dd16bd0481b2b9, type: 3}
-  health: 15
+  prefab: {fileID: 5234299692886886624, guid: 81b0aed254b32004ba4c25055648ee81, type: 3}
+  type: 0
   cost: 10

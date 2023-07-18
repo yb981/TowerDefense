@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class King : NPC
+public class King : Minion
 {
     protected override void ResetInstance()
     {

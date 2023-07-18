@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private float range = 40f;
     [SerializeField] private float shootingSpeed = 1f;
@@ -55,7 +56,7 @@ public class Tower : MonoBehaviour
 
     private void CreateProjectile()
     {
-        Transform projectile = Instantiate(projectilePrefab,transform.position,Quaternion.identity);
+        Transform projectile = Instantiate(projectilePrefab,projectileSpawnPoint.position,Quaternion.identity);
         projectile.GetComponent<Projectile>().SetTarget(target);
     }
 

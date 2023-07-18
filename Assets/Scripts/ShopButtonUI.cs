@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ShopButtonUI : MonoBehaviour
 {
-    [SerializeField] private KnightBluePrintSO monsterSO;
+    [SerializeField] private MinionBluePrintSO monsterSO;
     private Button button;
     private GridBuildingSystem gridBuildingSystem;
     private bool enoughMoney;
@@ -80,7 +80,7 @@ public class ShopButtonUI : MonoBehaviour
         button.onClick.RemoveListener(ButtonClicked);
     }
 
-    public KnightBluePrintSO GetMonsterSO()
+    public MinionBluePrintSO GetMonsterSO()
     {
         return monsterSO;
     }

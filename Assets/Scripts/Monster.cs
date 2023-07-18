@@ -183,7 +183,7 @@ public class Monster : MonoBehaviour
 
     private void GetAllNPCs()
     {
-        NPC[] npcs = FindObjectsOfType<NPC>();
+        Minion[] npcs = FindObjectsOfType<Minion>();
         allNPCs = new Transform[npcs.Length];
         for (int i = 0; i < npcs.Length; i++)
         {

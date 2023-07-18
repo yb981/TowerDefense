@@ -32,7 +32,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     private List<Grid<GridObject>> grids = new List<Grid<GridObject>>();
     private bool building = false;
-    private KnightBluePrintSO currentBlueprint;
+    private MinionBluePrintSO currentBlueprint;
     
     private SpriteRenderer ghostRenderer;
 
@@ -166,7 +166,7 @@ public class GridBuildingSystem : MonoBehaviour
         PlayerStats.Instance.SetCredits(oldCredits);
     }
 
-    public void StartBuilding(KnightBluePrintSO blueprint)
+    public void StartBuilding(MinionBluePrintSO blueprint)
     {
         building = true;
         currentBlueprint = blueprint;

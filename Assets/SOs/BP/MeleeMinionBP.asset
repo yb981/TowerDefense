@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b7e4554a9132144fb39b0dee5a5486d, type: 3}
-  m_Name: Knight
+  m_Name: MeleeMinionBP
   m_EditorClassIdentifier: 
   prefab: {fileID: 2764613874000594079, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
-  health: 5
-  cost: 10
-  movementSpeed: 0
+  type: 0
+  cost: 8

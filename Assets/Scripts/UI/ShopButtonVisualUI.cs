@@ -18,7 +18,7 @@ public class ShopButtonVisualUI : MonoBehaviour
 
     private void Start() 
     {
-        KnightBluePrintSO monster = shopButtonUI.GetMonsterSO();
+        MinionBluePrintSO monster = shopButtonUI.GetMonsterSO();
         Transform monsterTransform = monster.GetTransform();
         image.sprite = monsterTransform.GetComponentInChildren<SpriteRenderer>().sprite;
         image.color = monsterTransform.GetComponentInChildren<SpriteRenderer>().color;

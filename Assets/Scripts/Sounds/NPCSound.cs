@@ -11,7 +11,7 @@ public class NPCSound : MonoBehaviour
     private void Start() 
     {
         GetComponent<Health>().OnDamageTaken += Health_OnDamageTaken;
-        GetComponent<NPC>().OnAttacked += NPC_OnAttacked;
+        GetComponent<Minion>().OnAttacked += NPC_OnAttacked;
     }
 
     private void NPC_OnAttacked()

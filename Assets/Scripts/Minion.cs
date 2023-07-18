@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC : MonoBehaviour
+public class Minion : MonoBehaviour
 {
 
     public event Action OnAttacked;
@@ -15,20 +15,24 @@ public class NPC : MonoBehaviour
         attack,
     }
 
+
+    [SerializeField] private float triggerRange = 3f;
+    [SerializeField] private float attackSpeed = 3f;
+    [SerializeField] private float attackRange = 1f;
+    [SerializeField] private int attackDamage = 1;
+    [SerializeField] private float defaultMovementSpeed = 2f;       
+
+
     private Health health;
 
-    protected Transform target;
+    private Transform target;
     protected Vector3 spawnPoint;
-    protected NPCState state;
+    private NPCState state;
     protected bool playing = false;
-    protected float findTimer = 0.5f;
-    protected float findFrequency = 0.5f;
-    protected float triggerRange = 3f;
-    protected float attackTimer = 3f;
-    protected float attackSpeed = 3f;
-    protected float attackRange = 1f;
-    protected int attackDamage = 1;
-    protected float defaultMovementSpeed = 2f;
+    private float findTimer = 0.5f;
+    private float findFrequency = 0.5f;
+    private float attackTimer = 3f;
+
 
     protected virtual void Start()
     {
