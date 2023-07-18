@@ -12,5 +12,4 @@ public class MonsterStatsSO : ScriptableObject
     [SerializeField] public float attackSpeed = 3f;
     [SerializeField] public int attackDamage = 1;
     [SerializeField] public float currentMovementSpeed = 2f;
-    
 }

@@ -62,10 +62,6 @@ public class Scoreboard : MonoBehaviour
     public void SetPlayerName(string name)
     {
         currentEntry.GetComponent<ScoreBoardElement>().SetName(name);
-        foreach (GameObject item in scoreboardElements)
-        {
-            Debug.Log(item.GetComponent<ScoreBoardElement>().GetName());
-        }
         ScoreBoardSaveLoad.SaveScoreBoard(scoreboardElements);
     }
 

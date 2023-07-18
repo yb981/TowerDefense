@@ -8,7 +8,7 @@ public class NPC : MonoBehaviour
 
     public event Action OnAttacked;
 
-    enum NPCState 
+    protected enum NPCState 
     {
         idle,
         chase,
@@ -17,20 +17,20 @@ public class NPC : MonoBehaviour
 
     private Health health;
 
-    private Transform target;
-    private Vector3 spawnPoint;
-    private NPCState state;
-    private bool playing = false;
-    private float findTimer = 0.5f;
-    private float findFrequency = 0.5f;
-    private float triggerRange = 3f;
-    private float attackTimer = 3f;
-    private float attackSpeed = 3f;
-    private float attackRange = 1f;
-    private int attackDamage = 1;
-    private float defaultMovementSpeed = 2f;
+    protected Transform target;
+    protected Vector3 spawnPoint;
+    protected NPCState state;
+    protected bool playing = false;
+    protected float findTimer = 0.5f;
+    protected float findFrequency = 0.5f;
+    protected float triggerRange = 3f;
+    protected float attackTimer = 3f;
+    protected float attackSpeed = 3f;
+    protected float attackRange = 1f;
+    protected int attackDamage = 1;
+    protected float defaultMovementSpeed = 2f;
 
-    void Start()
+    protected virtual void Start()
     {
         health = GetComponent<Health>();
         health.OnHealthChanged += Health_OnHealthChanged;
@@ -44,7 +44,7 @@ public class NPC : MonoBehaviour
         state = NPCState.idle;
     }
 
-    private void Update() 
+    protected virtual void Update() 
     {
         if(playing)
         {
@@ -64,19 +64,18 @@ public class NPC : MonoBehaviour
                 case NPCState.attack:
                     AttackTarget();
                     break;
-
                 default: break;
             }
         }
     }
 
-    private void MoveTo(Vector3 goalPosition)
+    protected void MoveTo(Vector3 goalPosition)
     {
         Vector3 dir = goalPosition-transform.position;
         transform.Translate(dir.normalized * Time.deltaTime * defaultMovementSpeed);
     }
 
-    private void AttackTarget()
+    protected virtual void AttackTarget()
     {
         if(target != null)
         {
@@ -91,7 +90,7 @@ public class NPC : MonoBehaviour
         }
     }
 
-    private void ChaseTarget()
+    protected virtual void ChaseTarget()
     {
         if(target != null)
         {
@@ -107,19 +106,19 @@ public class NPC : MonoBehaviour
         }
     }
 
-    private void ChangeState(NPCState newState)
+    protected void ChangeState(NPCState newState)
     {
         state = newState;
     }
 
-    private void FindTargets()
+    protected virtual void FindTargets()
     {
         if(findTimer < findFrequency)
             return;
 
-        NormalMonster[] monsters = FindObjectsOfType<NormalMonster>();
+        Monster[] monsters = FindObjectsOfType<Monster>();
         float closestDistance = triggerRange;
-        foreach (NormalMonster monster in monsters)
+        foreach (Monster monster in monsters)
         {
             float rangeToEnemy = Vector3.Distance(monster.transform.position, transform.position);
             if(monster != null && rangeToEnemy < closestDistance)
@@ -136,25 +135,24 @@ public class NPC : MonoBehaviour
         findTimer = 0;
     }
 
-    private void LevelManager_OnLevelPhasePlay()
+    protected void LevelManager_OnLevelPhasePlay()
     {
         playing = true;
     }
 
-    private void LevelManager_OnLevelPhasePostPlay()
+    protected void LevelManager_OnLevelPhasePostPlay()
     {
         ResetInstance();
     }
 
-    private void ResetInstance()
+    protected virtual void ResetInstance()
     {
         playing = false;
         health.SetHealth(health.GetMaxHealth());
         transform.position = spawnPoint;
     }
 
-
-    private void Health_OnHealthChanged()
+    protected void Health_OnHealthChanged()
     {
         if(health.GetHealth() <= 0)
         {
@@ -162,12 +160,12 @@ public class NPC : MonoBehaviour
         }
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         Destroy(gameObject);
     }
 
-    private void OnDestroy() 
+    protected void OnDestroy() 
     {
         health.OnHealthChanged -= Health_OnHealthChanged;
 

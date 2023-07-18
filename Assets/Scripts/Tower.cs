@@ -61,7 +61,7 @@ public class Tower : MonoBehaviour
 
     private void FindEnemies()
     {
-        NormalMonster[] enemies = FindObjectsOfType<NormalMonster>();
+        Monster[] enemies = FindObjectsOfType<Monster>();
 
         if(enemies.Length == 0)
         {
@@ -70,7 +70,7 @@ public class Tower : MonoBehaviour
         }
 
         float lowestDistance = range;
-        foreach (NormalMonster enemy in enemies)
+        foreach (Monster enemy in enemies)
         {
             float distance = Vector3.Distance(enemy.GetComponent<Transform>().position, transform.position);
             if(distance < lowestDistance)

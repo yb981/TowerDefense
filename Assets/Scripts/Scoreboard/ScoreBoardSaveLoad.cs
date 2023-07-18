@@ -35,7 +35,7 @@ public static class ScoreBoardSaveLoad
 
     public static void DeleteScoreBoard()
     {
-        string filePath = Application.dataPath + "/scoreboardData.json";
+        string filePath = SAVE_FILE;
         if(System.IO.File.Exists(filePath))
         {
             System.IO.File.Delete(filePath);

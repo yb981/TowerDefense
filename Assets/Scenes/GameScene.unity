@@ -3111,6 +3111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 2764613874000594079, guid: 849d61f2da1174b4d91a688007374227, type: 3}
   enemyRange: {fileID: 2931168741333544322, guid: e19d178699194984b8a08e57de58266f, type: 3}
+  boss: {fileID: 895264443517743539, guid: 90630ebecc43d71418ea1b67d2014269, type: 3}
   spawner: {fileID: 1331131790}
 --- !u!114 &1250279304
 MonoBehaviour:

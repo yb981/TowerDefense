@@ -41,6 +41,8 @@ public class Health : MonoBehaviour
 
     public void DoDamage(int damage)
     {
+        if(health == 0) return;
+
         if(health - damage <= 0)
         {
             health = 0;

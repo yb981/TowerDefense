@@ -7,6 +7,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform enemy;
     [SerializeField] private Transform enemyRange;
+    [SerializeField] private Transform boss;
     [SerializeField] private Spawner spawner;
     private int currentWave = 1;
     private int monsterAlive = 0;
@@ -43,11 +44,16 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < currentWave; i++)
         {
-            if(i % 2 == 0)
+            if(currentWave != 0 && currentWave % 10 == 0 && i == currentWave-1)
             {
-                spawner.SpawnEnemy(enemy.gameObject);
+                spawner.SpawnEnemy(boss.gameObject);
             }else{
-                spawner.SpawnEnemy(enemyRange.gameObject);
+                if(i != 0 && i % 3 == 0)
+                {
+                    spawner.SpawnEnemy(enemyRange.gameObject);
+                }else{
+                    spawner.SpawnEnemy(enemy.gameObject);
+                }
             }
             
             yield return new WaitForSeconds(1f);

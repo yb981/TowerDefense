@@ -22,7 +22,7 @@ public class Monster : MonoBehaviour
     private float triggerRange;
     private float attackRange;
     private float attackSpeed;
-    private int attackDamage;
+    protected int attackDamage;
     private float currentMovementSpeed;
 
     private Transform[] allNPCs;
@@ -37,9 +37,9 @@ public class Monster : MonoBehaviour
     private bool isAlive = true;
     private float attackTimer;
 
-    private Health health;
+    protected Health health;
 
-    private void Start() 
+    protected virtual void Start() 
     {
         health = GetComponent<Health>();
         health.OnHealthChanged += Health_OnHealthChanged;
@@ -65,7 +65,7 @@ public class Monster : MonoBehaviour
         currentMovementSpeed = monsterStatsSO.currentMovementSpeed;
     }
 
-    private void Update() 
+    protected virtual void Update() 
     {
         if(playing && isAlive)
         {
@@ -172,6 +172,7 @@ public class Monster : MonoBehaviour
         OnMonsterDied?.Invoke();
         RewardPlayer();
         Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void RewardPlayer()
