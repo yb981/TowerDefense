@@ -10,6 +10,10 @@ public class IngameMenu : MonoBehaviour
     [SerializeField] GameObject menuParent;
     [SerializeField] Button continueButton;
     [SerializeField] Button menuButton;
+    [SerializeField] Button optionButton;
+    [SerializeField] Button optionBackButton;
+    [SerializeField] Options options;
+    [SerializeField] GameObject ingameMenu;
     private SceneFader sceneFader;
 
     void Start()
@@ -18,6 +22,8 @@ public class IngameMenu : MonoBehaviour
         menuParent.SetActive(false);
         continueButton.onClick.AddListener(ToggleMenu);
         menuButton.onClick.AddListener(GoBackToMenu);
+        optionButton.onClick.AddListener(ToggleOptions);
+        optionBackButton.onClick.AddListener(ShowIngameMenuButtons);
     }
 
     private void Update() 
@@ -38,11 +44,27 @@ public class IngameMenu : MonoBehaviour
         }else{
             Time.timeScale = 1;
         }
-    } 
+    }
 
     private void GoBackToMenu()
     {
         Time.timeScale = 1;
         sceneFader.FadeToScene(GameConstants.SCENE_MAIN_MENU);
+    }
+
+    private void ToggleOptions()
+    {
+        HideIngameMenuButtons();
+        options.ShowOptions();
+    }
+
+    private void HideIngameMenuButtons()
+    {
+        ingameMenu.SetActive(false);
+    }
+
+        private void ShowIngameMenuButtons()
+    {
+        ingameMenu.SetActive(true);
     }
 }
