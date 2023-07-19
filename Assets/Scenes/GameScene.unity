@@ -3325,8 +3325,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 2764613874000594079, guid: 849d61f2da1174b4d91a688007374227, type: 3}
   enemyRange: {fileID: 2931168741333544322, guid: e19d178699194984b8a08e57de58266f, type: 3}
+  enemyTank: {fileID: 836021120529103942, guid: 109cc434f5642984c83c4595d67d8958, type: 3}
   boss: {fileID: 895264443517743539, guid: 90630ebecc43d71418ea1b67d2014269, type: 3}
   spawner: {fileID: 1331131790}
+  enemyChance: 3
+  enemyRangeChance: 2
+  enemyTankChance: 1
+  bossWaves: 10
 --- !u!114 &1250279304
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db16e1b68d6d1d43a49615538e53485, type: 3}
   m_Name: RangeMonsterSO
   m_EditorClassIdentifier: 
-  rewardCreditsOnKill: 0
-  rewardScoreOnKill: 0
+  rewardCreditsOnKill: 2
+  rewardScoreOnKill: 2
   triggerRange: 5
   attackRange: 3
   attackSpeed: 3

@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     public event Action OnDamageTaken;
 
     [SerializeField] private int maxHealth;
+    [SerializeField] private int armor = 0;
     private int health;
     
     private void Start() 
@@ -43,11 +44,11 @@ public class Health : MonoBehaviour
     {
         if(health == 0) return;
 
-        if(health - damage <= 0)
+        if(health+armor - damage <= 0)
         {
             health = 0;
         }else{
-            health -= damage;
+            health -= Mathf.Clamp(damage-armor, 1,int.MaxValue);
         }
         OnHealthChanged?.Invoke();
         OnDamageTaken?.Invoke();

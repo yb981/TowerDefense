@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4db16e1b68d6d1d43a49615538e53485, type: 3}
-  m_Name: Boss
+  m_Name: TankMonsterSO
   m_EditorClassIdentifier: 
-  rewardCreditsOnKill: 5
-  rewardScoreOnKill: 10
+  rewardCreditsOnKill: 3
+  rewardScoreOnKill: 3
   triggerRange: 5
   attackRange: 1
-  attackSpeed: 3
+  attackSpeed: 5
   attackDamage: 1
   currentMovementSpeed: 2
