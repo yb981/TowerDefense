@@ -82,6 +82,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7780838058985694600, guid: d7dac346d327e664d8234d6ee104829d, type: 3}
   range: 5
   shootingSpeed: 1
+  turningProjectile: 1
 --- !u!1 &5188261962558498394
 GameObject:
   m_ObjectHideFlags: 0

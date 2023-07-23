@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CodeMonkey.Utils;
 
 public class Tower : MonoBehaviour
 {
@@ -9,11 +10,13 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private float range = 40f;
     [SerializeField] private float shootingSpeed = 1f;
+    [SerializeField] private bool turningProjectile = false;
+
     private Transform target;
     private bool playing;
     private float shootTimer = 0f;
 
-    private void Start() 
+    protected virtual void Start() 
     {
         LevelManager.instance.OnLevelPhasePlay += LevelManager_OnLevelPhasePlay;    
         LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;    
@@ -32,7 +35,7 @@ public class Tower : MonoBehaviour
         playing = true;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if(playing){
             FindEnemies();
@@ -40,7 +43,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void Shoot()
+    protected virtual void Shoot()
     {
         shootTimer += Time.deltaTime;
         Mathf.Clamp(shootTimer, 0, shootingSpeed);
@@ -54,13 +57,14 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void CreateProjectile()
+    protected virtual void CreateProjectile()
     {
         Transform projectile = Instantiate(projectilePrefab,projectileSpawnPoint.position,Quaternion.identity);
-        projectile.GetComponent<Projectile>().SetTarget(target);
+        projectile.GetComponent<Projectile>().Setup(target);
+        
     }
 
-    private void FindEnemies()
+    protected virtual void FindEnemies()
     {
         Monster[] enemies = FindObjectsOfType<Monster>();
 

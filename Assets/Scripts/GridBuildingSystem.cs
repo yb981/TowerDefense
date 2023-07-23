@@ -7,6 +7,8 @@ using System;
 public class GridBuildingSystem : MonoBehaviour
 {
     public event Action OnBuilt;
+    public static EventHandler OnStartBuilding;
+    public static event Action OnEndBuilding;
 
     [Serializable]
     public class GridBluePrint
@@ -25,6 +27,8 @@ public class GridBuildingSystem : MonoBehaviour
         all,
     }
 
+    [SerializeField] private GameObject gridHighlightPrefab;
+    public static GameObject GridHighlightPrefab { get ; private set; }
     [SerializeField] List<GridBluePrint> gridBluePrints = new List<GridBluePrint>();
 
     [Header("Other")]
@@ -38,6 +42,8 @@ public class GridBuildingSystem : MonoBehaviour
 
     void Awake()
     {
+        GridHighlightPrefab = gridHighlightPrefab;
+
         foreach (GridBluePrint bluePrint in gridBluePrints)
         {
             grids.Add(new Grid<GridObject>(bluePrint.width, bluePrint.height, bluePrint.cellSize, bluePrint.origin.position, bluePrint.type, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y)));
@@ -171,10 +177,12 @@ public class GridBuildingSystem : MonoBehaviour
         building = true;
         currentBlueprint = blueprint;
         ghostRenderer.enabled = true;
+        OnStartBuilding?.Invoke(this, EventArgs.Empty);
     }
 
     public void StopBuilding()
     {
+        OnEndBuilding?.Invoke();
         building = false;
         currentBlueprint = null;
         DisableAndResetGhost();
@@ -187,18 +195,51 @@ public class GridBuildingSystem : MonoBehaviour
         ghostRenderer.sprite = null;
     }
 
+    public MinionBluePrintSO GetCurrentBluePrint()
+    {
+        return currentBlueprint;
+    }
+
     public class GridObject
     {
         private Grid<GridObject> grid;
         private int x;
         private int y;
         private Transform transform;
+        private GameObject highlight;
 
         public GridObject(Grid<GridObject> grid, int x, int y)
         {
             this.grid = grid;
             this.x = x;
             this.y = y;
+
+            // Setup Highlight Object
+            highlight = Instantiate(GridBuildingSystem.GridHighlightPrefab,grid.GetCellCenter(x,y),Quaternion.identity);
+            highlight.name = highlight.name + x +"," +y;
+            highlight.transform.SetParent(FindObjectOfType<GridBuildingSystem>().transform);
+            highlight.SetActive(false);
+
+            GridBuildingSystem.OnStartBuilding += GridBuildingSystem_OnStartBuilding;
+            GridBuildingSystem.OnEndBuilding += GridBuildingSystem_OnEndBuilding;
+        }
+
+        private void GridBuildingSystem_OnStartBuilding(object sender, EventArgs e)
+        {
+            GridBuildingSystem gridBuildingSystem = (GridBuildingSystem) sender;
+            Debug.Log(gridBuildingSystem);
+            if(transform == null)
+            {
+                if(gridBuildingSystem.GetCurrentBluePrint().GetBuildType() == grid.GetBuildType())
+                {
+                    highlight.SetActive(true);
+                }   
+            }
+        }
+
+        private void GridBuildingSystem_OnEndBuilding()
+        {
+            highlight.SetActive(false);
         }
 
         public void SetTransfrom(Transform building)
