@@ -13,8 +13,7 @@ public class Minion : Unit
     [SerializeField] protected float triggerRange = 3f;
     [SerializeField] protected float attackSpeed = 3f;
     [SerializeField] protected float attackRange = 1f;
-    [SerializeField] protected int attackDamage = 1;
-    [SerializeField] protected new float defaultMovementSpeed = 2f;       
+    [SerializeField] protected int attackDamage = 1; 
 
     //protected Health health;
 
@@ -51,6 +50,9 @@ public class Minion : Unit
 
             switch(state)
             {
+                case UnitState.spawn: 
+                    // wait
+                    break;
                 case UnitState.idle:
                     MoveTo(spawnPoint);
                     FindTargets();

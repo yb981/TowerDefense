@@ -11,7 +11,7 @@ public class MonsterAnimation : MonoBehaviour
 
     private Health health;
     private Monster monster;
-    private Minion.UnitState minionState;
+    private Minion.UnitState state;
     private Animator animator;
 
     void  Start()
@@ -46,10 +46,11 @@ public class MonsterAnimation : MonoBehaviour
 
     private void Monster_OnStateChanged()
     {
-        minionState = monster.GetState();
+        state = monster.GetState();
 
-        switch(minionState)
+        switch(state)
         {
+            case Minion.UnitState.spawn: animator.SetBool(ANIMATION_MOVING, false); break;
             case Minion.UnitState.idle: animator.SetBool(ANIMATION_MOVING, false); break;
             case Minion.UnitState.walk: animator.SetBool(ANIMATION_MOVING, true); break;
             case Minion.UnitState.chase: animator.SetBool(ANIMATION_MOVING, true); break;

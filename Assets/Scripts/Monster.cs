@@ -16,6 +16,7 @@ public class Monster : Unit
     protected float attackRange;
     protected float attackSpeed;
     protected int attackDamage;
+    protected float spawnTime = 0.5f;
 
     private Transform[] allNPCs;
 
@@ -34,13 +35,12 @@ public class Monster : Unit
 
         king = FindObjectOfType<King>().GetComponent<Transform>();
 
-        // Init variables
-        playing = true;
-        ChangeState(UnitState.walk);
-
-
         GetAllNPCs();
         SetStatsFromMonsterStatsSO();
+
+        // Init variables
+        playing = true;
+        StartCoroutine(Spawn());
     }
 
     protected virtual void SetStatsFromMonsterStatsSO()
@@ -79,6 +79,12 @@ public class Monster : Unit
             }
             
         }
+    }
+
+    protected IEnumerator Spawn()
+    {
+        yield return new WaitForSeconds(spawnTime);
+        ChangeState(UnitState.walk);
     }
 
     protected virtual void AttackTarget()

@@ -7,13 +7,14 @@ public class Unit : MonoBehaviour
 {
     public event Action OnStateChanged;
 
-    protected float defaultMovementSpeed;
+    [SerializeField] protected float defaultMovementSpeed = 2f;
     protected Health health;
 
     protected UnitState state;
 
     public enum UnitState 
     {
+        spawn,
         idle,
         walk,
         chase,
