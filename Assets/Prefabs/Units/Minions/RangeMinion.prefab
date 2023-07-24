@@ -83,6 +83,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangeMinion
       objectReference: {fileID: 0}
+    - target: {fileID: 7205396039017970724, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
+      propertyPath: m_Radius
+      value: 0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205396039017970724, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.21
+      objectReference: {fileID: 0}
     - target: {fileID: 8103143980289736411, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
       propertyPath: m_Color.b
       value: 0.509434
@@ -95,5 +103,30 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.23309009
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3568287280287786262, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
+--- !u!1 &3181585152760107598 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4816974373530754609, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
+  m_PrefabInstance: {fileID: 7997854715165117567}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8860231926020996146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3181585152760107598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5330107fcf93e7443ae4fdafdfb50a3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerRange: 4
+  attackSpeed: 4
+  attackRange: 3
+  attackDamage: 3
+  defaultMovementSpeed: 2
+  projectilePrefab: {fileID: 767714131510230892, guid: d7dac346d327e664d8234d6ee104829d, type: 3}
+  projectileSpeed: 10

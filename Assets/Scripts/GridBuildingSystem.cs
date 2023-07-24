@@ -227,7 +227,6 @@ public class GridBuildingSystem : MonoBehaviour
         private void GridBuildingSystem_OnStartBuilding(object sender, EventArgs e)
         {
             GridBuildingSystem gridBuildingSystem = (GridBuildingSystem) sender;
-            Debug.Log(gridBuildingSystem);
             if(transform == null)
             {
                 if(gridBuildingSystem.GetCurrentBluePrint().GetBuildType() == grid.GetBuildType())

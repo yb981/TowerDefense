@@ -8,7 +8,7 @@ public class Monster : MonoBehaviour
     public static event Action OnMonsterDied;
     public event Action OnMonsterAttacked;
 
-    enum EnemyState 
+    protected enum EnemyState 
     {
         walk,
         chase,
@@ -17,25 +17,25 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private MonsterStatsSO monsterStatsSO;
 
-    private int rewardCreditsOnKill;
-    private int rewardScoreOnKill;
-    private float triggerRange;
-    private float attackRange;
-    private float attackSpeed;
+    protected int rewardCreditsOnKill;
+    protected int rewardScoreOnKill;
+    protected float triggerRange;
+    protected float attackRange;
+    protected float attackSpeed;
     protected int attackDamage;
-    private float currentMovementSpeed;
+    protected float currentMovementSpeed;
 
     private Transform[] allNPCs;
 
     private Transform king;
-    private Transform target;
+    protected Transform target;
 
     private EnemyState state;
     private bool playing;
     private float timer;
     
     private bool isAlive = true;
-    private float attackTimer;
+    protected float attackTimer;
 
     protected Health health;
 
@@ -156,7 +156,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void MoveTo(Transform goalPosition)
+    protected void MoveTo(Transform goalPosition)
     {
         if(goalPosition == null)
             return;
@@ -175,13 +175,13 @@ public class Monster : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void RewardPlayer()
+    protected void RewardPlayer()
     {
         PlayerStats.Instance.AddCredits(rewardCreditsOnKill);
         PlayerStats.Instance.AddScore(rewardScoreOnKill);
     }
 
-    private void GetAllNPCs()
+    protected void GetAllNPCs()
     {
         Minion[] npcs = FindObjectsOfType<Minion>();
         allNPCs = new Transform[npcs.Length];
@@ -191,7 +191,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void ChangeState(EnemyState newState)
+    protected void ChangeState(EnemyState newState)
     {
         state = newState;
     }

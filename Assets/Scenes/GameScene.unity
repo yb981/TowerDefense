@@ -409,6 +409,10 @@ PrefabInstance:
       propertyPath: monsterSO
       value: 
       objectReference: {fileID: 11400000, guid: bf8524c7ebc688b4195eba4f8ed3e6e2, type: 2}
+    - target: {fileID: 555690232816419932, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
+      propertyPath: bluePrintSO
+      value: 
+      objectReference: {fileID: 11400000, guid: bf8524c7ebc688b4195eba4f8ed3e6e2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
 --- !u!224 &267973802 stripped
@@ -1006,6 +1010,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 555690232816419932, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
       propertyPath: monsterSO
+      value: 
+      objectReference: {fileID: 11400000, guid: f30b954e0e5fb8d4fa11182a714123a7, type: 2}
+    - target: {fileID: 555690232816419932, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
+      propertyPath: bluePrintSO
       value: 
       objectReference: {fileID: 11400000, guid: f30b954e0e5fb8d4fa11182a714123a7, type: 2}
     m_RemovedComponents: []
@@ -3340,6 +3348,10 @@ PrefabInstance:
       propertyPath: monsterSO
       value: 
       objectReference: {fileID: 11400000, guid: dc0217e0175e08d439145be1e90034b4, type: 2}
+    - target: {fileID: 555690232816419932, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
+      propertyPath: bluePrintSO
+      value: 
+      objectReference: {fileID: 11400000, guid: dc0217e0175e08d439145be1e90034b4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
 --- !u!1 &1195817590
@@ -4955,6 +4967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7209b4dbe6fdf145b19094745b540c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridHighlightPrefab: {fileID: 5395896348518329964, guid: 078cae434a7663b4ca4a745ddb3979f5, type: 3}
   gridBluePrints:
   - origin: {fileID: 1681136746}
     width: 2
@@ -5093,6 +5106,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 555690232816419932, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
       propertyPath: monsterSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 8d1ea5f3be2a94943a619bbd0ff2c59d, type: 2}
+    - target: {fileID: 555690232816419932, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
+      propertyPath: bluePrintSO
       value: 
       objectReference: {fileID: 11400000, guid: 8d1ea5f3be2a94943a619bbd0ff2c59d, type: 2}
     m_RemovedComponents: []

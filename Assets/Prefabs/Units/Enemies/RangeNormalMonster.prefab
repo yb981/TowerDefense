@@ -91,5 +91,26 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.15490389
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7362388665937026327, guid: 849d61f2da1174b4d91a688007374227, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 849d61f2da1174b4d91a688007374227, type: 3}
+--- !u!1 &5487969782591649580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4816974373530754609, guid: 849d61f2da1174b4d91a688007374227, type: 3}
+  m_PrefabInstance: {fileID: 1076496491721664797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8218014981310944658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5487969782591649580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044dee428a1a185459aecdaffc1778a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterStatsSO: {fileID: 11400000, guid: 1c50cc9fbb960804f8f48020ecc077b0, type: 2}
+  projectilePrefab: {fileID: 767714131510230892, guid: d7dac346d327e664d8234d6ee104829d, type: 3}
+  projectileSpeed: 10

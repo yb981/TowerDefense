@@ -15,23 +15,21 @@ public class Minion : MonoBehaviour
         attack,
     }
 
+    [SerializeField] protected float triggerRange = 3f;
+    [SerializeField] protected float attackSpeed = 3f;
+    [SerializeField] protected float attackRange = 1f;
+    [SerializeField] protected int attackDamage = 1;
+    [SerializeField] protected float defaultMovementSpeed = 2f;       
 
-    [SerializeField] private float triggerRange = 3f;
-    [SerializeField] private float attackSpeed = 3f;
-    [SerializeField] private float attackRange = 1f;
-    [SerializeField] private int attackDamage = 1;
-    [SerializeField] private float defaultMovementSpeed = 2f;       
+    protected Health health;
 
-
-    private Health health;
-
-    private Transform target;
+    protected Transform target;
     protected Vector3 spawnPoint;
     private NPCState state;
     protected bool playing = false;
     private float findTimer = 0.5f;
     private float findFrequency = 0.5f;
-    private float attackTimer = 3f;
+    protected float attackTimer = 3f;
 
 
     protected virtual void Start()

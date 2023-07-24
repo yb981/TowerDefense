@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ShopButtonUI : MonoBehaviour
 {
-    [SerializeField] private MinionBluePrintSO monsterSO;
+    [SerializeField] private MinionBluePrintSO bluePrintSO;
     private Button button;
     private GridBuildingSystem gridBuildingSystem;
     private bool enoughMoney;
@@ -52,7 +52,7 @@ public class ShopButtonUI : MonoBehaviour
 
     private void UpdateMoneyControlVariable()
     {
-        if(PlayerStats.Instance.GetCredits() < monsterSO.GetCost())
+        if(PlayerStats.Instance.GetCredits() < bluePrintSO.GetCost())
         {
             enoughMoney = false;
         }else{
@@ -72,7 +72,7 @@ public class ShopButtonUI : MonoBehaviour
 
     private void ButtonClicked()
     {
-        gridBuildingSystem.StartBuilding(monsterSO);
+        gridBuildingSystem.StartBuilding(bluePrintSO);
     }
 
     private void OnDestroy() 
@@ -82,6 +82,6 @@ public class ShopButtonUI : MonoBehaviour
 
     public MinionBluePrintSO GetMonsterSO()
     {
-        return monsterSO;
+        return bluePrintSO;
     }
 }

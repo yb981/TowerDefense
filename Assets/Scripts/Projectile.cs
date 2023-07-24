@@ -56,6 +56,17 @@ public class Projectile : MonoBehaviour
         SetAngle(newTarget.position);
     }
 
+    public virtual void Setup(Transform newTarget, float projectileSpeed, int projectileDamage)
+    {
+        target = newTarget;
+        staticTargetPosition = newTarget.position;
+
+        this.projectileSpeed = projectileSpeed;
+        damage = projectileDamage;
+
+        SetAngle(newTarget.position);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         DirectHitControl(other);
@@ -63,10 +74,11 @@ public class Projectile : MonoBehaviour
 
     private void DirectHitControl(Collider2D other)
     {
-        Monster monster = other.GetComponent<Monster>();
-        if (monster != null && other.transform == target)
+        //Monster monster = other.GetComponent<Monster>();
+        GameObject gameObjectHit = other.gameObject;
+        if (gameObjectHit != null && other.transform == target)
         {
-            monster.GetComponent<Health>().DoDamage(damage);
+            gameObjectHit.GetComponent<Health>().DoDamage(damage);
             Die();
         }
     }

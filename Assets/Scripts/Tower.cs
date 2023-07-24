@@ -10,7 +10,8 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private float range = 40f;
     [SerializeField] private float shootingSpeed = 1f;
-    [SerializeField] private bool turningProjectile = false;
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private int damage;
 
     private Transform target;
     private bool playing;
@@ -60,7 +61,7 @@ public class Tower : MonoBehaviour
     protected virtual void CreateProjectile()
     {
         Transform projectile = Instantiate(projectilePrefab,projectileSpawnPoint.position,Quaternion.identity);
-        projectile.GetComponent<Projectile>().Setup(target);
+        projectile.GetComponent<Projectile>().Setup(target,projectileSpeed,damage);
         
     }
 
