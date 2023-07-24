@@ -7,8 +7,9 @@ public class Minion : MonoBehaviour
 {
 
     public event Action OnAttacked;
+    public event Action OnStateChanged;
 
-    protected enum NPCState 
+    public enum NPCState 
     {
         idle,
         chase,
@@ -111,6 +112,7 @@ public class Minion : MonoBehaviour
     protected void ChangeState(NPCState newState)
     {
         state = newState;
+        OnStateChanged?.Invoke();
     }
 
     protected virtual void FindTargets()
@@ -152,6 +154,7 @@ public class Minion : MonoBehaviour
         playing = false;
         health.SetHealth(health.GetMaxHealth());
         transform.position = spawnPoint;
+        ChangeState(NPCState.idle);
     }
 
     protected void Health_OnHealthChanged()
@@ -165,6 +168,11 @@ public class Minion : MonoBehaviour
     protected virtual void Die()
     {
         Destroy(gameObject);
+    }
+
+    public NPCState GetState()
+    {  
+        return state;
     }
 
     protected void OnDestroy() 

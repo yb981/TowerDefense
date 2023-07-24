@@ -405,10 +405,10 @@ GameObject:
   - component: {fileID: -3568287280287786262}
   - component: {fileID: 1203706870477684772}
   - component: {fileID: -7028114207310169946}
-  - component: {fileID: 379738877463208505}
   - component: {fileID: 7205396039017970724}
+  - component: {fileID: 3232671785881859650}
   m_Layer: 0
-  m_Name: Knight
+  m_Name: Minion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -476,7 +476,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagedClip: {fileID: 8300000, guid: 6e66ca0277de4b44babe5f3d5ed7085c, type: 3}
   attackClip: {fileID: 8300000, guid: 510d639e748e17c4f957d00c7fdc8df0, type: 3}
---- !u!95 &379738877463208505
+--- !u!58 &7205396039017970724
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816974373530754609}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.33}
+  serializedVersion: 2
+  m_Radius: 0.32
+--- !u!95 &3232671785881859650
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -497,22 +513,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!58 &7205396039017970724
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4816974373530754609}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.33}
-  serializedVersion: 2
-  m_Radius: 0.32
 --- !u!1 &5108372678430454861
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,6 +523,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2431926979996281512}
   - component: {fileID: 8103143980289736411}
+  - component: {fileID: 3412163779553370502}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -597,3 +598,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!114 &3412163779553370502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5108372678430454861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b96a1d5f89cf4cbc191c907b72f6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

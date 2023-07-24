@@ -9,6 +9,7 @@ public class King : Minion
     {
         playing = false;
         transform.position = spawnPoint;
+        ChangeState(NPCState.idle);
     }
 
     protected override void Die()
