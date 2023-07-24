@@ -22,7 +22,7 @@ public class MinionRanged : Minion
                 OnAttacked?.Invoke();
             }
         }else{
-            ChangeState(NPCState.idle);
+            ChangeState(UnitState.idle);
         }
     }
 

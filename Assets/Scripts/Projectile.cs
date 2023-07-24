@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using System;
 
 public class Projectile : MonoBehaviour
 {
@@ -14,9 +15,20 @@ public class Projectile : MonoBehaviour
     [Header("Coding")]
     [SerializeField] protected GameObject explosionObject;
 
+    private void Start() 
+    {
+        LevelManager.instance.OnLevelPhasePostPlay += LevelManager_OnLevelPhasePostPlay;    
+    }
+
     protected virtual void Update()
     {
         MoveToTarget();
+    }
+    
+    private void LevelManager_OnLevelPhasePostPlay()
+    {
+        // If gamephase is over, instantly destroy the projectile without effect
+        Destroy(gameObject);
     }
 
     protected virtual void SetAngle(Vector3 destination)
@@ -91,5 +103,10 @@ public class Projectile : MonoBehaviour
         }
         Destroy(gameObject);
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy() 
+    {
+        LevelManager.instance.OnLevelPhasePostPlay -= LevelManager_OnLevelPhasePostPlay;   
     }
 }

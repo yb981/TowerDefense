@@ -3,40 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Minion : MonoBehaviour
+public class Minion : Unit
 {
 
     public event Action OnAttacked;
-    public event Action OnStateChanged;
+    public new event Action OnStateChanged;
 
-    public enum NPCState 
-    {
-        idle,
-        chase,
-        attack,
-    }
 
     [SerializeField] protected float triggerRange = 3f;
     [SerializeField] protected float attackSpeed = 3f;
     [SerializeField] protected float attackRange = 1f;
     [SerializeField] protected int attackDamage = 1;
-    [SerializeField] protected float defaultMovementSpeed = 2f;       
+    [SerializeField] protected new float defaultMovementSpeed = 2f;       
 
-    protected Health health;
+    //protected Health health;
 
     protected Transform target;
     protected Vector3 spawnPoint;
-    private NPCState state;
     protected bool playing = false;
     private float findTimer = 0.5f;
     private float findFrequency = 0.5f;
     protected float attackTimer = 3f;
 
 
-    protected virtual void Start()
+    protected override void Start()
     {
-        health = GetComponent<Health>();
-        health.OnHealthChanged += Health_OnHealthChanged;
+/*         health = GetComponent<Health>();
+        health.OnHealthChanged += Health_OnHealthChanged; */
+        base.Start();
 
         LevelManager.instance.OnLevelPhasePlay += LevelManager_OnLevelPhasePlay;
         LevelManager.instance.OnLevelPhasePostPlay += LevelManager_OnLevelPhasePostPlay;
@@ -44,7 +38,7 @@ public class Minion : MonoBehaviour
         // Init variables
         spawnPoint = transform.position;
         playing = false;
-        state = NPCState.idle;
+        state = UnitState.idle;
     }
 
     protected virtual void Update() 
@@ -57,14 +51,14 @@ public class Minion : MonoBehaviour
 
             switch(state)
             {
-                case NPCState.idle:
+                case UnitState.idle:
                     MoveTo(spawnPoint);
                     FindTargets();
                     break;
-                case NPCState.chase:
+                case UnitState.chase:
                     ChaseTarget();
                     break;  
-                case NPCState.attack:
+                case UnitState.attack:
                     AttackTarget();
                     break;
                 default: break;
@@ -89,7 +83,7 @@ public class Minion : MonoBehaviour
                 OnAttacked?.Invoke();
             }
         }else{
-            ChangeState(NPCState.idle);
+            ChangeState(UnitState.idle);
         }
     }
 
@@ -99,20 +93,14 @@ public class Minion : MonoBehaviour
         {
             if(Vector3.Distance(transform.position,target.position) < attackRange)
             {
-                ChangeState(NPCState.attack);
+                ChangeState(UnitState.attack);
             }else{
                 MoveTo(target.position);
             }
         }else{
             // if no enemy keep walk / find new enemies
-            ChangeState(NPCState.idle);
+            ChangeState(UnitState.idle);
         }
-    }
-
-    protected void ChangeState(NPCState newState)
-    {
-        state = newState;
-        OnStateChanged?.Invoke();
     }
 
     protected virtual void FindTargets()
@@ -134,7 +122,7 @@ public class Minion : MonoBehaviour
 
         if(target != null)
         {
-            ChangeState(NPCState.chase);
+            ChangeState(UnitState.chase);
         }
         findTimer = 0;
     }
@@ -154,25 +142,7 @@ public class Minion : MonoBehaviour
         playing = false;
         health.SetHealth(health.GetMaxHealth());
         transform.position = spawnPoint;
-        ChangeState(NPCState.idle);
-    }
-
-    protected void Health_OnHealthChanged()
-    {
-        if(health.GetHealth() <= 0)
-        {
-            Die();
-        }
-    }
-
-    protected virtual void Die()
-    {
-        Destroy(gameObject);
-    }
-
-    public NPCState GetState()
-    {  
-        return state;
+        ChangeState(UnitState.idle);
     }
 
     protected void OnDestroy() 

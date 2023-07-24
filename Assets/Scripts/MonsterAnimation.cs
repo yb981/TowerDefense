@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionVisuals : MonoBehaviour
+public class MonsterAnimation : MonoBehaviour
 {
     private static string ANIMATION_MOVING = "isMoving";
     private static string ANIMATION_ATTACKING = "isAttacking";
@@ -11,7 +10,7 @@ public class MinionVisuals : MonoBehaviour
     private static string ANIMATION_NOTPLAYING = "isNotPlaying";
 
     private Health health;
-    private Minion minion;
+    private Monster monster;
     private Minion.UnitState minionState;
     private Animator animator;
 
@@ -22,11 +21,12 @@ public class MinionVisuals : MonoBehaviour
         health = GetComponentInParent<Health>();
         health.OnDamageTaken += Health_OnDamageTaken;
 
-        minion = GetComponentInParent<Minion>();
-        minion.OnStateChanged += Minion_OnStateChanged;
-        minion.OnAttacked += Minion_OnAttacked;
+        monster = GetComponentInParent<Monster>();
+        monster.OnStateChanged += Monster_OnStateChanged;
+        monster.OnMonsterAttacked += Monster_OnMonsterAttacked;
 
         LevelManager.instance.OnLevelPhasePostPlay += LevelManager_OnLevelPhasePostPlay;
+        Monster_OnStateChanged();
     }
 
     private void Health_OnDamageTaken()
@@ -39,18 +39,19 @@ public class MinionVisuals : MonoBehaviour
         animator.SetTrigger(ANIMATION_NOTPLAYING);
     }
 
-    private void Minion_OnAttacked()
+    private void Monster_OnMonsterAttacked()
     {
         animator.SetTrigger(ANIMATION_ATTACKING);
     }
 
-    private void Minion_OnStateChanged()
+    private void Monster_OnStateChanged()
     {
-        minionState = minion.GetState();
+        minionState = monster.GetState();
 
         switch(minionState)
         {
             case Minion.UnitState.idle: animator.SetBool(ANIMATION_MOVING, false); break;
+            case Minion.UnitState.walk: animator.SetBool(ANIMATION_MOVING, true); break;
             case Minion.UnitState.chase: animator.SetBool(ANIMATION_MOVING, true); break;
             case Minion.UnitState.attack: animator.SetBool(ANIMATION_MOVING, false); break;
             default: break;

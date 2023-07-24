@@ -3,17 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : Unit
 {
     public static event Action OnMonsterDied;
     public event Action OnMonsterAttacked;
-
-    protected enum EnemyState 
-    {
-        walk,
-        chase,
-        attack,
-    }
 
     [SerializeField] private MonsterStatsSO monsterStatsSO;
 
@@ -23,32 +16,28 @@ public class Monster : MonoBehaviour
     protected float attackRange;
     protected float attackSpeed;
     protected int attackDamage;
-    protected float currentMovementSpeed;
 
     private Transform[] allNPCs;
 
     private Transform king;
     protected Transform target;
 
-    private EnemyState state;
     private bool playing;
     private float timer;
     
     private bool isAlive = true;
     protected float attackTimer;
 
-    protected Health health;
-
-    protected virtual void Start() 
+    protected override void Start() 
     {
-        health = GetComponent<Health>();
-        health.OnHealthChanged += Health_OnHealthChanged;
+        base.Start();
 
         king = FindObjectOfType<King>().GetComponent<Transform>();
 
         // Init variables
-        state = EnemyState.walk;
         playing = true;
+        ChangeState(UnitState.walk);
+
 
         GetAllNPCs();
         SetStatsFromMonsterStatsSO();
@@ -62,7 +51,7 @@ public class Monster : MonoBehaviour
         attackRange = monsterStatsSO.attackRange;
         attackSpeed = monsterStatsSO.attackSpeed;
         attackDamage = monsterStatsSO.attackDamage;
-        currentMovementSpeed = monsterStatsSO.currentMovementSpeed;
+        defaultMovementSpeed = monsterStatsSO.currentMovementSpeed;
     }
 
     protected virtual void Update() 
@@ -75,14 +64,14 @@ public class Monster : MonoBehaviour
 
             switch(state)
             {
-                case EnemyState.walk:
+                case UnitState.walk:
                     MoveTo(king);
                     FindTargets();
                     break;
-                case EnemyState.chase:
+                case UnitState.chase:
                     ChaseTarget();
                     break;  
-                case EnemyState.attack:
+                case UnitState.attack:
                     AttackTarget();
                     break;
 
@@ -103,7 +92,7 @@ public class Monster : MonoBehaviour
                 attackTimer = 0;
             }
         }else{
-            ChangeState(EnemyState.walk);
+            ChangeState(UnitState.walk);
         }
     }
 
@@ -113,13 +102,13 @@ public class Monster : MonoBehaviour
         {
             if(Vector3.Distance(transform.position,target.position) < attackRange)
             {
-                ChangeState(EnemyState.attack);
+                ChangeState(UnitState.attack);
             }else{
                 MoveTo(target);
             }
         }else{
             // if no enemy keep walk / find new enemies
-            ChangeState(EnemyState.walk);
+            ChangeState(UnitState.walk);
         }
     }
 
@@ -144,35 +133,16 @@ public class Monster : MonoBehaviour
         }
         if(target != null)
         {
-            ChangeState(EnemyState.chase);
+            ChangeState(UnitState.chase);
         }
     }
 
-    protected virtual void Health_OnHealthChanged()
-    {
-        if(health.GetHealth() <= 0)
-        {
-            Die();
-        }
-    }
-
-    protected void MoveTo(Transform goalPosition)
-    {
-        if(goalPosition == null)
-            return;
-
-        Vector3 dir = goalPosition.position-transform.position;
-
-        transform.Translate(dir.normalized * Time.deltaTime * currentMovementSpeed);
-    }
-
-    protected virtual void Die()
+    protected override void Die()
     {
         isAlive = false;
         OnMonsterDied?.Invoke();
         RewardPlayer();
-        Destroy(gameObject);
-        gameObject.SetActive(false);
+        base.Die();
     }
 
     protected void RewardPlayer()
@@ -190,9 +160,4 @@ public class Monster : MonoBehaviour
             allNPCs[i] = npcs[i].GetComponent<Transform>();
         }
     }
-
-    protected void ChangeState(EnemyState newState)
-    {
-        state = newState;
-    }
-}
+} 

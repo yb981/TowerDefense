@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 5560534505928417354}
   - component: {fileID: 7817474840794036206}
   - component: {fileID: -3298196924607575656}
+  - component: {fileID: 2172516902000069085}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -268,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  armor: 0
 --- !u!58 &5560534505928417354
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -310,6 +312,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagedClip: {fileID: 8300000, guid: 6e66ca0277de4b44babe5f3d5ed7085c, type: 3}
   attackClip: {fileID: 8300000, guid: 510d639e748e17c4f957d00c7fdc8df0, type: 3}
+--- !u!95 &2172516902000069085
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816974373530754609}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0457e73938e3af042a0a2a61c5fc2427, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5108372678430454861
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2431926979996281512}
   - component: {fileID: 8103143980289736411}
+  - component: {fileID: 7652897102168998673}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -394,6 +418,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!114 &7652897102168998673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5108372678430454861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9ea9ad5e9755e04080f3cb30bd95b76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7371657879974645204
 GameObject:
   m_ObjectHideFlags: 0

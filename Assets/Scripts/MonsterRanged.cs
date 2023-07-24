@@ -21,7 +21,7 @@ public class MonsterRanged : Monster
                 attackTimer = 0;
             }
         }else{
-            ChangeState(EnemyState.walk);
+            ChangeState(UnitState.walk);
         }
     }
 
