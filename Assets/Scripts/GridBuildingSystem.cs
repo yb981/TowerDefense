@@ -24,6 +24,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         unit,
         building,
+        tile,
         all,
     }
 
