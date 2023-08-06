@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance {get; private set;}
 
+    public event Action OnLevelPhaseTileBuild;
     public event Action OnLevelPhasePlay;
     public event Action OnLevelPhaseBuild;
     public event Action OnLevelPhasePostPlay;
@@ -14,6 +15,7 @@ public class LevelManager : MonoBehaviour
 
     public enum LevelPhase 
     {
+        tilebuild,
         build,
         play,
         postplay,
@@ -28,11 +30,17 @@ public class LevelManager : MonoBehaviour
         instance = this;    
     }
 
+    private void Start() 
+    {
+        ChangeLevelPhase(LevelPhase.tilebuild);
+    }
+
     private void ChangeLevelPhase(LevelPhase newPhase)
     {
         levelPhase = newPhase;
         switch(newPhase)
         {
+            case LevelPhase.tilebuild: OnLevelPhaseTileBuild?.Invoke(); break;
             case LevelPhase.build: OnLevelPhaseBuild?.Invoke(); break;
             case LevelPhase.play: OnLevelPhasePlay?.Invoke(); break;
             case LevelPhase.postplay: OnLevelPhasePostPlay?.Invoke(); break;
@@ -43,6 +51,11 @@ public class LevelManager : MonoBehaviour
     public LevelPhase GetLevelPhase()
     {
         return levelPhase;
+    }
+
+    public void EndTileBuild()
+    {
+        if(levelPhase == LevelPhase.tilebuild)     ChangeLevelPhase(LevelPhase.build);
     }
 
     public void StartWave()
@@ -79,6 +92,6 @@ public class LevelManager : MonoBehaviour
     private IEnumerator DelayedBackToBuildingPhase()
     {
         yield return new WaitForSeconds(1f);
-        ChangeLevelPhase(LevelPhase.build);
+        ChangeLevelPhase(LevelPhase.tilebuild);
     }
 }
