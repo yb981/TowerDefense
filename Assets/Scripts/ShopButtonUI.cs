@@ -20,7 +20,7 @@ public class ShopButtonUI : MonoBehaviour
     private void Start() 
     {
         gridBuildingSystem = FindObjectOfType<GridBuildingSystem>();
-        gridBuildingSystem.OnBuilt += GridBuildingSystem_OnBuilt;
+        GridBuildingSystem.OnBuilt += GridBuildingSystem_OnBuilt;
         LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;
         LevelManager.instance.OnLevelPhasePlay += LevelManager_OnLevelPhasePlay;
         PlayerStats.OnCreditsChanged += PlayerStats_OnCreditsChanged;

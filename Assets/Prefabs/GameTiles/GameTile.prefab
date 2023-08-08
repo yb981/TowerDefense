@@ -2769,7 +2769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8c3e0765da70b4ea377b184de448c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openings: 00010001
+  openingsForInit: 00010001
 --- !u!1 &2738442124374991575
 GameObject:
   m_ObjectHideFlags: 0

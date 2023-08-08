@@ -57,7 +57,7 @@ public class CameraController : MonoBehaviour
 
     private void ResetCameraZoom()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.T))
         {
             Camera.main.orthographicSize = defaultZoom;
         }

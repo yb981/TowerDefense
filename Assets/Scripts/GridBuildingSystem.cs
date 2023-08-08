@@ -6,7 +6,7 @@ using System;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public event Action OnBuilt;
+    public static event Action OnBuilt;
     public static EventHandler OnStartBuilding;
     public static event Action OnEndBuilding;
 
