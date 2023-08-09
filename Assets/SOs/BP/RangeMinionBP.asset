@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: RangeMinionBP
   m_EditorClassIdentifier: 
   prefab: {fileID: 5234299692886886624, guid: 81b0aed254b32004ba4c25055648ee81, type: 3}
-  type: 0
+  type: 1
   cost: 10

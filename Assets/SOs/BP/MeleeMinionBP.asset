@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MeleeMinionBP
   m_EditorClassIdentifier: 
   prefab: {fileID: 2764613874000594079, guid: 712c8c41ca9c68e428770645058c4994, type: 3}
-  type: 0
+  type: 1
   cost: 8

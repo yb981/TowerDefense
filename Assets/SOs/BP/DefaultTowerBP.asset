@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DefaultTowerBP
   m_EditorClassIdentifier: 
   prefab: {fileID: 2913992377124992172, guid: 9bb73bd7dfa98ee48a4a391ae9ce3394, type: 3}
-  type: 1
+  type: 2
   cost: 18

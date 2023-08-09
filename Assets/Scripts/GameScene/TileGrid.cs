@@ -5,6 +5,7 @@ using CodeMonkey.Utils;
 
 public class TileGrid : MonoBehaviour
 {
+    private GridBuildingSystem gridBuildingSystem;
     Grid<GridTileObject> tileGrid;
     [SerializeField] private int width;
     [SerializeField] private int height;
@@ -23,7 +24,7 @@ public class TileGrid : MonoBehaviour
 
     private void Awake()
     {
-        tileGrid = new Grid<GridTileObject>(width, height, cellSize, transform.position, GridBuildingSystem.FieldType.tile, (Grid<GridTileObject> g, int x, int y) => new GridTileObject(g, x, y));
+        tileGrid = new Grid<GridTileObject>(width, height, cellSize, transform.position, (Grid<GridTileObject> g, int x, int y) => new GridTileObject(g, x, y));
     }
 
     private void Start()
@@ -31,8 +32,11 @@ public class TileGrid : MonoBehaviour
         LevelManager.instance.OnLevelPhaseTileBuild += LevelManager_OnLevelPhaseTileBuild;
         if (LevelManager.instance.GetLevelPhase() == LevelManager.LevelPhase.tilebuild) LevelManager_OnLevelPhaseTileBuild();
 
-        GridTileObject startGridTileObject = tileGrid.GetGridObject(StartX,StartY);
-        startGridTileObject.SetTransfrom(Instantiate(startTile, tileGrid.GetWorldPosition(StartX,StartY), Quaternion.identity));
+        gridBuildingSystem = GetComponent<GridBuildingSystem>();
+
+        Transform tile = Instantiate(startTile, tileGrid.GetWorldPosition(StartX,StartY), Quaternion.identity);
+        currentObject = tileGrid.GetGridObject(StartX,StartY);
+        PlaceNewTile(tile,StartX,StartY);
     }
 
     private void LevelManager_OnLevelPhaseTileBuild()
@@ -84,10 +88,29 @@ public class TileGrid : MonoBehaviour
     private void PlaceNewTileAndContinue()
     {
         tileGrid.GetXY(UtilsClass.GetMouseWorldPosition(), out int x, out int y);
-        //Transform newTile = Instantiate(testTile,tileGrid.GetWorldPosition(x,y),Quaternion.identity);
-        //currentObject.SetTransfrom(newTile);
-        currentObject.SetTransfrom(ghostObject);
+        PlaceNewTile(ghostObject,x,y);
         LevelManager.instance.EndTileBuild();
+    }
+
+    private void PlaceNewTile(Transform newObject, int x, int y)
+    {
+        currentObject.SetTransfrom(newObject);
+        ApplyBuildingArea(newObject, x,y);
+    }
+
+    private void ApplyBuildingArea(Transform newObject, int x, int y)
+    {
+        BuildTileData buildArea = newObject.GetComponent<Tile>().GetBuildArea();
+
+        int originX = x*cellSize;
+        int originY = y*cellSize;
+        for (int i = 0; i < buildArea.rows.Length; i++)
+        {
+            for (int j = 0; j < buildArea.rows[i].row.Length; j++)
+            {
+                gridBuildingSystem.SetTypeOfCell(buildArea.rows[i].row[j],j+originX,i+originY);
+            }
+        }        
     }
 
     private bool CanConnectTile()
@@ -168,6 +191,21 @@ public class TileGrid : MonoBehaviour
         if (connections != 0) return true;
 
         return false;
+    }
+
+    public int GetCellSize()
+    {
+        return cellSize;
+    }
+
+    public int GetWidth()
+    {
+        return width;
+    }
+
+    public int GetHeight()
+    {
+        return height;
     }
 
     public class GridTileObject

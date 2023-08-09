@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CannonTowerBP
   m_EditorClassIdentifier: 
   prefab: {fileID: 4972174128579208736, guid: 9117f368fec0570478c8b3cb16ac3a7d, type: 3}
-  type: 1
+  type: 2
   cost: 20

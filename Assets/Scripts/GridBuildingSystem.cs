@@ -6,36 +6,32 @@ using System;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public static event Action OnBuilt;
+    public  event Action OnBuilt;
     public static EventHandler OnStartBuilding;
     public static event Action OnEndBuilding;
 
-    [Serializable]
-    public class GridBluePrint
-    {
-        public Transform origin; 
-        public int width;
-        public int height;
-        public float cellSize;
-        public FieldType type;
-    }
-
     public enum FieldType
     {
+        none,
         unit,
         building,
-        tile,
         all,
     }
 
     [SerializeField] private GameObject gridHighlightPrefab;
     public static GameObject GridHighlightPrefab { get ; private set; }
-    [SerializeField] List<GridBluePrint> gridBluePrints = new List<GridBluePrint>();
+
+    [Header("BuildGrid")]
+    [SerializeField] private int cellSize = 1;
+    private int width;
+    private int height;
+
 
     [Header("Other")]
     [SerializeField] private Transform ghost;
 
-    private List<Grid<GridObject>> grids = new List<Grid<GridObject>>();
+    private TileGrid tileGrid;
+    private Grid<GridObject> grid;
     private bool building = false;
     private MinionBluePrintSO currentBlueprint;
     
@@ -45,10 +41,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         GridHighlightPrefab = gridHighlightPrefab;
 
-        foreach (GridBluePrint bluePrint in gridBluePrints)
-        {
-            grids.Add(new Grid<GridObject>(bluePrint.width, bluePrint.height, bluePrint.cellSize, bluePrint.origin.position, bluePrint.type, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y)));
-        }
+        SetupGrid();
     }
 
     private void Start()
@@ -58,11 +51,24 @@ public class GridBuildingSystem : MonoBehaviour
 
         ghostRenderer = ghost.GetComponent<SpriteRenderer>();
         ghostRenderer.enabled = false;
+
+        
+    }
+
+    private void SetupGrid()
+    {
+        tileGrid = GetComponent<TileGrid>();
+
+        int tileGridCellSize = tileGrid.GetCellSize();
+        width = tileGrid.GetWidth()*(tileGridCellSize/cellSize);
+        height = tileGrid.GetHeight()*(tileGridCellSize/cellSize);
+
+        grid = new Grid<GridObject>(width, height, cellSize, transform.position, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y));
     }
 
     private void LevelManager_OnLevelPhaseBuild()
     {
-        building = true;
+        //building = true;
     }
 
     private void LevelManager_OnLevelPhasePlay()
@@ -74,30 +80,18 @@ public class GridBuildingSystem : MonoBehaviour
     {
         if (building)
         {
-            
-            GhostBuildingDisplayAllGrids();
+            GhostBuildingDisplay();
 
             if (Input.GetMouseButtonDown(0))
             {
-                TryBuildSelectedGameObjectAllGrids();
+                TryBuildSelectedGameObject();
             }
         }
     }
 
-    private void GhostBuildingDisplayAllGrids()
-    {
-        foreach (Grid<GridObject> grid in grids)
-        {
-            GhostBuildingDisplay(grid);
-        }
-    }
-
-    private void GhostBuildingDisplay(Grid<GridObject> grid)
+    private void GhostBuildingDisplay()
     {
         if(currentBlueprint == null) 
-            return;
-
-        if(!CorrectBuildType(grid)) 
             return;
 
         Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
@@ -107,7 +101,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             ghostRenderer.sprite = currentBlueprint.GetTransform().GetComponentInChildren<SpriteRenderer>().sprite;
             ghost.transform.position = grid.GetCellCenter(x,y);
-            if(gridObject.CanBuild())
+            if(gridObject.CanBuild(currentBlueprint.GetBuildType()))
             {
                 ghostRenderer.color = new Color(1,1,1,0.5f);
             }else{
@@ -116,26 +110,15 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
-    private void TryBuildSelectedGameObjectAllGrids()
+    private void TryBuildSelectedGameObject()
     {
-        foreach (Grid<GridObject> grid in grids)
-        {
-            TryBuildSelectedGameObject(grid);
-        }
-    }
-
-    private void TryBuildSelectedGameObject(Grid<GridObject> grid)
-    {
-        if(!CorrectBuildType(grid))
-            return;
-
         if (grid.GetGridObject(UtilsClass.GetMouseWorldPosition()) != null)
         {       
             Vector3 mousePos = UtilsClass.GetMouseWorldPosition();
 
             grid.GetXY(mousePos, out int x, out int y);
             GridObject gridObject = grid.GetGridObject(x,y);
-            if (gridObject.CanBuild())
+            if (gridObject.CanBuild(currentBlueprint.GetBuildType()))
             {
                 Transform monster = Instantiate(currentBlueprint.GetTransform(), grid.GetCellCenter(x, y), Quaternion.identity);
                 gridObject.SetTransfrom(monster);
@@ -150,20 +133,6 @@ public class GridBuildingSystem : MonoBehaviour
                 UtilsClass.CreateWorldTextPopup("Can't bulid here", mousePos);
             }
         }
-    }
-
-    private bool CorrectBuildType(Grid<GridObject> grid)
-    {
-        if(currentBlueprint == null)
-            return false;
-
-        if(currentBlueprint.GetBuildType() != FieldType.all && currentBlueprint.GetBuildType() != grid.GetBuildType())
-        {
-            return false;
-        }else{
-            return true;
-        }
-        
     }
 
     private void DoPayment()
@@ -201,6 +170,16 @@ public class GridBuildingSystem : MonoBehaviour
         return currentBlueprint;
     }
 
+    public void SetTypeOfCell(FieldType type, int x, int y)
+    {
+        grid.GetGridObject(x,y).SetType(type);
+    }
+
+    public int GetCellSize()
+    {
+        return cellSize;
+    }
+
     public class GridObject
     {
         private Grid<GridObject> grid;
@@ -208,6 +187,7 @@ public class GridBuildingSystem : MonoBehaviour
         private int y;
         private Transform transform;
         private GameObject highlight;
+        private FieldType type = FieldType.none;
 
         public GridObject(Grid<GridObject> grid, int x, int y)
         {
@@ -228,12 +208,9 @@ public class GridBuildingSystem : MonoBehaviour
         private void GridBuildingSystem_OnStartBuilding(object sender, EventArgs e)
         {
             GridBuildingSystem gridBuildingSystem = (GridBuildingSystem) sender;
-            if(transform == null)
+            if(transform == null && gridBuildingSystem.GetCurrentBluePrint().GetBuildType() == type)
             {
-                if(gridBuildingSystem.GetCurrentBluePrint().GetBuildType() == grid.GetBuildType())
-                {
-                    highlight.SetActive(true);
-                }   
+                highlight.SetActive(true);
             }
         }
 
@@ -253,15 +230,20 @@ public class GridBuildingSystem : MonoBehaviour
             return transform;
         }
 
+        public void SetType(FieldType type)
+        {
+            this.type = type;
+        }
+
         public void ClearTransform()
         {
             transform = null;
             grid.TriggerGridObjectChanged(x, y);
         }
 
-        public bool CanBuild()
+        public bool CanBuild(FieldType type)
         {
-            if (transform == null)
+            if (transform == null && this.type == type)
             {
                 return true;
             }
@@ -275,6 +257,5 @@ public class GridBuildingSystem : MonoBehaviour
         {
             return (x + "," + y + "\n" + transform);
         }
-
     }
 }

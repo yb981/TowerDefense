@@ -11,7 +11,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake() 
     {
-        spawnGrid = new Grid<GridSpawnAreaObject>(spawnGridWidth,spawnGridHeight,spawnGridCellSize,transform.position, GridBuildingSystem.FieldType.unit,
+        spawnGrid = new Grid<GridSpawnAreaObject>(spawnGridWidth,spawnGridHeight,spawnGridCellSize,transform.position,
                                                 (Grid<GridSpawnAreaObject>g ,int w , int h) => new GridSpawnAreaObject(g,w,h));
     }
 

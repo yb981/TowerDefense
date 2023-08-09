@@ -10,7 +10,7 @@ public class TestingGrid : MonoBehaviour
 
     void Start()
     {
-        grid = new Grid<HeatMapGridObject>(8,12,10f, new Vector3(0,30,0), GridBuildingSystem.FieldType.all ,(Grid<HeatMapGridObject> g, int x, int y) => new HeatMapGridObject(g,x,y));
+        grid = new Grid<HeatMapGridObject>(8,12,10f, new Vector3(0,30,0),(Grid<HeatMapGridObject> g, int x, int y) => new HeatMapGridObject(g,x,y));
     }
 
     private void Update() 
