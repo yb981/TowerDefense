@@ -17,6 +17,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int enemyTankChance;
     [SerializeField] private int bossWaves;
     [SerializeField] private float spawnTime = 1f;
+    [SerializeField] private int startSpawnAmount;
+    [SerializeField] private int additionalSpawnsPerWave;
     private int currentWave = 1;
     private int monsterAlive = 0;
 
@@ -43,14 +45,14 @@ public class WaveManager : MonoBehaviour
 
     private void StartNextWave()
     {
-        monsterAlive = currentWave;
-        StartCoroutine(SpawnMonster());
+        StartCoroutine(SpawnMonsters());
     }
 
-    private IEnumerator SpawnMonster()
+    private IEnumerator SpawnMonsters()
     {
-
-        for (int i = 0; i < currentWave; i++)
+        int monstersToSpawn = startSpawnAmount+(currentWave-1)*additionalSpawnsPerWave;
+        monsterAlive = monstersToSpawn;
+        for (int i = 0; i < monstersToSpawn; i++)
         {
             if(currentWave != 0 && currentWave % bossWaves == 0 && i == currentWave-1)
             {

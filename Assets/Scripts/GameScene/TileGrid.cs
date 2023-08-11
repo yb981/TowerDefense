@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using System;
 
 public class TileGrid : MonoBehaviour
 {
+
     private GridBuildingSystem gridBuildingSystem;
     Grid<GridTileObject> tileGrid;
     [SerializeField] private int width;
@@ -17,6 +19,7 @@ public class TileGrid : MonoBehaviour
     [SerializeField] private Transform startTile;
     [SerializeField] private int StartX;
     [SerializeField] private int StartY;
+    private Transform buildTile;
 
     private GridTileObject currentObject;
     private Transform ghostObject;
@@ -29,8 +32,11 @@ public class TileGrid : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.instance.OnLevelPhaseTileBuild += LevelManager_OnLevelPhaseTileBuild;
-        if (LevelManager.instance.GetLevelPhase() == LevelManager.LevelPhase.tilebuild) LevelManager_OnLevelPhaseTileBuild();
+/*         LevelManager.instance.OnLevelPhaseTileBuild += LevelManager_OnLevelPhaseTileBuild;
+        if (LevelManager.instance.GetLevelPhase() == LevelManager.LevelPhase.tilebuild) LevelManager_OnLevelPhaseTileBuild(); */
+
+        TileSelection tileSelection = FindObjectOfType<TileSelection>();
+        tileSelection.OnTileSelected += TileSelection_OnTileSelected;
 
         gridBuildingSystem = GetComponent<GridBuildingSystem>();
 
@@ -39,10 +45,20 @@ public class TileGrid : MonoBehaviour
         PlaceNewTile(tile,StartX,StartY);
     }
 
-    private void LevelManager_OnLevelPhaseTileBuild()
+    private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
+    {
+        StartBuilding(e.tilePrefab);
+    }
+
+/*     private void LevelManager_OnLevelPhaseTileBuild()
+    {
+
+    } */
+
+    private void StartBuilding(Transform newTile)
     {
         building = true;
-        ghostObject = Instantiate(testTile, new Vector3(0, 0, 0), Quaternion.identity);
+        ghostObject = Instantiate(newTile, new Vector3(0, 0, 0), Quaternion.identity);
         StartCoroutine("BuildingTiles");
     }
 

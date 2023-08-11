@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start() 
     {
-        ChangeLevelPhase(LevelPhase.tilebuild);
+        ChangeLevelPhase(LevelPhase.build);
     }
 
     private void ChangeLevelPhase(LevelPhase newPhase)
@@ -77,6 +77,7 @@ public class LevelManager : MonoBehaviour
         sceneFader.FadeToScene(GameConstants.SCENE_HIGHSCORE);
     }
 
+
     private void PersistData()
     {
         PersistenceManager.Instance.SaveScore(PlayerStats.Instance.GetScore());
@@ -86,12 +87,12 @@ public class LevelManager : MonoBehaviour
 
     private void ResetWaveForNextBuildPhase()
     {
-        StartCoroutine(DelayedBackToBuildingPhase());
+        StartCoroutine(DelayedPhaseTransition(LevelPhase.tilebuild, 0.5f));
     }
 
-    private IEnumerator DelayedBackToBuildingPhase()
+    private IEnumerator DelayedPhaseTransition(LevelPhase phase, float time)
     {
-        yield return new WaitForSeconds(1f);
-        ChangeLevelPhase(LevelPhase.tilebuild);
+        yield return new WaitForSeconds(time);
+        ChangeLevelPhase(phase);
     }
 }
