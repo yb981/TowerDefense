@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Tile : MonoBehaviour
-{    
+{
     public enum direction
     {
         right,
@@ -14,10 +15,10 @@ public class Tile : MonoBehaviour
     }
 
     [SerializeField] private BuildTileData buildTileData;
-/*     [SerializeField] private GridBuildingSystem.FieldType[,] buildArea  = 
-                                                        { {GridBuildingSystem.FieldType.unit, GridBuildingSystem.FieldType.unit}, 
-                                                        {GridBuildingSystem.FieldType.building, GridBuildingSystem.FieldType.building}} ; 
-     */
+    /*     [SerializeField] private GridBuildingSystem.FieldType[,] buildArea  = 
+                                                            { {GridBuildingSystem.FieldType.unit, GridBuildingSystem.FieldType.unit}, 
+                                                            {GridBuildingSystem.FieldType.building, GridBuildingSystem.FieldType.building}} ; 
+         */
     [SerializeField] private bool[] openingsForInit = new bool[4];
     private TileNode[] openingNodes = new TileNode[4];
 
@@ -25,11 +26,27 @@ public class Tile : MonoBehaviour
     private int rotation;
     private List<Transform> rotationTiles = new List<Transform>();
     private int currentRotationIndex = 0;
-    
-    private void Start() 
+    private TileGrid tileGrid;
+    [Header("Coding references")]
+    [SerializeField] private Tilemap tileMap;
+    [SerializeField] private GridLayout tileVisualGrid;
+
+    private void Start()
     {
         AddRotationTilesToList();
         InitNodes();
+        tileGrid = FindObjectOfType<TileGrid>();
+    }
+
+    private void Update()
+    {
+        /*         // TEST
+                if(Input.GetKey(KeyCode.E))
+                {
+                    Vector3Int currentCell = tileVisualGrid.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                    if(tileMap.GetTile(currentCell) != null)
+                        tileMap.SetTransformMatrix(currentCell,Matrix4x4.Rotate(Quaternion.Euler(0,0,-90f)));
+                } */
     }
 
     private void InitNodes()
@@ -37,7 +54,7 @@ public class Tile : MonoBehaviour
         for (int i = 0; i < openingNodes.Length; i++)
         {
             openingNodes[i] = new TileNode();
-            if(openingsForInit[i])
+            if (openingsForInit[i])
             {
                 openingNodes[i].entry = true;
             }
@@ -51,7 +68,7 @@ public class Tile : MonoBehaviour
             rotationTiles.Add(transform.GetChild(i));
 
             // Disable child/rotation if not the first
-            if(i != currentRotationIndex)
+            if (i != currentRotationIndex)
             {
                 rotationTiles[i].gameObject.SetActive(false);
             }
@@ -61,69 +78,139 @@ public class Tile : MonoBehaviour
     public void TurnTile()
     {
 
-        if(currentRotationIndex == rotationTiles.Count -1)
+        if (currentRotationIndex == rotationTiles.Count - 1)
         {
             currentRotationIndex = 0;
-        }else{
+        }
+        else
+        {
             currentRotationIndex++;
         }
 
         RotateNodesCounterClockwise();
         RotateBuildAreaCounterClockwise();
-        
-        for (int i = 0; i < rotationTiles.Count; i++)
-        {
-            if(i != currentRotationIndex)
-            {
-                rotationTiles[i].gameObject.SetActive(false);
-            }else{
-                rotationTiles[i].gameObject.SetActive(true);
-            }
-        }
+        RotateVisual();
+    }
 
-        Debug.Log("turned, openings: " );
-        for (int i = 0; i < openingNodes.Length; i++)
-        {
-            Debug.Log(openingNodes[i].entry+"," );
-        }
-    } 
-
-    private void RotateNodesCounterClockwise()
+    private void RotateVisual()
     {
-        TileNode temporaryNode = openingNodes[0];
-        for (int i = 0; i < openingNodes.Length; i++)
+
+        //visual rotation
+
+        int adjustment = tileGrid.GetCellSize();
+
+        Transform child = transform.GetChild(0);
+        child.Rotate(new Vector3(0, 0, 90f), Space.Self);
+
+        Vector3 adjustmentVector = new Vector3(0, 0, 0);
+
+        if (child.eulerAngles.z == 90f)
         {
-            int next = i+1;
-            if(next == openingNodes.Length)
+            adjustmentVector += new Vector3(adjustment, 0, 0);
+        }
+        else if (child.eulerAngles.z == 180f)
+        {
+            adjustmentVector += new Vector3(0, adjustment, 0);
+        }
+        else if (child.eulerAngles.z == 270f)
+        {
+            adjustmentVector += new Vector3(-adjustment, 0, 0);
+        }
+        else
+        {
+            adjustmentVector += new Vector3(0, -adjustment, 0);
+        }
+        child.position += adjustmentVector;
+
+        RotateTilesInTilemap();
+        /* 
+                // tiles rotation
+                for (int i = 0; i < rotationTiles.Count; i++)
+                        {
+                            if(i != currentRotationIndex)
+                            {
+                                rotationTiles[i].gameObject.SetActive(false);
+                            }else{
+                                rotationTiles[i].gameObject.SetActive(true);
+                            }
+                }  */
+    }
+
+    private void RotateTilesInTilemap()
+    {
+        BoundsInt bounds = tileMap.cellBounds;
+
+        //float rotation = transform.eulerAngles.z;
+        //Debug.Log("bounds position: "+bounds.position);
+
+        foreach (Vector3Int position in bounds.allPositionsWithin)
+        {
+            TileBase tile = tileMap.GetTile(position);
+
+            if (tile != null)
             {
-                // if last index, get saved first
-                openingNodes[i] = temporaryNode;
-            }else{
-                openingNodes[i] = openingNodes[next];
+                Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 0, -90f));
+
+                tileMap.SetTransformMatrix(position, rotationMatrix);
             }
         }
     }
 
-    private void RotateBuildAreaCounterClockwise()
+    private void RotateNodesCounterClockwise()
     {
-        BuildTileData copyData = new BuildTileData();
-        int numCols = buildTileData.rows.Length;
-
-        // Init copy
-        for (int i = 0; i < numCols; i++)
+        TileNode temporaryNode = openingNodes[openingNodes.Length - 1];
+        for (int i = openingNodes.Length - 1; i > 0; i--)
         {
-            copyData.rows[i].row = new GridBuildingSystem.FieldType[buildTileData.rows[i].row.Length];
+            openingNodes[i] = openingNodes[i - 1];
         }
+        openingNodes[0] = temporaryNode;
+    }
 
+    private void RotateBuildAreaClockwise()
+    {
+        // Create Copy
+        BuildTileData copyData = CopyBuildTileData();
+
+        // Rotate
+        int numCols = buildTileData.rows.Length;
         for (int col = 0; col < numCols; col++)
         {
             for (int j = 0; j < buildTileData.rows[col].row.Length; j++)
             {
-                copyData.rows[numCols-j-1].row[col] = buildTileData.rows[col].row[j];
+                copyData.rows[numCols - j - 1].row[col] = buildTileData.rows[col].row[j];
             }
         }
 
         buildTileData = copyData;
+    }
+
+    private void RotateBuildAreaCounterClockwise()
+    {
+        // Create Copy
+        BuildTileData copyData = CopyBuildTileData();
+
+        // Rotate
+        int numCols = buildTileData.rows.Length;
+        int numRows = buildTileData.rows[0].row.Length;
+        for (int col = 0; col < numCols; col++)
+        {
+            for (int j = 0; j < buildTileData.rows[col].row.Length; j++)
+            {
+                copyData.rows[j].row[numRows - col - 1] = buildTileData.rows[col].row[j];
+            }
+        }
+
+        buildTileData = copyData;
+    }
+
+    private BuildTileData CopyBuildTileData()
+    {
+        BuildTileData copyData = new BuildTileData();
+        for (int i = 0; i < buildTileData.rows.Length; i++)
+        {
+            copyData.rows[i].row = new GridBuildingSystem.FieldType[buildTileData.rows[i].row.Length];
+        }
+        return copyData;
     }
 
     public void SetPosition(Vector3 newPosition)
@@ -138,17 +225,17 @@ public class Tile : MonoBehaviour
 
     public TileNode GetNorthNode()
     {
-        return openingNodes[1%rotationTiles.Count];
+        return openingNodes[1 % rotationTiles.Count];
     }
 
     public TileNode GetSouthNode()
     {
-        return openingNodes[3%rotationTiles.Count];
+        return openingNodes[3 % rotationTiles.Count];
     }
 
     public TileNode GetWestNode()
     {
-        return openingNodes[2%rotationTiles.Count];
+        return openingNodes[2 % rotationTiles.Count];
     }
 
     public TileNode GetEastNode()

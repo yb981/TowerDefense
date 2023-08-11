@@ -2472,6 +2472,7 @@ MonoBehaviour:
   enemyRangeChance: 2
   enemyTankChance: 1
   bossWaves: 10
+  spawnTime: 0.2
 --- !u!114 &1250279304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2737,7 +2738,7 @@ MonoBehaviour:
   width: 3
   height: 3
   cellSize: 10
-  testTile: {fileID: 3772694589048596949, guid: a1eb83619c1c61346ac16281b14797fd, type: 3}
+  testTile: {fileID: 3772694589048596949, guid: 9f7e8a9781c1021418a18d8e58d23c9d, type: 3}
   startTile: {fileID: 3772694589048596949, guid: a1eb83619c1c61346ac16281b14797fd, type: 3}
   StartX: 0
   StartY: 0

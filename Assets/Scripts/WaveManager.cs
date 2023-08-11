@@ -16,6 +16,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int enemyRangeChance;
     [SerializeField] private int enemyTankChance;
     [SerializeField] private int bossWaves;
+    [SerializeField] private float spawnTime = 1f;
     private int currentWave = 1;
     private int monsterAlive = 0;
 
@@ -58,7 +59,7 @@ public class WaveManager : MonoBehaviour
                 spawner.SpawnEnemy(RandomEnemy());
             }
             
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(spawnTime);
         }
         
     }
