@@ -157,6 +157,11 @@ public class Minion : Unit
         gameObject.SetActive(true);
     }
 
+    public void SetSpawnPoint(Vector3 newSpawnPoint)
+    {
+        spawnPoint = newSpawnPoint;
+    }
+
     protected void OnDestroy() 
     {
         health.OnHealthChanged -= Health_OnHealthChanged;

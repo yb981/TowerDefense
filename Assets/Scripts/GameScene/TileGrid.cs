@@ -55,6 +55,8 @@ public class TileGrid : MonoBehaviour
 
     } */
 
+
+
     private void StartBuilding(Transform newTile)
     {
         building = true;
@@ -112,6 +114,17 @@ public class TileGrid : MonoBehaviour
     {
         currentObject.SetTransfrom(newObject);
         ApplyBuildingArea(newObject, x,y);
+        ApplyConnectionNodes(newObject, x,y);
+        SetSpawnersOfNewTile(newObject);
+        
+    }
+
+    private void SetSpawnersOfNewTile(Transform newObject)
+    {
+        Debug.Log("new object: "+ newObject);
+        TileSpawnManager tileSpawnManager = newObject.GetComponentInChildren<TileSpawnManager>();
+        Debug.Log(tileSpawnManager);
+        tileSpawnManager.SetSpawnerLocations();
     }
 
     private void ApplyBuildingArea(Transform newObject, int x, int y)
@@ -126,12 +139,73 @@ public class TileGrid : MonoBehaviour
             {
                 gridBuildingSystem.SetTypeOfCell(buildArea.rows[i].row[j],j+originX,i+originY);
             }
-        }        
+        }
+    }
+
+    private void ApplyConnectionNodes(Transform newObject, int x, int y)
+    {
+        Tile newTile = newObject.GetComponent<Tile>();
+
+        // Check South
+        GridTileObject nextTile = tileGrid.GetGridObject(x, y-1);
+        if (nextTile != null && nextTile.GetTransform() != null)
+        {
+            Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetNorthNode();
+            Tile.TileNode ghostNode = newTile.GetSouthNode();
+
+            if(node.entry == true)
+            {
+                node.connectionTile = newTile.transform;
+                ghostNode.connectionTile = nextTile.GetTransform();
+            }
+        }
+
+        // Check North
+        nextTile = tileGrid.GetGridObject(x, y+1);
+        if (nextTile != null && nextTile.GetTransform() != null)
+        {
+            Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetSouthNode();
+            Tile.TileNode ghostNode = newTile.GetNorthNode();
+
+            if(node.entry == true)
+            {
+                node.connectionTile = newTile.transform;
+                ghostNode.connectionTile = nextTile.GetTransform();
+            }
+        }
+
+        // Check West
+        nextTile = tileGrid.GetGridObject(x-1, y);
+        if (nextTile != null && nextTile.GetTransform() != null)
+        {
+            Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetEastNode();
+            Tile.TileNode ghostNode = newTile.GetWestNode();
+
+            if(node.entry == true)
+            {
+                node.connectionTile = newTile.transform;
+                ghostNode.connectionTile = nextTile.GetTransform();
+            }
+        }
+
+        // Check East
+        nextTile = tileGrid.GetGridObject(x+1, y);
+        if (nextTile != null && nextTile.GetTransform() != null)
+        {
+            Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetWestNode();
+            Tile.TileNode ghostNode = newTile.GetEastNode();
+
+            if(node.entry == true)
+            {
+                node.connectionTile = newTile.transform;
+                ghostNode.connectionTile = nextTile.GetTransform();
+            }
+        }
+
     }
 
     private bool CanConnectTile()
     {
-        Debug.Log("seeing if can connect tile");
         // Check if current cell is empty
         GridTileObject currentHover = tileGrid.GetGridObject(UtilsClass.GetMouseWorldPosition());
         if (currentHover != null && currentHover.GetTransform() != null)
@@ -168,7 +242,6 @@ public class TileGrid : MonoBehaviour
                 connections++;
             }
         }
-        Debug.Log("South aligns");
 
         // Check North
         nextTile = tileGrid.GetGridObject(x, y+1);
@@ -181,7 +254,6 @@ public class TileGrid : MonoBehaviour
 
             if(node.entry == true) connections++;
         }
-        Debug.Log("North aligns");
 
         // Check West
         nextTile = tileGrid.GetGridObject(x-1, y);
@@ -193,7 +265,6 @@ public class TileGrid : MonoBehaviour
             if (node.entry != ghostNode.entry) return false;
             if(node.entry == true) connections++;
         }
-        Debug.Log("West aligns");
 
         // Check East
         nextTile = tileGrid.GetGridObject(x+1, y);
@@ -205,12 +276,15 @@ public class TileGrid : MonoBehaviour
             if (node.entry != ghostNode.entry) return false;
             if(node.entry == true) connections++;
         }
-        Debug.Log("East aligns");
 
-        Debug.Log("connections: "+ connections);
         if (connections != 0) return true;
 
         return false;
+    }
+
+    public Tile GetTileOfPosition(Vector3 location)
+    {
+        return tileGrid.GetGridObject(location).GetTransform().GetComponent<Tile>();
     }
 
     public int GetCellSize()

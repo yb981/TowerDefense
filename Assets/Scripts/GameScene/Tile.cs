@@ -33,7 +33,7 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        AddRotationTilesToList();
+        //AddRotationTilesToList();
         InitNodes();
         tileGrid = FindObjectOfType<TileGrid>();
     }
@@ -259,7 +259,7 @@ public class Tile : MonoBehaviour
     public class TileNode
     {
         public bool entry = false;
-        public GameObject connectionTile;
+        public Transform connectionTile;
     }
 
 
