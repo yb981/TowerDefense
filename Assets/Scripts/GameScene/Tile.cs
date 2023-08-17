@@ -75,7 +75,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void TurnTile()
+    public void RotateTile()
     {
 
         if (currentRotationIndex == rotationTiles.Count - 1)
@@ -138,7 +138,7 @@ public class Tile : MonoBehaviour
 
     private void RotateTilesInTilemap()
     {
-        BoundsInt bounds = tileMap.cellBounds;
+        BoundsInt bounds = tileMap.cellBounds; 
 
         //float rotation = transform.eulerAngles.z;
         //Debug.Log("bounds position: "+bounds.position);
@@ -164,6 +164,14 @@ public class Tile : MonoBehaviour
             openingNodes[i] = openingNodes[i - 1];
         }
         openingNodes[0] = temporaryNode;
+
+        string rotation = "[";
+        foreach (var item in openingNodes)
+        {
+            rotation += item.entry + ",";
+        }
+        rotation += "]";
+        Debug.Log(rotation);
     }
 
     private void RotateBuildAreaClockwise()
@@ -225,17 +233,17 @@ public class Tile : MonoBehaviour
 
     public TileNode GetNorthNode()
     {
-        return openingNodes[1 % rotationTiles.Count];
+        return openingNodes[1];
     }
 
     public TileNode GetSouthNode()
     {
-        return openingNodes[3 % rotationTiles.Count];
+        return openingNodes[3];
     }
 
     public TileNode GetWestNode()
     {
-        return openingNodes[2 % rotationTiles.Count];
+        return openingNodes[2];
     }
 
     public TileNode GetEastNode()

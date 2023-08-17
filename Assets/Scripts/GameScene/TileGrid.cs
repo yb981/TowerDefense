@@ -77,7 +77,7 @@ public class TileGrid : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ghostObject.GetComponent<Tile>().TurnTile();
+                ghostObject.GetComponent<Tile>().RotateTile();
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -163,7 +163,10 @@ public class TileGrid : MonoBehaviour
                 return false;
             }
 
-            connections++;
+            if(node.entry == true)
+            {
+                connections++;
+            }
         }
         Debug.Log("South aligns");
 
@@ -175,7 +178,8 @@ public class TileGrid : MonoBehaviour
             Tile.TileNode ghostNode = ghostTile.GetNorthNode();
 
             if (node.entry != ghostNode.entry) return false;
-            connections++;
+
+            if(node.entry == true) connections++;
         }
         Debug.Log("North aligns");
 
@@ -187,7 +191,7 @@ public class TileGrid : MonoBehaviour
             Tile.TileNode ghostNode = ghostTile.GetWestNode();
 
             if (node.entry != ghostNode.entry) return false;
-            connections++;
+            if(node.entry == true) connections++;
         }
         Debug.Log("West aligns");
 
@@ -199,7 +203,7 @@ public class TileGrid : MonoBehaviour
             Tile.TileNode ghostNode = ghostTile.GetEastNode();
 
             if (node.entry != ghostNode.entry) return false;
-            connections++;
+            if(node.entry == true) connections++;
         }
         Debug.Log("East aligns");
 

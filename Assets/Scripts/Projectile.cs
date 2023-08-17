@@ -51,7 +51,7 @@ public class Projectile : MonoBehaviour
 
     private bool TargetStillAlive()
     {
-        if (target == null && target.gameObject.activeSelf == false)
+        if (target == null || target.gameObject.activeSelf == false)
         {
             Destroy(gameObject);
             gameObject.SetActive(false);
