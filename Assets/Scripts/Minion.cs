@@ -24,6 +24,8 @@ public class Minion : Unit
     private float findFrequency = 0.5f;
     protected float attackTimer = 3f;
 
+    private Vector3 disabledPosition = new Vector3(-100f,-100f,-100f);
+
 
     protected override void Start()
     {
@@ -139,12 +141,20 @@ public class Minion : Unit
         ResetInstance();
     }
 
+    protected override void Die()
+    {
+        // Disable Minion
+        transform.position = disabledPosition;
+        gameObject.SetActive(false);
+    }
+
     protected virtual void ResetInstance()
     {
         playing = false;
         health.SetHealth(health.GetMaxHealth());
         transform.position = spawnPoint;
         ChangeState(UnitState.idle);
+        gameObject.SetActive(true);
     }
 
     protected void OnDestroy() 

@@ -470,7 +470,11 @@ MonoBehaviour:
   - {fileID: 1963861632}
   - {fileID: 1963861632}
   child: {fileID: 809460500}
-  tilePrefabs: []
+  tilePrefabs:
+  - {fileID: 3772694589048596949, guid: 214b22ad013806947bfdf07837141c62, type: 3}
+  - {fileID: 3772694589048596949, guid: 9f7e8a9781c1021418a18d8e58d23c9d, type: 3}
+  - {fileID: 3772694589048596949, guid: a1eb83619c1c61346ac16281b14797fd, type: 3}
+  - {fileID: 3772694589048596949, guid: 965af27a83e00e8449eceedbf92f0b1e, type: 3}
 --- !u!224 &267973802 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 491600588584743672, guid: 2a9e89717ad70b842896735bc3307105, type: 3}

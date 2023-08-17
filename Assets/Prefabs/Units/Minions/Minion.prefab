@@ -443,11 +443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbe7f8bffa936c449dc69bd4f47d4fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerRange: 3
+  defaultMovementSpeed: 2
+  triggerRange: 6
   attackSpeed: 3
   attackRange: 1
   attackDamage: 1
-  defaultMovementSpeed: 2
 --- !u!114 &1203706870477684772
 MonoBehaviour:
   m_ObjectHideFlags: 0

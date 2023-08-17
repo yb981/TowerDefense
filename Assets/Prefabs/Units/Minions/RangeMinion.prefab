@@ -123,10 +123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5330107fcf93e7443ae4fdafdfb50a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerRange: 4
+  defaultMovementSpeed: 2
+  triggerRange: 6
   attackSpeed: 4
   attackRange: 3
   attackDamage: 3
-  defaultMovementSpeed: 2
   projectilePrefab: {fileID: 767714131510230892, guid: d7dac346d327e664d8234d6ee104829d, type: 3}
   projectileSpeed: 10

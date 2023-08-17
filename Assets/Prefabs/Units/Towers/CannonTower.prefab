@@ -68,6 +68,10 @@ PrefabInstance:
       value: 0.7830189
       objectReference: {fileID: 0}
     - target: {fileID: 8598524620824936832, guid: 9bb73bd7dfa98ee48a4a391ae9ce3394, type: 3}
+      propertyPath: range
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598524620824936832, guid: 9bb73bd7dfa98ee48a4a391ae9ce3394, type: 3}
       propertyPath: damage
       value: 2
       objectReference: {fileID: 0}

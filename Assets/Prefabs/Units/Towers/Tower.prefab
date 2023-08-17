@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpawnPoint: {fileID: 3271840874181250326}
   projectilePrefab: {fileID: 7780838058985694600, guid: d7dac346d327e664d8234d6ee104829d, type: 3}
-  range: 5
+  range: 10
   shootingSpeed: 1
   projectileSpeed: 12
   damage: 2

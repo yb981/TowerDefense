@@ -89,7 +89,7 @@ public class Monster : Unit
 
     protected virtual void AttackTarget()
     {
-        if(target != null)
+        if(NPCExsitsAndAlive(target))
         {
             if(attackTimer > attackSpeed)
             {
@@ -104,7 +104,7 @@ public class Monster : Unit
 
     protected virtual void ChaseTarget()
     {
-        if(target != null)
+        if(NPCExsitsAndAlive(target))
         {
             if(Vector3.Distance(transform.position,target.position) < attackRange)
             {
@@ -127,7 +127,7 @@ public class Monster : Unit
 
         foreach (Transform npcTarget in allNPCs)
         {
-            if(npcTarget != null)
+            if(NPCExsitsAndAlive(npcTarget))
             {
                 float rangeToNPC = Vector3.Distance(npcTarget.position,transform.position);
                 if(rangeToNPC < closest)
@@ -141,6 +141,11 @@ public class Monster : Unit
         {
             ChangeState(UnitState.chase);
         }
+    }
+
+    protected bool NPCExsitsAndAlive(Transform target)
+    {
+        return (target != null) && (target.gameObject.activeSelf == true);
     }
 
     protected override void Die()

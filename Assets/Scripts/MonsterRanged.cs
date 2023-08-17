@@ -12,7 +12,7 @@ public class MonsterRanged : Monster
 
     protected override void AttackTarget()
     {
-        if(target != null)
+        if(NPCExsitsAndAlive(target))
         {
             if(attackTimer > attackSpeed)
             {
