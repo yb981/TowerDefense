@@ -42,8 +42,16 @@ public class TileGrid : MonoBehaviour
 
         Transform tile = Instantiate(startTile, tileGrid.GetWorldPosition(StartX,StartY), Quaternion.identity);
         currentObject = tileGrid.GetGridObject(StartX,StartY);
+        StartCoroutine(CreateStartTileEndOfFrame(tile));
+    }
+
+    private IEnumerator CreateStartTileEndOfFrame(Transform tile)
+    {
+        yield return null;
+
         PlaceNewTile(tile,StartX,StartY);
     }
+    
 
     private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
     {
@@ -121,10 +129,8 @@ public class TileGrid : MonoBehaviour
 
     private void SetSpawnersOfNewTile(Transform newObject)
     {
-        Debug.Log("new object: "+ newObject);
         TileSpawnManager tileSpawnManager = newObject.GetComponentInChildren<TileSpawnManager>();
-        Debug.Log(tileSpawnManager);
-        tileSpawnManager.SetSpawnerLocations();
+        tileSpawnManager.InitializeSpawners();
     }
 
     private void ApplyBuildingArea(Transform newObject, int x, int y)
@@ -300,6 +306,11 @@ public class TileGrid : MonoBehaviour
     public int GetHeight()
     {
         return height;
+    }
+
+    public Grid<GridTileObject> GetTileGrid()
+    {
+        return tileGrid;
     }
 
     public class GridTileObject

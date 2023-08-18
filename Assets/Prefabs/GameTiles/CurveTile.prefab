@@ -5220,6 +5220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8929212284987566700}
+  - component: {fileID: 1980930746511651126}
   m_Layer: 0
   m_Name: Spawners
   m_TagString: Untagged
@@ -5246,6 +5247,18 @@ Transform:
   m_Father: {fileID: 3772694589048596949}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1980930746511651126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909937541109316396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48c522b15202fb04cbb46e9881aeaf7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9142147277111838121
 GameObject:
   m_ObjectHideFlags: 0

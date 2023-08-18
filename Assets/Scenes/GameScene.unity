@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1596001391923059722, guid: 339c68d336b6d0040b2951e999d1262c, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1596001391923059722, guid: 339c68d336b6d0040b2951e999d1262c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2803,6 +2803,7 @@ GameObject:
   - component: {fileID: 1250279301}
   - component: {fileID: 1250279302}
   - component: {fileID: 1250279303}
+  - component: {fileID: 1250279307}
   - component: {fileID: 1250279304}
   - component: {fileID: 1250279305}
   - component: {fileID: 1250279306}
@@ -2853,18 +2854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dface5fb7d281643a9105bc7155ee89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 2764613874000594079, guid: 849d61f2da1174b4d91a688007374227, type: 3}
-  enemyRange: {fileID: 2931168741333544322, guid: e19d178699194984b8a08e57de58266f, type: 3}
-  enemyTank: {fileID: 836021120529103942, guid: 109cc434f5642984c83c4595d67d8958, type: 3}
-  boss: {fileID: 895264443517743539, guid: 90630ebecc43d71418ea1b67d2014269, type: 3}
-  spawner: {fileID: 1331131790}
-  enemyChance: 60
-  enemyRangeChance: 30
-  enemyTankChance: 10
-  bossWaves: 10
-  spawnTime: 0.2
-  startSpawnAmount: 5
-  additionalSpawnsPerWave: 5
 --- !u!114 &1250279304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2905,53 +2894,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d26b8ec7708534ba1b42479043f40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1331131788
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1331131789}
-  - component: {fileID: 1331131790}
-  m_Layer: 0
-  m_Name: EnemySpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1331131789
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331131788}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1331131790
+--- !u!114 &1250279307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331131788}
+  m_GameObject: {fileID: 1250279300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 881155e6b877b654686601e0099fa505, type: 3}
+  m_Script: {fileID: 11500000, guid: 63411aa0432f57f488eceed54a625df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnGridWidth: 4
-  spawnGridHeight: 2
-  spawnGridCellSize: 1
+  enemy: {fileID: 2764613874000594079, guid: 849d61f2da1174b4d91a688007374227, type: 3}
+  enemyRange: {fileID: 2931168741333544322, guid: e19d178699194984b8a08e57de58266f, type: 3}
+  enemyTank: {fileID: 836021120529103942, guid: 109cc434f5642984c83c4595d67d8958, type: 3}
+  boss: {fileID: 895264443517743539, guid: 90630ebecc43d71418ea1b67d2014269, type: 3}
+  enemyChance: 60
+  enemyRangeChance: 30
+  enemyTankChance: 10
+  bossWaves: 10
+  spawnTime: 0.2
+  startSpawnAmount: 5
+  additionalSpawnsPerWave: 1
 --- !u!114 &1345216296 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7259557609489185213, guid: 98f7c06995c51cc45a4f23d9c8edd299, type: 3}
@@ -3118,7 +3083,7 @@ Transform:
   - {fileID: 850287933}
   - {fileID: 670680053}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1377023754
 MonoBehaviour:
@@ -3489,7 +3454,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3689857410510446955, guid: 45fd206ae64c1564ebe069e1c42ea061, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3689857410510446955, guid: 45fd206ae64c1564ebe069e1c42ea061, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4329,7 +4294,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4123942397133486480, guid: 43f7809cf69da3b46a9a1520fcb27f2b, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4123942397133486480, guid: 43f7809cf69da3b46a9a1520fcb27f2b, type: 3}
       propertyPath: m_LocalPosition.x
