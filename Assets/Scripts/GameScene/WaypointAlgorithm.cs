@@ -11,7 +11,7 @@ public class WaypointAlgorithm
         this.tileGrid = tileGrid;
     }
 
-    public Stack<Vector3> GetBestWaypointPath(Vector3 start, Vector3 destination)
+    public Queue<Vector3> GetBestWaypointPath(Vector3 start, Vector3 destination)
     {
         Debug.Log("starting to find waypoints");
         Transform startNode = tileGrid.GetGridObject(start).GetTransform();
@@ -20,17 +20,17 @@ public class WaypointAlgorithm
         return AStar(startNode.GetComponent<Tile>(),finalNode.GetComponent<Tile>());
     }
 
-    private Stack<Vector3> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile current)
+    private Queue<Vector3> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile current)
     {
-        Stack<Vector3> path = new Stack<Vector3>();
+        Queue<Vector3> path = new Queue<Vector3>();
         tileGrid.GetXY(current.transform.position, out int x, out int y);
-        path.Push(tileGrid.GetCellCenter(x, y));
+        path.Enqueue(tileGrid.GetCellCenter(x, y));
 
         while (cameFrom.ContainsKey(current))
         {
             current = cameFrom[current];
             tileGrid.GetXY(current.transform.position, out x, out y);
-            path.Push(tileGrid.GetCellCenter(x, y));
+            path.Enqueue(tileGrid.GetCellCenter(x, y));
         }
 
         Debug.Log(path);
@@ -43,11 +43,13 @@ public class WaypointAlgorithm
         return path;
     }
 
-    private Stack<Vector3> AStar(Tile start, Tile end)
+    private Queue<Vector3> AStar(Tile start, Tile end)
     {
         // Create Queue and add first element
         Queue<Tile> openSet = new Queue<Tile>();
+        Queue<Tile> closedSet = new Queue<Tile>();
         openSet.Enqueue(start);
+        closedSet.Enqueue(start);
 
         Dictionary<Tile, Tile> cameFrom = new Dictionary<Tile, Tile>();
 
@@ -68,11 +70,12 @@ public class WaypointAlgorithm
             {
                 if (tmpNeighbors[i].connectionTile != null)
                 {
-                    Tile newTile = tmpNeighbors[i].connectionTile?.GetComponent<Tile>();
+                    Tile newTile = tmpNeighbors[i].connectionTile.GetComponent<Tile>();
 
-                    if (!openSet.Contains(newTile))
+                    if (!closedSet.Contains(newTile))
                     {
                         openSet.Enqueue(newTile);
+                        closedSet.Enqueue(newTile);
                         cameFrom[newTile] = current;
                     }
                 }
@@ -80,6 +83,6 @@ public class WaypointAlgorithm
         }
 
         Debug.LogError("no path found");
-        return new Stack<Vector3>();
+        return new Queue<Vector3>();
     }
 }

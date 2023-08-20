@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private direction spawnLocation;
 
     private TileGrid tileGrid;
-    private Stack<Vector3> waypointsFromSpawner;
+    private Queue<Vector3> waypointsFromSpawner;
 
     private void Start()
     {
@@ -66,7 +66,7 @@ public class Spawner : MonoBehaviour
             waypointsString += array[i] + ",";
         }
         Debug.Log(waypointsString);
-        Stack<Vector3> waypointsCopy = new Stack<Vector3>(waypointsFromSpawner);
+        Queue<Vector3> waypointsCopy = new Queue<Vector3>(waypointsFromSpawner);
         instantiatedEnemy.GetComponent<Monster>().SetWaypoints(waypointsCopy);
     }
 
@@ -78,7 +78,7 @@ public class Spawner : MonoBehaviour
         return spawnPoint;
     }
 
-    public void SetSpawnerWaypoints(Stack<Vector3> waypoints)
+    public void SetSpawnerWaypoints(Queue<Vector3> waypoints)
     {
         waypointsFromSpawner = waypoints;
     }

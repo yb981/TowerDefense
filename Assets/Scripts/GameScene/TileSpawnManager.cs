@@ -19,7 +19,7 @@ public class TileSpawnManager : MonoBehaviour
 
     public void InitializeSpawners()
     {
-        Stack<Vector3> waypoints = waypointAlgorithm.GetBestWaypointPath(transform.position,king.transform.position);
+        Queue<Vector3> waypoints = waypointAlgorithm.GetBestWaypointPath(transform.position,king.transform.position);
         //Debug.Log("waypoints: "+ waypoints);
 
         spawners = GetComponentsInChildren<Spawner>();

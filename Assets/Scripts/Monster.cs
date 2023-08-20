@@ -28,7 +28,7 @@ public class Monster : Unit
 
     private bool isAlive = true;
     protected float attackTimer;
-    private Stack<Vector3> wayPoints;
+    private Queue<Vector3> wayPoints;
     private Vector3 nextWaypoint;
 
     protected override void Start()
@@ -85,11 +85,11 @@ public class Monster : Unit
 
     protected void MoveToNextWaypoint()
     {
-        if (nextWaypoint == Vector3.zero || Vector3.Distance(nextWaypoint, transform.position) < 3f)
+        if (nextWaypoint == Vector3.zero || Vector3.Distance(nextWaypoint, transform.position) < 1f)
         {
             if (wayPoints.Count > 0)
             {
-                nextWaypoint = wayPoints.Pop();
+                nextWaypoint = wayPoints.Dequeue();
             }
             else
             {
@@ -202,7 +202,7 @@ public class Monster : Unit
         }
     }
 
-    public void SetWaypoints(Stack<Vector3> newWaypoints)
+    public void SetWaypoints(Queue<Vector3> newWaypoints)
     {
         string waypointsString = "waypoints in Monster: ";
         Vector3[] array = newWaypoints.ToArray();
