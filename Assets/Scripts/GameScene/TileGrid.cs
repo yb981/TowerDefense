@@ -68,9 +68,8 @@ public class TileGrid : MonoBehaviour
 
         Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(BossX,BossY), Quaternion.identity);
         currentObject = tileGrid.GetGridObject(BossX,BossY);
-        PlaceNewTile(tile,BossX,BossY);
+        PlaceNewTile(bossT,BossX,BossY);
     }
-    
 
     private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
     {
@@ -133,16 +132,18 @@ public class TileGrid : MonoBehaviour
     private void PlaceNewTile(Transform newObject, int x, int y)
     {
         currentObject.SetTransfrom(newObject);
+        Debug.Log("currentObj: "+currentObject.GetTransform());
         ApplyBuildingArea(newObject, x,y);
         ApplyConnectionNodes(newObject, x,y);
         SetSpawnersOfNewTile(newObject);
         OnTileBuilt?.Invoke();
+        Debug.Log("x: "+x+ ", y: "+y+":"+tileGrid.GetGridObject(x,y).GetTransform());
     }
 
     private void SetSpawnersOfNewTile(Transform newObject)
     {
         TileSpawnManager tileSpawnManager = newObject.GetComponentInChildren<TileSpawnManager>();
-        tileSpawnManager.InitializeSpawners();
+        tileSpawnManager?.InitializeSpawners();
     }
 
     private void ApplyBuildingArea(Transform newObject, int x, int y)

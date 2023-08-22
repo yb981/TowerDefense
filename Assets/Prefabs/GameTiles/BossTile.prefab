@@ -1451,9 +1451,9 @@ MonoBehaviour:
   openingsForInit: 01010101
   tileMap: {fileID: 90588963106108153}
   tileVisualGrid: {fileID: 90588964023135570}
-  visual: {fileID: 3660718997873965218}
   spawners: {fileID: 1869549621487589175}
   fog: {fileID: 1644251907219575390}
+  tileSpawnManager: {fileID: 4204373306522692053}
 --- !u!1 &2552660900626412624
 GameObject:
   m_ObjectHideFlags: 0

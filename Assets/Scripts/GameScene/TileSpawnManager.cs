@@ -9,17 +9,17 @@ public class TileSpawnManager : MonoBehaviour
     private WaypointAlgorithm waypointAlgorithm;
     private King king;
 
-    private void Start() 
+    private void Awake()
     {
+        king = FindObjectOfType<King>();
         spawners = GetComponentsInChildren<Spawner>();
         tileGrid = FindObjectOfType<TileGrid>();
-        waypointAlgorithm = new WaypointAlgorithm(tileGrid.GetTileGrid());      
-        king = FindObjectOfType<King>();        
     }
 
     public void InitializeSpawners()
     {
-        Stack<Vector3> waypoints = waypointAlgorithm.GetBestWaypointPath(transform.position,king.transform.position);
+        waypointAlgorithm = new WaypointAlgorithm(tileGrid.GetTileGrid());
+        Stack<Vector3> waypoints = waypointAlgorithm.GetBestWaypointPath(transform.position, king.transform.position);
         //Debug.Log("waypoints: "+ waypoints);
 
         spawners = GetComponentsInChildren<Spawner>();

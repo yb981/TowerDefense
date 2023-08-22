@@ -7,6 +7,7 @@ public class BossTile : Tile
 {
     [SerializeField] private GameObject spawners;
     [SerializeField] private GameObject fog;
+    [SerializeField] private TileSpawnManager tileSpawnManager;
     private void Awake() 
     {
         // Deactivate visuals
@@ -14,7 +15,6 @@ public class BossTile : Tile
 
         // subscribe to placement tiles, and then enable when tile connected 
         tileGrid = FindObjectOfType<TileGrid>();
-        
     }
 
     private void TileGrid_OnTileBuild()
@@ -24,19 +24,29 @@ public class BossTile : Tile
         {
             fog.SetActive(false);
             spawners.SetActive(true);
+            // Need to initialize here, because before there was no connection
+            tileSpawnManager.InitializeSpawners();
         }
     }
 
     private bool TileConnected()
     {
-        if(openingNodes == null) return false;
+        if(openingNodes == null) {
+            Debug.Log("No opening nodes! openingNodes == null");
+            return false;
+        }
 
         foreach (TileNode node in openingNodes)
         {
-            if(node == null) return false;
+            if(node == null)
+            {
+                Debug.Log("nodes itself are null, nodes not initialized");
+                 return false;
+            }
             if(node.connectionTile != null) return true;
         }
 
+        Debug.Log("no nodes connected to tile");
         return false;
     }
 

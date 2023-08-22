@@ -2915,8 +2915,8 @@ MonoBehaviour:
   enemyTankChance: 1
   bossWaves: 10
   spawnTime: 0.2
-  startSpawnAmount: 5
-  additionalSpawnsPerWave: 2
+  startSpawnAmount: 2
+  additionalSpawnsPerWave: 1
 --- !u!114 &1345216296 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7259557609489185213, guid: 98f7c06995c51cc45a4f23d9c8edd299, type: 3}
@@ -3061,6 +3061,7 @@ GameObject:
   - component: {fileID: 1377023753}
   - component: {fileID: 1377023754}
   - component: {fileID: 1377023755}
+  - component: {fileID: 1377023756}
   m_Layer: 0
   m_Name: GameTilesGrid
   m_TagString: Untagged
@@ -3122,6 +3123,18 @@ MonoBehaviour:
   gridHighlightPrefab: {fileID: 670680051}
   cellSize: 1
   ghost: {fileID: 850287933}
+--- !u!114 &1377023756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377023752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713a6484a0f601b4b92a27f4394e8b32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1450383451 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1470002354973837129, guid: 75863397a460933448cfb30e42f38bd8, type: 3}
