@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float mousesButtonSpeed = 10f;
     [SerializeField] private bool borderMovement = false;
     private float MIN_ZOOM = 5f;
-    private float MAX_ZOOM = 50f;
+    private float MAX_ZOOM = 20f;
     private float defaultZoom;
     private Vector3 mouseWheelDownPosition;
 

@@ -20,13 +20,13 @@ public class Tile : MonoBehaviour
                                                             {GridBuildingSystem.FieldType.building, GridBuildingSystem.FieldType.building}} ; 
          */
     [SerializeField] private bool[] openingsForInit = new bool[4];
-    private TileNode[] openingNodes = new TileNode[4];
+    protected TileNode[] openingNodes = new TileNode[4];
 
 
     private int rotation;
     private List<Transform> rotationTiles = new List<Transform>();
     private int currentRotationIndex = 0;
-    private TileGrid tileGrid;
+    protected TileGrid tileGrid;
     [Header("Coding references")]
     [SerializeField] private Tilemap tileMap;
     [SerializeField] private GridLayout tileVisualGrid;

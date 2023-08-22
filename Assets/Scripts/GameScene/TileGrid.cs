@@ -6,6 +6,7 @@ using System;
 
 public class TileGrid : MonoBehaviour
 {
+    public event Action OnTileBuilt;
 
     private GridBuildingSystem gridBuildingSystem;
     Grid<GridTileObject> tileGrid;
@@ -19,6 +20,13 @@ public class TileGrid : MonoBehaviour
     [SerializeField] private Transform startTile;
     [SerializeField] private int StartX;
     [SerializeField] private int StartY;
+    [Header("BossTile")]
+    [SerializeField] private Transform bossTile;
+    [SerializeField] private int maxRangeFromStart;
+    [SerializeField] private int minRangeFromStart;
+    private int BossX;
+    private int BossY;
+    
     private Transform buildTile;
 
     private GridTileObject currentObject;
@@ -32,24 +40,35 @@ public class TileGrid : MonoBehaviour
 
     private void Start()
     {
-/*         LevelManager.instance.OnLevelPhaseTileBuild += LevelManager_OnLevelPhaseTileBuild;
-        if (LevelManager.instance.GetLevelPhase() == LevelManager.LevelPhase.tilebuild) LevelManager_OnLevelPhaseTileBuild(); */
-
         TileSelection tileSelection = FindObjectOfType<TileSelection>();
         tileSelection.OnTileSelected += TileSelection_OnTileSelected;
 
         gridBuildingSystem = GetComponent<GridBuildingSystem>();
 
-        Transform tile = Instantiate(startTile, tileGrid.GetWorldPosition(StartX,StartY), Quaternion.identity);
-        currentObject = tileGrid.GetGridObject(StartX,StartY);
-        StartCoroutine(CreateStartTileEndOfFrame(tile));
+        CreateTilesInGrid();
+
     }
 
-    private IEnumerator CreateStartTileEndOfFrame(Transform tile)
+    private void CreateTilesInGrid()
+    {
+        Transform startT = Instantiate(startTile, tileGrid.GetWorldPosition(StartX,StartY), Quaternion.identity);
+        currentObject = tileGrid.GetGridObject(StartX,StartY);
+        StartCoroutine(CreateStartTileEndOfFrameAndBossTile(startT,StartX,StartY));
+    }
+
+    private IEnumerator CreateStartTileEndOfFrameAndBossTile(Transform tile, int x, int y)
     {
         yield return null;
 
         PlaceNewTile(tile,StartX,StartY);
+
+        // Random Boss Coords
+        BossX = (int) (StartX + ((UnityEngine.Random.Range(0,2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart,maxRangeFromStart));
+        BossY = (int) (StartY + ((UnityEngine.Random.Range(0,2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart,maxRangeFromStart));
+
+        Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(BossX,BossY), Quaternion.identity);
+        currentObject = tileGrid.GetGridObject(BossX,BossY);
+        PlaceNewTile(tile,BossX,BossY);
     }
     
 
@@ -57,13 +76,6 @@ public class TileGrid : MonoBehaviour
     {
         StartBuilding(e.tilePrefab);
     }
-
-/*     private void LevelManager_OnLevelPhaseTileBuild()
-    {
-
-    } */
-
-
 
     private void StartBuilding(Transform newTile)
     {
@@ -124,7 +136,7 @@ public class TileGrid : MonoBehaviour
         ApplyBuildingArea(newObject, x,y);
         ApplyConnectionNodes(newObject, x,y);
         SetSpawnersOfNewTile(newObject);
-        
+        OnTileBuilt?.Invoke();
     }
 
     private void SetSpawnersOfNewTile(Transform newObject)
@@ -311,6 +323,11 @@ public class TileGrid : MonoBehaviour
     public Grid<GridTileObject> GetTileGrid()
     {
         return tileGrid;
+    }
+
+    public Vector3 GetStartTileCenterPosition()
+    {
+        return tileGrid.GetCellCenter(StartX,StartY);
     }
 
     public class GridTileObject

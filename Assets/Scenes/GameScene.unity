@@ -1024,7 +1024,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2910,13 +2910,13 @@ MonoBehaviour:
   enemyRange: {fileID: 2931168741333544322, guid: e19d178699194984b8a08e57de58266f, type: 3}
   enemyTank: {fileID: 836021120529103942, guid: 109cc434f5642984c83c4595d67d8958, type: 3}
   boss: {fileID: 895264443517743539, guid: 90630ebecc43d71418ea1b67d2014269, type: 3}
-  enemyChance: 60
-  enemyRangeChance: 30
-  enemyTankChance: 10
+  enemyChance: 6
+  enemyRangeChance: 3
+  enemyTankChance: 1
   bossWaves: 10
   spawnTime: 0.2
   startSpawnAmount: 5
-  additionalSpawnsPerWave: 1
+  additionalSpawnsPerWave: 2
 --- !u!114 &1345216296 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7259557609489185213, guid: 98f7c06995c51cc45a4f23d9c8edd299, type: 3}
@@ -3097,13 +3097,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22670d0768896dd40a590fe9e498d8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 8
-  height: 8
+  width: 20
+  height: 20
   cellSize: 10
   testTile: {fileID: 3772694589048596949, guid: 965af27a83e00e8449eceedbf92f0b1e, type: 3}
   startTile: {fileID: 3772694589048596949, guid: b2a5882b56fc9104690cc8dca3402bce, type: 3}
-  StartX: 2
-  StartY: 2
+  StartX: 9
+  StartY: 9
+  bossTile: {fileID: 3772694589048596949, guid: bda94de202b5f8c4089ec0b08b8bed31, type: 3}
+  maxRangeFromStart: 2
+  minRangeFromStart: 2
 --- !u!114 &1377023755
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -33,6 +33,14 @@ public class LevelManager : MonoBehaviour
     private void Start() 
     {
         ChangeLevelPhase(LevelPhase.build);
+
+        SetStartingPositionOfCamera();
+    }
+
+    private void SetStartingPositionOfCamera()
+    {
+        Vector3 StartingTilePos = FindObjectOfType<TileGrid>().GetStartTileCenterPosition();
+        Camera.main.transform.position = new Vector3(StartingTilePos.x, StartingTilePos.y, Camera.main.transform.position.z);
     }
 
     private void ChangeLevelPhase(LevelPhase newPhase)

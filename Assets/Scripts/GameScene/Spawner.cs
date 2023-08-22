@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private direction spawnLocation;
 
     private TileGrid tileGrid;
-    private Queue<Vector3> waypointsFromSpawner;
+    private Stack<Vector3> waypointsFromSpawner;
 
     private void Start()
     {
@@ -57,16 +57,8 @@ public class Spawner : MonoBehaviour
     {
         WaveManager.Instance.AddMonsterSpawnAmount(1);
         Transform instantiatedEnemy = Instantiate(enemy, GetRandomSpawnPoint(), Quaternion.identity);
-        Debug.Log("spawned enemy: "+ instantiatedEnemy);
 
-        string waypointsString = "waypoints in spawner: ";
-        Vector3[] array = waypointsFromSpawner.ToArray();
-        for (int i = 0; i < array.Length; i++)
-        {
-            waypointsString += array[i] + ",";
-        }
-        Debug.Log(waypointsString);
-        Queue<Vector3> waypointsCopy = new Queue<Vector3>(waypointsFromSpawner);
+        Stack<Vector3> waypointsCopy = new Stack<Vector3>(waypointsFromSpawner);
         instantiatedEnemy.GetComponent<Monster>().SetWaypoints(waypointsCopy);
     }
 
@@ -78,7 +70,7 @@ public class Spawner : MonoBehaviour
         return spawnPoint;
     }
 
-    public void SetSpawnerWaypoints(Queue<Vector3> waypoints)
+    public void SetSpawnerWaypoints(Stack<Vector3> waypoints)
     {
         waypointsFromSpawner = waypoints;
     }

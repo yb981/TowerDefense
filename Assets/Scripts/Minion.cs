@@ -70,12 +70,6 @@ public class Minion : Unit
         }
     }
 
-    protected void MoveTo(Vector3 goalPosition)
-    {
-        Vector3 dir = goalPosition-transform.position;
-        transform.Translate(dir.normalized * Time.deltaTime * defaultMovementSpeed);
-    }
-
     protected virtual void AttackTarget()
     {
         if(target != null)

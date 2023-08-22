@@ -11,57 +11,48 @@ public class WaypointAlgorithm
         this.tileGrid = tileGrid;
     }
 
-    public Queue<Vector3> GetBestWaypointPath(Vector3 start, Vector3 destination)
+    public Stack<Vector3> GetBestWaypointPath(Vector3 start, Vector3 destination)
     {
-        Debug.Log("starting to find waypoints");
         Transform startNode = tileGrid.GetGridObject(start).GetTransform();
         Transform finalNode = tileGrid.GetGridObject(destination).GetTransform();
 
         return AStar(startNode.GetComponent<Tile>(),finalNode.GetComponent<Tile>());
     }
 
-    private Queue<Vector3> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile current)
+    private Stack<Vector3> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile current)
     {
-        Queue<Vector3> path = new Queue<Vector3>();
+        Stack<Vector3> path = new Stack<Vector3>();
         tileGrid.GetXY(current.transform.position, out int x, out int y);
-        path.Enqueue(tileGrid.GetCellCenter(x, y));
+        path.Push(tileGrid.GetCellCenter(x, y));
 
         while (cameFrom.ContainsKey(current))
         {
             current = cameFrom[current];
             tileGrid.GetXY(current.transform.position, out x, out y);
-            path.Enqueue(tileGrid.GetCellCenter(x, y));
-        }
-
-        Debug.Log(path);
-        Vector3[] array = path.ToArray();
-        foreach (var item in array)
-        {
-            Debug.Log(item);
+            path.Push(tileGrid.GetCellCenter(x, y));
         }
 
         return path;
     }
 
-    private Queue<Vector3> AStar(Tile start, Tile end)
+    private Stack<Vector3> AStar(Tile start, Tile end)
     {
-        // Create Queue and add first element
-        Queue<Tile> openSet = new Queue<Tile>();
-        Queue<Tile> closedSet = new Queue<Tile>();
-        openSet.Enqueue(start);
-        closedSet.Enqueue(start);
+        // Create Stack and add first element
+        Stack<Tile> openSet = new Stack<Tile>();
+        Stack<Tile> closedSet = new Stack<Tile>();
+        openSet.Push(start);
+        closedSet.Push(start);
 
         Dictionary<Tile, Tile> cameFrom = new Dictionary<Tile, Tile>();
 
         // 
         while (openSet.Count != 0)
         {
-            Tile current = openSet.Dequeue();
+            Tile current = openSet.Pop();
 
             // End condition
             if (current == end)
             {
-                Debug.Log("Found path");
                 return ReconstructPath(cameFrom, current);
             }
 
@@ -74,8 +65,8 @@ public class WaypointAlgorithm
 
                     if (!closedSet.Contains(newTile))
                     {
-                        openSet.Enqueue(newTile);
-                        closedSet.Enqueue(newTile);
+                        openSet.Push(newTile);
+                        closedSet.Push(newTile);
                         cameFrom[newTile] = current;
                     }
                 }
@@ -83,6 +74,6 @@ public class WaypointAlgorithm
         }
 
         Debug.LogError("no path found");
-        return new Queue<Vector3>();
+        return new Stack<Vector3>();
     }
 }

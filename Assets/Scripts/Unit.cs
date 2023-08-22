@@ -12,7 +12,7 @@ public class Unit : MonoBehaviour
 
     protected UnitState state;
 
-    public enum UnitState 
+    public enum UnitState
     {
         spawn,
         idle,
@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour
         attack,
     }
 
-    protected virtual void Start() 
+    protected virtual void Start()
     {
         health = GetComponent<Health>();
         health.OnHealthChanged += Health_OnHealthChanged;
@@ -29,22 +29,32 @@ public class Unit : MonoBehaviour
 
     protected void MoveTo(Transform goalPosition)
     {
-        if(goalPosition == null)
+        if (goalPosition == null)
             return;
 
-        Vector3 dir = goalPosition.position-transform.position;
+        Vector3 dir = goalPosition.position - transform.position;
+
+        transform.Translate(dir.normalized * Time.deltaTime * defaultMovementSpeed);
+    }
+
+    protected void MoveTo(Vector3 goalPosition)
+    {
+        if (goalPosition == null)
+            return;
+
+        Vector3 dir = goalPosition - transform.position;
 
         transform.Translate(dir.normalized * Time.deltaTime * defaultMovementSpeed);
     }
 
     protected virtual void Health_OnHealthChanged()
     {
-        if(health.GetHealth() <= 0)
+        if (health.GetHealth() <= 0)
         {
             Die();
         }
     }
-    
+
     protected virtual void Die()
     {
         Destroy(gameObject);
@@ -58,7 +68,7 @@ public class Unit : MonoBehaviour
     }
 
     public UnitState GetState()
-    {  
+    {
         return state;
     }
 }

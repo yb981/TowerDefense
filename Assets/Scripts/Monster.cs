@@ -28,8 +28,8 @@ public class Monster : Unit
 
     private bool isAlive = true;
     protected float attackTimer;
-    private Queue<Vector3> wayPoints;
-    private Vector3 nextWaypoint;
+    private List<Vector3> wayPoints = new List<Vector3>();
+    private Vector3 nextWaypoint = Vector3.zero;
 
     protected override void Start()
     {
@@ -79,9 +79,9 @@ public class Monster : Unit
 
                 default: break;
             }
-
         }
     }
+
 
     protected void MoveToNextWaypoint()
     {
@@ -89,7 +89,9 @@ public class Monster : Unit
         {
             if (wayPoints.Count > 0)
             {
-                nextWaypoint = wayPoints.Dequeue();
+                nextWaypoint = wayPoints[wayPoints.Count-1];
+                wayPoints.RemoveAt(wayPoints.Count-1);
+                Vector3[] tmp = wayPoints.ToArray();
             }
             else
             {
@@ -202,16 +204,12 @@ public class Monster : Unit
         }
     }
 
-    public void SetWaypoints(Queue<Vector3> newWaypoints)
+    public void SetWaypoints(Stack<Vector3> newWaypoints)
     {
-        string waypointsString = "waypoints in Monster: ";
-        Vector3[] array = newWaypoints.ToArray();
-        for (int i = 0; i < array.Length; i++)
+        int entriesCount = newWaypoints.Count;
+        for (int i = 0; i < entriesCount; i++)
         {
-            waypointsString += array[i] + ",";
+            wayPoints.Add(newWaypoints.Pop());
         }
-        Debug.Log(waypointsString);
-
-        wayPoints = newWaypoints;
     }
 }
