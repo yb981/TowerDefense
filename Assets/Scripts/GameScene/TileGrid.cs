@@ -14,24 +14,12 @@ public class TileGrid : MonoBehaviour
     [SerializeField] private int height;
     [SerializeField] private int cellSize;
 
-    [Header("test")]
-    [SerializeField] private Transform testTile;
-    [Header("StartTile")]
-    [SerializeField] private Transform startTile;
-    [SerializeField] private int StartX;
-    [SerializeField] private int StartY;
-    [Header("BossTile")]
-    [SerializeField] private Transform bossTile;
-    [SerializeField] private int maxRangeFromStart;
-    [SerializeField] private int minRangeFromStart;
-    private int BossX;
-    private int BossY;
+    private int StartX;
+    private int StartY;
 
     private Transform buildTile;
 
     private GridTileObject currentObject;
-    private Transform ghostObject;
-    private bool building;
 
     private void Awake()
     {
@@ -40,112 +28,41 @@ public class TileGrid : MonoBehaviour
 
     private void Start()
     {
-        TileSelection tileSelection = FindObjectOfType<TileSelection>();
-        tileSelection.OnTileSelected += TileSelection_OnTileSelected;
-
         gridBuildingSystem = GetComponent<GridBuildingSystem>();
-
-        CreateTilesInGrid();
     }
 
-    private void CreateTilesInGrid()
+    public bool TryPlacingConnectionTile(Transform instantiatedTile, int x, int y)
     {
-        Transform startT = Instantiate(startTile, tileGrid.GetWorldPosition(StartX, StartY), Quaternion.identity);
-        currentObject = tileGrid.GetGridObject(StartX, StartY);
-        StartCoroutine(CreateStartTileEndOfFrameAndBossTile(startT, StartX, StartY));
-    }
-
-    private IEnumerator CreateStartTileEndOfFrameAndBossTile(Transform tile, int x, int y)
-    {
-        yield return null;
-
-        PlaceNewTile(tile, StartX, StartY);
-
-        // Random Boss Coords
-        BossX = (int)(StartX + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-        BossY = (int)(StartY + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-
-        Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(BossX, BossY), Quaternion.identity);
-        currentObject = tileGrid.GetGridObject(BossX, BossY);
-        PlaceNewTile(bossT, BossX, BossY);
-    }
-
-    private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
-    {
-        StartBuilding(e.tilePrefab);
-    }
-
-    private void StartBuilding(Transform newTile)
-    {
-        building = true;
-        ghostObject = Instantiate(newTile, new Vector3(0, 0, 0), Quaternion.identity);
-        StartCoroutine("BuildingTiles");
-    }
-
-    private IEnumerator BuildingTiles()
-    {
-        while (building)
-        {
-            // Update Position
-            // TODO only update position if can build in that area
-            // there is an entry point from existing tile
-            tileGrid.GetXY(UtilsClass.GetMouseWorldPosition(), out int x, out int y);
-            if (ghostObject.transform.position != tileGrid.GetWorldPosition(x, y))
-            {
-                ghostObject.transform.position = tileGrid.GetWorldPosition(x, y);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                ghostObject.GetComponent<Tile>().RotateTile();
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                TryPlacingTile();
-            }
-            yield return null;
-        }
-    }
-
-    private bool TryPlacingTile()
-    {
-        currentObject = tileGrid.GetGridObject(UtilsClass.GetMouseWorldPosition());
+        currentObject = tileGrid.GetGridObject(x,y);
         if (currentObject != null)
         {
-            if (CanConnectTile())
+            if (CanConnectTile(instantiatedTile, x, y))
             {
-                PlaceNewTileAndContinue();
-                building = false;
+                PlaceNewTile(instantiatedTile, x, y);
                 return true;
             }
         }
         return false;
     }
 
-    private void PlaceNewTileAndContinue()
+    public void PlaceNewTile(Transform newObject, int x, int y)
     {
-        tileGrid.GetXY(UtilsClass.GetMouseWorldPosition(), out int x, out int y);
-        PlaceNewTile(ghostObject, x, y);
-        LevelManager.instance.EndTileBuild();
-    }
-
-    private void PlaceNewTile(Transform newObject, int x, int y)
-    {
+        currentObject = tileGrid.GetGridObject(x,y);
         currentObject.SetTransfrom(newObject);
-        ApplyBuildingArea(newObject, x, y);
-        ApplyConnectionNodes(newObject, x, y);
-        SetSpawnersOfNewTile(newObject);
+
+        SetSubTiles(newObject, x, y);
+        SetConnectionNodes(newObject, x, y);
+        SetSpawners(newObject);
         OnTileBuilt?.Invoke();
     }
 
-    private void SetSpawnersOfNewTile(Transform newObject)
+    private void SetSpawners(Transform newObject)
     {
         TileSpawnManager tileSpawnManager = newObject.GetComponentInChildren<TileSpawnManager>();
         tileSpawnManager?.InitializeSpawners();
     }
 
-    private void ApplyBuildingArea(Transform newObject, int x, int y)
+    private void SetSubTiles(Transform newObject, int x, int y)
     {
         BuildTileData buildArea = newObject.GetComponent<Tile>().GetBuildArea();
 
@@ -160,7 +77,7 @@ public class TileGrid : MonoBehaviour
         }
     }
 
-    private void ApplyConnectionNodes(Transform newObject, int x, int y)
+    private void SetConnectionNodes(Transform newObject, int x, int y)
     {
         Tile newTile = newObject.GetComponent<Tile>();
 
@@ -219,29 +136,25 @@ public class TileGrid : MonoBehaviour
                 ghostNode.connectionTile = nextTile.GetTransform();
             }
         }
-
     }
 
-    private bool CanConnectTile()
+    private bool CanConnectTile(Transform newObject, int x, int y)
     {
         // Check if current cell is empty
-        GridTileObject currentHover = tileGrid.GetGridObject(UtilsClass.GetMouseWorldPosition());
+        GridTileObject currentHover = tileGrid.GetGridObject(x,y);
         if (currentHover != null && currentHover.GetTransform() != null)
         {
             return false;
         }
-
-        return NodesFitInAllDirections();
-
+        return NodesFitInAllDirections(newObject,x,y);
     }
 
-    private bool NodesFitInAllDirections()
+    private bool NodesFitInAllDirections(Transform newObject, int x, int y)
     {
         int connections = 0;
-        tileGrid.GetXY(UtilsClass.GetMouseWorldPosition(), out int x, out int y);
 
         // Check if can fit, compare connections
-        Tile ghostTile = ghostObject.GetComponent<Tile>();
+        Tile ghostTile = newObject.GetComponent<Tile>();
 
         // Check South
         GridTileObject nextTile = tileGrid.GetGridObject(x, y - 1);
@@ -300,33 +213,18 @@ public class TileGrid : MonoBehaviour
         return false;
     }
 
-    public void PlaceNewBossTile()
-    {
-        int newBossX;
-        int newBossY;
-        
 
-        // loop until free tile
-        int safetyExit = 4;
-        do
-        {
-            newBossX = (int)(BossX + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-            newBossY = (int)(BossY + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-            safetyExit--;
-        } while (!TryPlacingSoloTile(newBossX, newBossY) && safetyExit >= 0);
-    }
-
-    private bool TryPlacingSoloTile(int x, int y)
+    public bool TryPlacingSoloTile(Transform tilePrefab, int x, int y)
     {
         Debug.Log("trying to build Solotile at: " + x + "," + y);
-        
+
         currentObject = tileGrid.GetGridObject(x, y);
         if (currentObject != null)
         {
             if (NoTilesAdjustent(x, y))
             {
-                Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(x, y), Quaternion.identity);
-                PlaceNewTile(bossT, x, y);
+                Transform instantiatedTile = Instantiate(tilePrefab, tileGrid.GetWorldPosition(x, y), Quaternion.identity);
+                PlaceNewTile(instantiatedTile, x, y);
                 return true;
             }
         }
@@ -400,6 +298,12 @@ public class TileGrid : MonoBehaviour
     public Vector3 GetStartTileCenterPosition()
     {
         return tileGrid.GetCellCenter(StartX, StartY);
+    }
+
+    public void SetStartTile(int x, int y)
+    {
+        StartX = x;
+        StartY = y;
     }
 
     public class GridTileObject
