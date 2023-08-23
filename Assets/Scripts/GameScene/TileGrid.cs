@@ -26,7 +26,7 @@ public class TileGrid : MonoBehaviour
     [SerializeField] private int minRangeFromStart;
     private int BossX;
     private int BossY;
-    
+
     private Transform buildTile;
 
     private GridTileObject currentObject;
@@ -46,29 +46,28 @@ public class TileGrid : MonoBehaviour
         gridBuildingSystem = GetComponent<GridBuildingSystem>();
 
         CreateTilesInGrid();
-
     }
 
     private void CreateTilesInGrid()
     {
-        Transform startT = Instantiate(startTile, tileGrid.GetWorldPosition(StartX,StartY), Quaternion.identity);
-        currentObject = tileGrid.GetGridObject(StartX,StartY);
-        StartCoroutine(CreateStartTileEndOfFrameAndBossTile(startT,StartX,StartY));
+        Transform startT = Instantiate(startTile, tileGrid.GetWorldPosition(StartX, StartY), Quaternion.identity);
+        currentObject = tileGrid.GetGridObject(StartX, StartY);
+        StartCoroutine(CreateStartTileEndOfFrameAndBossTile(startT, StartX, StartY));
     }
 
     private IEnumerator CreateStartTileEndOfFrameAndBossTile(Transform tile, int x, int y)
     {
         yield return null;
 
-        PlaceNewTile(tile,StartX,StartY);
+        PlaceNewTile(tile, StartX, StartY);
 
         // Random Boss Coords
-        BossX = (int) (StartX + ((UnityEngine.Random.Range(0,2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart,maxRangeFromStart));
-        BossY = (int) (StartY + ((UnityEngine.Random.Range(0,2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart,maxRangeFromStart));
+        BossX = (int)(StartX + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
+        BossY = (int)(StartY + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
 
-        Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(BossX,BossY), Quaternion.identity);
-        currentObject = tileGrid.GetGridObject(BossX,BossY);
-        PlaceNewTile(bossT,BossX,BossY);
+        Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(BossX, BossY), Quaternion.identity);
+        currentObject = tileGrid.GetGridObject(BossX, BossY);
+        PlaceNewTile(bossT, BossX, BossY);
     }
 
     private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
@@ -109,7 +108,7 @@ public class TileGrid : MonoBehaviour
         }
     }
 
-    private void TryPlacingTile()
+    private bool TryPlacingTile()
     {
         currentObject = tileGrid.GetGridObject(UtilsClass.GetMouseWorldPosition());
         if (currentObject != null)
@@ -118,26 +117,26 @@ public class TileGrid : MonoBehaviour
             {
                 PlaceNewTileAndContinue();
                 building = false;
+                return true;
             }
         }
+        return false;
     }
 
     private void PlaceNewTileAndContinue()
     {
         tileGrid.GetXY(UtilsClass.GetMouseWorldPosition(), out int x, out int y);
-        PlaceNewTile(ghostObject,x,y);
+        PlaceNewTile(ghostObject, x, y);
         LevelManager.instance.EndTileBuild();
     }
 
     private void PlaceNewTile(Transform newObject, int x, int y)
     {
         currentObject.SetTransfrom(newObject);
-        Debug.Log("currentObj: "+currentObject.GetTransform());
-        ApplyBuildingArea(newObject, x,y);
-        ApplyConnectionNodes(newObject, x,y);
+        ApplyBuildingArea(newObject, x, y);
+        ApplyConnectionNodes(newObject, x, y);
         SetSpawnersOfNewTile(newObject);
         OnTileBuilt?.Invoke();
-        Debug.Log("x: "+x+ ", y: "+y+":"+tileGrid.GetGridObject(x,y).GetTransform());
     }
 
     private void SetSpawnersOfNewTile(Transform newObject)
@@ -150,13 +149,13 @@ public class TileGrid : MonoBehaviour
     {
         BuildTileData buildArea = newObject.GetComponent<Tile>().GetBuildArea();
 
-        int originX = x*cellSize;
-        int originY = y*cellSize;
+        int originX = x * cellSize;
+        int originY = y * cellSize;
         for (int i = 0; i < buildArea.rows.Length; i++)
         {
             for (int j = 0; j < buildArea.rows[i].row.Length; j++)
             {
-                gridBuildingSystem.SetTypeOfCell(buildArea.rows[i].row[j],j+originX,i+originY);
+                gridBuildingSystem.SetTypeOfCell(buildArea.rows[i].row[j], j + originX, i + originY);
             }
         }
     }
@@ -166,13 +165,13 @@ public class TileGrid : MonoBehaviour
         Tile newTile = newObject.GetComponent<Tile>();
 
         // Check South
-        GridTileObject nextTile = tileGrid.GetGridObject(x, y-1);
+        GridTileObject nextTile = tileGrid.GetGridObject(x, y - 1);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetNorthNode();
             Tile.TileNode ghostNode = newTile.GetSouthNode();
 
-            if(node.entry == true)
+            if (node.entry == true)
             {
                 node.connectionTile = newTile.transform;
                 ghostNode.connectionTile = nextTile.GetTransform();
@@ -180,13 +179,13 @@ public class TileGrid : MonoBehaviour
         }
 
         // Check North
-        nextTile = tileGrid.GetGridObject(x, y+1);
+        nextTile = tileGrid.GetGridObject(x, y + 1);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetSouthNode();
             Tile.TileNode ghostNode = newTile.GetNorthNode();
 
-            if(node.entry == true)
+            if (node.entry == true)
             {
                 node.connectionTile = newTile.transform;
                 ghostNode.connectionTile = nextTile.GetTransform();
@@ -194,13 +193,13 @@ public class TileGrid : MonoBehaviour
         }
 
         // Check West
-        nextTile = tileGrid.GetGridObject(x-1, y);
+        nextTile = tileGrid.GetGridObject(x - 1, y);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetEastNode();
             Tile.TileNode ghostNode = newTile.GetWestNode();
 
-            if(node.entry == true)
+            if (node.entry == true)
             {
                 node.connectionTile = newTile.transform;
                 ghostNode.connectionTile = nextTile.GetTransform();
@@ -208,13 +207,13 @@ public class TileGrid : MonoBehaviour
         }
 
         // Check East
-        nextTile = tileGrid.GetGridObject(x+1, y);
+        nextTile = tileGrid.GetGridObject(x + 1, y);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetWestNode();
             Tile.TileNode ghostNode = newTile.GetEastNode();
 
-            if(node.entry == true)
+            if (node.entry == true)
             {
                 node.connectionTile = newTile.transform;
                 ghostNode.connectionTile = nextTile.GetTransform();
@@ -245,25 +244,25 @@ public class TileGrid : MonoBehaviour
         Tile ghostTile = ghostObject.GetComponent<Tile>();
 
         // Check South
-        GridTileObject nextTile = tileGrid.GetGridObject(x, y-1);
+        GridTileObject nextTile = tileGrid.GetGridObject(x, y - 1);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetNorthNode();
             Tile.TileNode ghostNode = ghostTile.GetSouthNode();
 
-            if (node.entry != ghostNode.entry) 
+            if (node.entry != ghostNode.entry)
             {
                 return false;
             }
 
-            if(node.entry == true)
+            if (node.entry == true)
             {
                 connections++;
             }
         }
 
         // Check North
-        nextTile = tileGrid.GetGridObject(x, y+1);
+        nextTile = tileGrid.GetGridObject(x, y + 1);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetSouthNode();
@@ -271,34 +270,106 @@ public class TileGrid : MonoBehaviour
 
             if (node.entry != ghostNode.entry) return false;
 
-            if(node.entry == true) connections++;
+            if (node.entry == true) connections++;
         }
 
         // Check West
-        nextTile = tileGrid.GetGridObject(x-1, y);
+        nextTile = tileGrid.GetGridObject(x - 1, y);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetEastNode();
             Tile.TileNode ghostNode = ghostTile.GetWestNode();
 
             if (node.entry != ghostNode.entry) return false;
-            if(node.entry == true) connections++;
+            if (node.entry == true) connections++;
         }
 
         // Check East
-        nextTile = tileGrid.GetGridObject(x+1, y);
+        nextTile = tileGrid.GetGridObject(x + 1, y);
         if (nextTile != null && nextTile.GetTransform() != null)
         {
             Tile.TileNode node = nextTile.GetTransform().GetComponent<Tile>().GetWestNode();
             Tile.TileNode ghostNode = ghostTile.GetEastNode();
 
             if (node.entry != ghostNode.entry) return false;
-            if(node.entry == true) connections++;
+            if (node.entry == true) connections++;
         }
 
         if (connections != 0) return true;
 
         return false;
+    }
+
+    public void PlaceNewBossTile()
+    {
+        int newBossX;
+        int newBossY;
+        
+
+        // loop until free tile
+        int safetyExit = 4;
+        do
+        {
+            newBossX = (int)(BossX + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
+            newBossY = (int)(BossY + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
+            safetyExit--;
+        } while (!TryPlacingSoloTile(newBossX, newBossY) && safetyExit >= 0);
+    }
+
+    private bool TryPlacingSoloTile(int x, int y)
+    {
+        Debug.Log("trying to build Solotile at: " + x + "," + y);
+        
+        currentObject = tileGrid.GetGridObject(x, y);
+        if (currentObject != null)
+        {
+            if (NoTilesAdjustent(x, y))
+            {
+                Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(x, y), Quaternion.identity);
+                PlaceNewTile(bossT, x, y);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool NoTilesAdjustent(int x, int y)
+    {
+        Transform neighborTile;
+        GridTileObject neighborObj;
+        // Check North
+        neighborObj = tileGrid.GetGridObject(x, y + 1);
+        if (neighborObj != null)
+        {
+            neighborTile = neighborObj.GetTransform();
+            if (neighborTile != null) return false;
+        }
+
+        // Check South
+        neighborObj = tileGrid.GetGridObject(x, y - 1);
+        if (neighborObj != null)
+        {
+            neighborTile = neighborObj.GetTransform();
+            if (neighborTile != null) return false;
+        }
+
+        // Check East
+        neighborObj = tileGrid.GetGridObject(x + 1, y);
+        if (neighborObj != null)
+        {
+            neighborTile = neighborObj.GetTransform();
+            if (neighborTile != null) return false;
+        }
+
+        // Check West
+        neighborObj = tileGrid.GetGridObject(x - 1, y);
+        if (neighborObj != null)
+        {
+            neighborTile = neighborObj.GetTransform();
+            if (neighborTile != null) return false;
+        }
+
+        return true;
     }
 
     public Tile GetTileOfPosition(Vector3 location)
@@ -328,7 +399,7 @@ public class TileGrid : MonoBehaviour
 
     public Vector3 GetStartTileCenterPosition()
     {
-        return tileGrid.GetCellCenter(StartX,StartY);
+        return tileGrid.GetCellCenter(StartX, StartY);
     }
 
     public class GridTileObject

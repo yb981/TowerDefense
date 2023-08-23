@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterBoss : Monster
 {
+    public static event Action OnBossDied;
     [SerializeField] private float timeToIncreaseRage = 3f;
     private float rageTimer;
 
@@ -28,5 +30,12 @@ public class MonsterBoss : Monster
     private void IncreaseDamage()
     {
         attackDamage++;
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("boss died!");
+        OnBossDied?.Invoke();
+        base.Die();
     }
 }

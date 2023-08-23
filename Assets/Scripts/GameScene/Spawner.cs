@@ -10,6 +10,7 @@ public class Spawner : MonoBehaviour
         South,
         West,
         East,
+        Center
     }
 
     Grid<GridSpawnAreaObject> spawnGrid;
@@ -19,7 +20,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private direction spawnLocation;
 
     private TileGrid tileGrid;
-    private Stack<Vector3> waypointsFromSpawner;
+    protected Stack<Vector3> waypointsFromSpawner;
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class Spawner : MonoBehaviour
         tileGrid = FindObjectOfType<TileGrid>();
     }
 
-    private void SpawnManager_OnSpawnEnemies(object sender, SpawnManager.OnSpawnEnemiesEventArgs e)
+    protected virtual void SpawnManager_OnSpawnEnemies(object sender, SpawnManager.OnSpawnEnemiesEventArgs e)
     {
         TrySpawningEnemy(e.spawnBlueprint);
     }

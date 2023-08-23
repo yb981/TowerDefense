@@ -188,7 +188,7 @@ public class Monster : Unit
         base.Die();
     }
 
-    protected void RewardPlayer()
+    protected virtual void RewardPlayer()
     {
         PlayerStats.Instance.AddCredits(rewardCreditsOnKill);
         PlayerStats.Instance.AddScore(rewardScoreOnKill);
