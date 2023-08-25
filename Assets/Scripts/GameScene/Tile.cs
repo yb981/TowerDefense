@@ -20,6 +20,7 @@ public class Tile : MonoBehaviour
                                                             {GridBuildingSystem.FieldType.building, GridBuildingSystem.FieldType.building}} ; 
          */
     [SerializeField] private bool[] openingsForInit = new bool[4];
+    [SerializeField] private MainTileEffect tileEffect = MainTileEffect.none;
     protected TileNode[] openingNodes = new TileNode[4];
 
 
@@ -254,6 +255,16 @@ public class Tile : MonoBehaviour
     public TileNode[] GetOpeningNodes()
     {
         return openingNodes;
+    }
+
+    public void SetTileEffect(MainTileEffect effect)
+    {
+        tileEffect = effect;
+    }
+
+    public MainTileEffect GetTileEffect()
+    {
+        return tileEffect;
     }
 
     public class TileNode

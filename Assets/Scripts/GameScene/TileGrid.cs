@@ -45,26 +45,28 @@ public class TileGrid : MonoBehaviour
         return false;
     }
 
-    public void PlaceNewTile(Transform newObject, int x, int y)
+    public void PlaceNewTile(Transform instantiatedTile, int x, int y)
     {
         currentObject = tileGrid.GetGridObject(x, y);
-        currentObject.SetTransfrom(newObject);
+        currentObject.SetTransfrom(instantiatedTile);
 
-        SetSubTiles(newObject, x, y);
-        SetConnectionNodes(newObject, x, y);
-        SetSpawners(newObject);
+        SetSubTiles(instantiatedTile, x, y);
+        SetConnectionNodes(instantiatedTile, x, y);
+        SetSpawners(instantiatedTile);
         OnTileBuilt?.Invoke();
     }
 
-    private void SetSpawners(Transform newObject)
+    private void SetSpawners(Transform instantiatedTile)
     {
-        TileSpawnManager tileSpawnManager = newObject.GetComponentInChildren<TileSpawnManager>();
+        TileSpawnManager tileSpawnManager = instantiatedTile.GetComponentInChildren<TileSpawnManager>();
         tileSpawnManager?.InitializeSpawners();
     }
 
-    private void SetSubTiles(Transform newObject, int x, int y)
+    private void SetSubTiles(Transform instantiatedTile, int x, int y)
     {
-        BuildTileData buildArea = newObject.GetComponent<Tile>().GetBuildArea();
+        Tile tile = instantiatedTile.GetComponent<Tile>();
+        BuildTileData buildArea = tile.GetBuildArea();
+        MainTileEffect mainTileEffect = tile.GetTileEffect();
 
         int originX = x * cellSize;
         int originY = y * cellSize;
@@ -73,13 +75,14 @@ public class TileGrid : MonoBehaviour
             for (int j = 0; j < buildArea.rows[i].row.Length; j++)
             {
                 gridBuildingSystem.SetTypeOfCell(buildArea.rows[i].row[j], j + originX, i + originY);
+                gridBuildingSystem.SetMainEffectOfCell(mainTileEffect, j + originX, i + originY);
             }
         }
     }
 
-    private void SetConnectionNodes(Transform newObject, int x, int y)
+    private void SetConnectionNodes(Transform instantiatedTile, int x, int y)
     {
-        Tile newTile = newObject.GetComponent<Tile>();
+        Tile newTile = instantiatedTile.GetComponent<Tile>();
 
         // Check South
         GridTileObject nextTile = tileGrid.GetGridObject(x, y - 1);
@@ -138,7 +141,7 @@ public class TileGrid : MonoBehaviour
         }
     }
 
-    private bool CanConnectTile(Transform newObject, int x, int y)
+    private bool CanConnectTile(Transform instantiatedTile, int x, int y)
     {
         // Check if current cell is empty
         GridTileObject currentHover = tileGrid.GetGridObject(x, y);
@@ -146,15 +149,15 @@ public class TileGrid : MonoBehaviour
         {
             return false;
         }
-        return NodesFitInAllDirections(newObject, x, y);
+        return NodesFitInAllDirections(instantiatedTile, x, y);
     }
 
-    private bool NodesFitInAllDirections(Transform newObject, int x, int y)
+    private bool NodesFitInAllDirections(Transform instantiatedTile, int x, int y)
     {
         int connections = 0;
 
         // Check if can fit, compare connections
-        Tile ghostTile = newObject.GetComponent<Tile>();
+        Tile ghostTile = instantiatedTile.GetComponent<Tile>();
 
         // Check South
         GridTileObject nextTile = tileGrid.GetGridObject(x, y - 1);

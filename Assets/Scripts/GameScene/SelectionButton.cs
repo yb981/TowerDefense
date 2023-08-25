@@ -8,6 +8,8 @@ public class SelectionButton : MonoBehaviour
 {
     private Button button;
     private Transform tilePrefab;
+    private TileBlueprint tileBlueprint;
+    private MainTileEffect mainTileEffect;
     private TileSelection tileSelection;
 
     void Start()
@@ -19,12 +21,14 @@ public class SelectionButton : MonoBehaviour
 
     private void Selected()
     {
-        tileSelection.Selected(tilePrefab);
+        tileSelection.Selected(tileBlueprint);
     }
 
-    public void SetTilePrefab(Transform prefab)
+    public void SetTilePrefab(TileBlueprint tileBlueprint)
     {
-        tilePrefab = prefab;
+        this.tileBlueprint = tileBlueprint;
+        mainTileEffect = tileBlueprint.mainTileEffect;
+        tilePrefab = tileBlueprint.tilePrefab;
         SetButtonVisual();
     }
 

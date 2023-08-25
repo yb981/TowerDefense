@@ -43,13 +43,14 @@ public class TileBuilding : MonoBehaviour
 
     private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
     {
-        StartBuilding(e.tilePrefab);
+        StartBuilding(e.tileBlueprint);
     }
 
-    private void StartBuilding(Transform newTile)
+    private void StartBuilding(TileBlueprint tileBlueprint)
     {
         building = true;
-        ghostObject = Instantiate(newTile, new Vector3(0, 0, 0), Quaternion.identity);
+        ghostObject = Instantiate(tileBlueprint.tilePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        ghostObject.GetComponent<Tile>().SetTileEffect(tileBlueprint.mainTileEffect);
         StartCoroutine("BuildingTiles");
     }
 

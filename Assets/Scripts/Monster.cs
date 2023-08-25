@@ -13,9 +13,6 @@ public class Monster : Unit
     protected int rewardCreditsOnKill;
     protected int rewardScoreOnKill;
     protected float triggerRange;
-    protected float attackRange;
-    protected float attackSpeed;
-    protected int attackDamage;
     protected float spawnTime = 0.5f;
 
     private Transform[] allNPCs;

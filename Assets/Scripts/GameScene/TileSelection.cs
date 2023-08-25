@@ -10,10 +10,10 @@ public class TileSelection : MonoBehaviour
     public event EventHandler<OnTileSelectedEventArgs> OnTileSelected;
     public class OnTileSelectedEventArgs : EventArgs
     {
-        public Transform tilePrefab;
+        public TileBlueprint tileBlueprint;
     }
 
-    [SerializeField] SelectionButton[] selectionButtons;
+    [SerializeField] TileSelectionOption[] tileSelectionOptions;
     [SerializeField] Transform child;
 
     [Header("All tiles")]
@@ -33,10 +33,17 @@ public class TileSelection : MonoBehaviour
 
     private void SetRandomTilesForButtons()
     {
-        foreach (SelectionButton button in selectionButtons)
+        foreach (TileSelectionOption options in tileSelectionOptions)
         {
-            button.SetTilePrefab(RandomPrefab());
+            TileBlueprint tileBlueprint = new TileBlueprint(RandomPrefab(),RandomMainTileEffect());
+            options.SetTilePrefab(tileBlueprint);
         }
+    }
+
+    private MainTileEffect RandomMainTileEffect()
+    {
+        int randomEntry = UnityEngine.Random.Range(0, Enum.GetNames(typeof(MainTileEffect)).Length);
+        return (MainTileEffect) Enum.GetValues(typeof(MainTileEffect)).GetValue(randomEntry);
     }
 
     private Transform RandomPrefab()
@@ -44,10 +51,10 @@ public class TileSelection : MonoBehaviour
         return tilePrefabs[UnityEngine.Random.Range(0,tilePrefabs.Length)];
     }
 
-    public void Selected(Transform selectedPrefab)
+    public void Selected(TileBlueprint newTileBlueprint)
     {
         OnTileSelected?.Invoke(this, new OnTileSelectedEventArgs{
-            tilePrefab = selectedPrefab
+            tileBlueprint = newTileBlueprint
         });
         Hide();
     }

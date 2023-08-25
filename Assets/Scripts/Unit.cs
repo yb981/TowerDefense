@@ -9,6 +9,9 @@ public class Unit : MonoBehaviour
 
     [SerializeField] protected float defaultMovementSpeed = 2f;
     protected Health health;
+   [SerializeField]  protected float attackRange;
+    [SerializeField] protected float attackSpeed;
+    [SerializeField] protected int attackDamage;
 
     protected UnitState state;
 
@@ -70,5 +73,10 @@ public class Unit : MonoBehaviour
     public UnitState GetState()
     {
         return state;
+    }
+
+    public void AddDamage(int bonusDamage)
+    {
+        attackDamage += bonusDamage;
     }
 }
