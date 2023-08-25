@@ -18,7 +18,7 @@ public class TileSpawnManager : MonoBehaviour
 
     public void InitializeSpawners()
     {
-        waypointAlgorithm = new WaypointAlgorithm(tileGrid.GetTileGrid());
+        waypointAlgorithm = new WaypointAlgorithm(tileGrid,tileGrid.GetTileGrid());
         Stack<Vector3> waypoints = waypointAlgorithm.GetBestWaypointPath(transform.position, king.transform.position);
 
         spawners = GetComponentsInChildren<Spawner>();

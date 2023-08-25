@@ -33,7 +33,7 @@ public class TileGrid : MonoBehaviour
 
     public bool TryPlacingConnectionTile(Transform instantiatedTile, int x, int y)
     {
-        currentObject = tileGrid.GetGridObject(x,y);
+        currentObject = tileGrid.GetGridObject(x, y);
         if (currentObject != null)
         {
             if (CanConnectTile(instantiatedTile, x, y))
@@ -47,7 +47,7 @@ public class TileGrid : MonoBehaviour
 
     public void PlaceNewTile(Transform newObject, int x, int y)
     {
-        currentObject = tileGrid.GetGridObject(x,y);
+        currentObject = tileGrid.GetGridObject(x, y);
         currentObject.SetTransfrom(newObject);
 
         SetSubTiles(newObject, x, y);
@@ -141,12 +141,12 @@ public class TileGrid : MonoBehaviour
     private bool CanConnectTile(Transform newObject, int x, int y)
     {
         // Check if current cell is empty
-        GridTileObject currentHover = tileGrid.GetGridObject(x,y);
+        GridTileObject currentHover = tileGrid.GetGridObject(x, y);
         if (currentHover != null && currentHover.GetTransform() != null)
         {
             return false;
         }
-        return NodesFitInAllDirections(newObject,x,y);
+        return NodesFitInAllDirections(newObject, x, y);
     }
 
     private bool NodesFitInAllDirections(Transform newObject, int x, int y)
@@ -270,6 +270,39 @@ public class TileGrid : MonoBehaviour
         return true;
     }
 
+    public List<GridTileObject> GetAllOpenEnds()
+    {
+        List<GridTileObject> allTiles = new List<GridTileObject>();
+        // All Tiles
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                GridTileObject current = tileGrid.GetGridObject(i, j);
+                if (current.GetTransform() != null) allTiles.Add(current);
+            }
+        }
+
+        List<GridTileObject> allOpenEndTiles = new List<GridTileObject>();
+        // Only pick open end tiles
+        foreach (GridTileObject current in allTiles)
+        {
+            Tile.TileNode[] openings = current.GetTransform().GetComponent<Tile>().GetOpeningNodes();
+            foreach (Tile.TileNode currentOpening in openings)
+            {
+                if (currentOpening.entry && currentOpening.connectionTile == null)
+                {
+                    allOpenEndTiles.Add(current);
+                    break;
+                }
+            }
+        }
+
+        Debug.Log("found " + allOpenEndTiles.Count + " open tiles");
+
+        return allOpenEndTiles;
+    }
+
     public Tile GetTileOfPosition(Vector3 location)
     {
         return tileGrid.GetGridObject(location).GetTransform().GetComponent<Tile>();
@@ -329,6 +362,11 @@ public class TileGrid : MonoBehaviour
         public Transform GetTransform()
         {
             return tile;
+        }
+        
+        public Vector2Int GetPosition()
+        {
+            return new Vector2Int(x,y);
         }
     }
 }

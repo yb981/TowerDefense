@@ -5,10 +5,12 @@ using UnityEngine;
 public class WaypointAlgorithm
 {
     private Grid<TileGrid.GridTileObject> tileGrid;
+    private TileGrid tileGridComp;
 
-    public WaypointAlgorithm(Grid<TileGrid.GridTileObject> tileGrid)
+    public WaypointAlgorithm(TileGrid tileGridComp, Grid<TileGrid.GridTileObject> tileGrid)
     {
         this.tileGrid = tileGrid;
+        this.tileGridComp = tileGridComp;
     }
 
     public Stack<Vector3> GetBestWaypointPath(Vector3 start, Vector3 destination)
@@ -16,7 +18,7 @@ public class WaypointAlgorithm
         Transform startNode = tileGrid.GetGridObject(start).GetTransform();
         Transform finalNode = tileGrid.GetGridObject(destination).GetTransform();
 
-        return AStar(startNode.GetComponent<Tile>(),finalNode.GetComponent<Tile>());
+        return AStar(startNode.GetComponent<Tile>(), finalNode.GetComponent<Tile>());
     }
 
     private Stack<Vector3> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile current)
@@ -76,4 +78,28 @@ public class WaypointAlgorithm
         Debug.LogError("no path found");
         return new Stack<Vector3>();
     }
+
+/*     public List<TileGrid.GridTileObject> GetAllTiles()
+    {
+        List<TileGrid.GridTileObject> allTiles = new List<TileGrid.GridTileObject>();
+
+        TileGrid.GridTileObject startNode = tileGrid.GetGridObject(tileGridComp.GetStartTileCenterPosition());
+
+
+        allTiles.Add(startNode);
+
+        // Add all new nodes if any
+        Tile.TileNode[] openings = startNode.GetTransform().GetComponent<Tile>().GetOpeningNodes();
+        if (openings[0].entry)
+        {
+            Transform newTile = openings[0].connectionTile;
+            if (newTile != null)
+            {
+
+                if (!allTiles.Contains(newTile))
+            }
+        }
+
+        return allTiles; 
+    }*/
 }

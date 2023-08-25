@@ -1007,7 +1007,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.3584906, g: 0.2383625, b: 0.103150584, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3146,8 +3146,8 @@ MonoBehaviour:
   StartX: 7
   StartY: 7
   bossTile: {fileID: 3772694589048596949, guid: bda94de202b5f8c4089ec0b08b8bed31, type: 3}
-  maxRangeFromStart: 2
-  minRangeFromStart: 2
+  maxRangeFromStart: 3
+  minRangeFromStart: 4
 --- !u!224 &1450383451 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1470002354973837129, guid: 75863397a460933448cfb30e42f38bd8, type: 3}

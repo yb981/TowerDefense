@@ -17,8 +17,6 @@ public class TileBuilding : MonoBehaviour
     [SerializeField] private Transform bossTile;
     [SerializeField] private int maxRangeFromStart;
     [SerializeField] private int minRangeFromStart;
-    private int BossX;
-    private int BossY;
     private TileGrid tileGridComponent;
     private Transform ghostObject;
     private bool building;
@@ -99,27 +97,35 @@ public class TileBuilding : MonoBehaviour
         tileGridComponent.PlaceNewTile(tile, StartX, StartY);
 
         // Random Boss Coords
-        BossX = (int)(StartX + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-        BossY = (int)(StartY + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-
-        Transform bossT = Instantiate(bossTile, tileGrid.GetWorldPosition(BossX, BossY), Quaternion.identity);
-        tileGridComponent.PlaceNewTile(bossT, BossX, BossY);
+        PlaceNewBossTile();
     }
 
 
     public void PlaceNewBossTile()
     {
-        int newBossX;
-        int newBossY;
-
+        Vector2Int newPos = new Vector2Int();
 
         // loop until free tile
-        int safetyExit = 4;
+        int safetyExit = 20;
         do
-        {
-            newBossX = (int)(BossX + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
-            newBossY = (int)(BossY + ((UnityEngine.Random.Range(0, 2) - 0.5) * 2) * UnityEngine.Random.Range(minRangeFromStart, maxRangeFromStart));
+        {   
+            List<TileGrid.GridTileObject> allOpenEndTiles = tileGridComponent.GetAllOpenEnds();
+            Vector2Int randomTilePosition = allOpenEndTiles[UnityEngine.Random.Range(0,allOpenEndTiles.Count)].GetPosition();
+
+            newPos = FindRandomPosition(randomTilePosition, minRangeFromStart, maxRangeFromStart);
             safetyExit--;
-        } while (!tileGridComponent.TryPlacingSoloTile(bossTile ,newBossX, newBossY) && safetyExit >= 0);
+        } while (!tileGridComponent.TryPlacingSoloTile(bossTile ,newPos.x, newPos.y) && safetyExit >= 0);
+    }
+
+    private Vector2Int FindRandomPosition(Vector2Int StartPosition, int minRange, int maxRange)
+    {
+        int randomX = UnityEngine.Random.Range(0,maxRange);
+        int randomY = UnityEngine.Random.Range(minRange-randomX,maxRange-randomX);
+
+        // Random Sign
+        randomX *= (int)((UnityEngine.Random.Range(0, 2) - 0.5) * 2);
+        randomY *= (int)((UnityEngine.Random.Range(0, 2) - 0.5) * 2);
+
+        return new Vector2Int(StartPosition.x+randomX, StartPosition.y+randomY);
     }
 }
