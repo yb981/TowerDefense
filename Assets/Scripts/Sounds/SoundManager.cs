@@ -64,6 +64,16 @@ public class SoundManager : MonoBehaviour
         return effectSource.volume;
     }
 
+    public bool IsMusicPlaying()
+    {
+        return musicSource.isPlaying;
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
+    }
+
     private void HandleSingleton()
     {
         if(Instance == null)

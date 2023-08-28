@@ -2860,7 +2860,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbc70333f782d9449c0e732b451eee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music: {fileID: 8300000, guid: d274f52347745654d9122b5598029a2c, type: 3}
+  music:
+  - {fileID: 8300000, guid: a73b50ea7984f3d45957d4c12cbe9497, type: 3}
+  - {fileID: 8300000, guid: 5e0e2d64ff0af2a4c8fba8b3f5d17007, type: 3}
+  - {fileID: 8300000, guid: b95f425f538326b43b6c85e0960d8488, type: 3}
+  - {fileID: 8300000, guid: f23941e21320b5b42af7d834b6c3b1db, type: 3}
+  - {fileID: 8300000, guid: 980172bf460ebef409c447ed6145d1dc, type: 3}
 --- !u!114 &1250279306
 MonoBehaviour:
   m_ObjectHideFlags: 0

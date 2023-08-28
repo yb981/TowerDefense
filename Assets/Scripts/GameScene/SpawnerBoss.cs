@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnerBoss : Spawner
 {
+    public static event Action OnBossSpawned;
     [SerializeField] private Transform bossPrefab;
 
     private bool bossSpawned = false;
@@ -14,6 +16,7 @@ public class SpawnerBoss : Spawner
         {
             SpawnEnemy(bossPrefab);
             bossSpawned = true;
+            OnBossSpawned?.Invoke();
         }
     }
 }
