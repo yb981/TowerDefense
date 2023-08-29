@@ -147,7 +147,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         SubTileGridObject gridObject = grid.GetGridObject(x, y);
         Transform unitOrTower = Instantiate(currentBlueprint.GetTransform(), grid.GetCellCenter(x, y), Quaternion.identity);
-        tileEffects.ApplyTileBonus(unitOrTower,gridObject.GetTileEffect());
+        tileEffects.ApplyTileBonus(unitOrTower,gridObject);
         gridObject.SetTransfrom(unitOrTower);
     }
 
@@ -305,6 +305,11 @@ public class GridBuildingSystem : MonoBehaviour
         public void SetSubTileGroundLevel(int height)
         {
             groundLevel = height;
+        }
+
+        public int GetSubTileGroundLevel()
+        {
+            return groundLevel;
         }
 
         public override string ToString()

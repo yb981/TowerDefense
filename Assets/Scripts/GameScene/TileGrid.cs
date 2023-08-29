@@ -63,12 +63,13 @@ public class TileGrid : MonoBehaviour
         tileSpawnManager?.InitializeSpawners();
     }
 
-    private void SetSubTiles(Transform instantiatedTile, int x, int y)
+     private void SetSubTiles(Transform instantiatedTile, int x, int y)
     {
         Tile tile = instantiatedTile.GetComponent<Tile>();
         BuildTileData buildArea = tile.GetBuildArea();
         MainTileEffect mainTileEffect = tile.GetTileEffect();
         Tilemap tilemap = tile.GetTilemap();
+        int[,] heightMap = tile.GetHeightMap();
 
         int originX = x * cellSize;
         int originY = y * cellSize;
@@ -82,15 +83,12 @@ public class TileGrid : MonoBehaviour
                 if (buildArea.rows[i].row[j] == GridBuildingSystem.FieldType.building)
                 {
                     // Set Random height
-                    int maxHeight = 2;
-                    int height = UnityEngine.Random.Range(0, maxHeight);
+                    int height = heightMap[i,j];
                     gridBuildingSystem.SetSubTileGroundLevel(tilemap, height, j + originX, i + originY);
-                    
                 }
-
             }
         }
-    }
+    } 
 
     private void SetConnectionNodes(Transform instantiatedTile, int x, int y)
     {

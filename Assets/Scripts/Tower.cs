@@ -90,4 +90,9 @@ public class Tower : MonoBehaviour
     {
         return range;
     }
+
+    public void AddRange(float additionalRange)
+    {
+        range += additionalRange;
+    }
 }

@@ -3610,6 +3610,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3772694589048596949}
   - component: {fileID: 9165119098664351797}
+  - component: {fileID: 7766802275500394471}
   m_Layer: 0
   m_Name: CurveTile
   m_TagString: Untagged
@@ -3662,8 +3663,25 @@ MonoBehaviour:
     - row: 02000000020000000200000002000000020000000200000002000000020000000200000002000000
     - row: 02000000020000000200000002000000020000000200000002000000020000000200000002000000
   openingsForInit: 01000001
+  tileEffect: 1
   tileMap: {fileID: 90588963106108153}
   tileVisualGrid: {fileID: 90588964023135570}
+--- !u!114 &7766802275500394471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270977783230137834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd9145b50754084dae97c0cf494bc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingLevel:
+  - {fileID: 11400000, guid: 79f7ec03754e18a498d0e3f176de08d6, type: 2}
+  - {fileID: 11400000, guid: ea026175d13266b49abeded822ec7fd8, type: 2}
+  - {fileID: 11400000, guid: 32f32751ea88bd04fad2eafd77692740, type: 2}
 --- !u!1 &3660718997873965218
 GameObject:
   m_ObjectHideFlags: 0
