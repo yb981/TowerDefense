@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using System;
+using UnityEngine.Tilemaps;
 
 public class TileGrid : MonoBehaviour
 {
@@ -62,11 +63,13 @@ public class TileGrid : MonoBehaviour
         tileSpawnManager?.InitializeSpawners();
     }
 
-    private void SetSubTiles(Transform instantiatedTile, int x, int y)
+     private void SetSubTiles(Transform instantiatedTile, int x, int y)
     {
         Tile tile = instantiatedTile.GetComponent<Tile>();
         BuildTileData buildArea = tile.GetBuildArea();
         MainTileEffect mainTileEffect = tile.GetTileEffect();
+        Tilemap tilemap = tile.GetTilemap();
+        int[,] heightMap = tile.GetHeightMap();
 
         int originX = x * cellSize;
         int originY = y * cellSize;
@@ -76,9 +79,16 @@ public class TileGrid : MonoBehaviour
             {
                 gridBuildingSystem.SetTypeOfCell(buildArea.rows[i].row[j], j + originX, i + originY);
                 gridBuildingSystem.SetMainEffectOfCell(mainTileEffect, j + originX, i + originY);
+
+                if (buildArea.rows[i].row[j] == GridBuildingSystem.FieldType.building)
+                {
+                    // Set Random height
+                    int height = heightMap[i,j];
+                    gridBuildingSystem.SetSubTileGroundLevel(tilemap, height, j + originX, i + originY);
+                }
             }
         }
-    }
+    } 
 
     private void SetConnectionNodes(Transform instantiatedTile, int x, int y)
     {
@@ -366,10 +376,10 @@ public class TileGrid : MonoBehaviour
         {
             return tile;
         }
-        
+
         public Vector2Int GetPosition()
         {
-            return new Vector2Int(x,y);
+            return new Vector2Int(x, y);
         }
     }
 }

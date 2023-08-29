@@ -14,15 +14,27 @@ public class Tile : MonoBehaviour
         down
     }
 
+    public event EventHandler<OnNewSubTileEventArgs> OnNewSubTile;
+    public class OnNewSubTileEventArgs : EventArgs
+    {
+        public Tilemap tileTilemap;
+        public Vector2Int pos;
+        public int buildHeight;
+        public GridBuildingSystem.FieldType fieldType;
+    };
+
     [SerializeField] private BuildTileData buildTileData;
     /*     [SerializeField] private GridBuildingSystem.FieldType[,] buildArea  = 
                                                             { {GridBuildingSystem.FieldType.unit, GridBuildingSystem.FieldType.unit}, 
                                                             {GridBuildingSystem.FieldType.building, GridBuildingSystem.FieldType.building}} ; 
+
          */
+
+
     [SerializeField] private bool[] openingsForInit = new bool[4];
     [SerializeField] private MainTileEffect tileEffect = MainTileEffect.none;
     protected TileNode[] openingNodes = new TileNode[4];
-
+    protected int[,] subTileHeights = new int[10, 10];
 
     private int rotation;
     private List<Transform> rotationTiles = new List<Transform>();
@@ -31,12 +43,25 @@ public class Tile : MonoBehaviour
     [Header("Coding references")]
     [SerializeField] private Tilemap tileMap;
     [SerializeField] private GridLayout tileVisualGrid;
+    private SubTileVisuals subTileVisuals;
+
+    private void Awake()
+    {
+        subTileVisuals = GetComponent<SubTileVisuals>();
+        // Set Random height
+        if (subTileVisuals == null)
+        {
+            Debug.LogError("cant find subtile Visuals");
+        }
+    }
 
     private void Start()
     {
         //AddRotationTilesToList();
         InitNodes();
         tileGrid = FindObjectOfType<TileGrid>();
+        //subTileHeights = new int[tileGrid.GetCellSize(), tileGrid.GetCellSize()];
+        SetSubTilesHeights();
     }
 
     private void Update()
@@ -60,6 +85,41 @@ public class Tile : MonoBehaviour
                 openingNodes[i].entry = true;
             }
         }
+    }
+
+    private void SetSubTilesHeights()
+    {
+        GridBuildingSystem gridBuildingSystem = FindObjectOfType<GridBuildingSystem>();
+
+        for (int i = 0; i < buildTileData.rows.Length; i++)
+        {
+            for (int j = 0; j < buildTileData.rows[i].row.Length; j++)
+            {
+
+                if (buildTileData.rows[i].row[j] == GridBuildingSystem.FieldType.building)
+                {
+                    int randomHeight = GetRandomHeight();
+
+                    gridBuildingSystem.SetSubTileGroundLevel(tileMap, randomHeight, j, i);
+                    subTileHeights[j, i] = randomHeight;
+
+                    OnNewSubTile?.Invoke(this, new OnNewSubTileEventArgs()
+                    {
+                        tileTilemap = tileMap,
+                        pos = new Vector2Int(j, i),
+                        fieldType = buildTileData.rows[i].row[j],
+                        buildHeight = randomHeight
+                    });
+                }
+            }
+        }
+    }
+
+    private int GetRandomHeight()
+    {
+        int maxHeight = 3;//subTileVisuals.GetNumberOfLevelHeights();
+        int randomHeight = UnityEngine.Random.Range(0, maxHeight);
+        return randomHeight;
     }
 
     private void AddRotationTilesToList()
@@ -139,7 +199,7 @@ public class Tile : MonoBehaviour
 
     private void RotateTilesInTilemap()
     {
-        BoundsInt bounds = tileMap.cellBounds; 
+        BoundsInt bounds = tileMap.cellBounds;
 
         //float rotation = transform.eulerAngles.z;
         //Debug.Log("bounds position: "+bounds.position);
@@ -265,6 +325,16 @@ public class Tile : MonoBehaviour
     public MainTileEffect GetTileEffect()
     {
         return tileEffect;
+    }
+
+    public Tilemap GetTilemap()
+    {
+        return tileMap;
+    }
+
+    public int[,] GetHeightMap()
+    {
+        return subTileHeights;
     }
 
     public class TileNode

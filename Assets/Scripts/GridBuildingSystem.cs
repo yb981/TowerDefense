@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using System;
+using UnityEngine.Tilemaps;
 
 public class GridBuildingSystem : MonoBehaviour
 {
     public event Action OnBuilt;
     public static EventHandler OnStartBuilding;
     public static event Action OnEndBuilding;
+    public static event EventHandler<OnNewSubTileEventArgs> OnNewSubTile;
+    public class OnNewSubTileEventArgs : EventArgs {
+        public Tilemap tileTilemap;
+        public Vector2Int pos;
+        public int buildHeight;
+        public FieldType fieldType;
+    };
 
     public enum FieldType
     {
@@ -139,7 +147,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         SubTileGridObject gridObject = grid.GetGridObject(x, y);
         Transform unitOrTower = Instantiate(currentBlueprint.GetTransform(), grid.GetCellCenter(x, y), Quaternion.identity);
-        tileEffects.ApplyTileBonus(unitOrTower,gridObject.GetTileEffect());
+        tileEffects.ApplyTileBonus(unitOrTower,gridObject);
         gridObject.SetTransfrom(unitOrTower);
     }
 
@@ -183,6 +191,17 @@ public class GridBuildingSystem : MonoBehaviour
         grid.GetGridObject(x, y).SetType(type);
     }
 
+    public void SetSubTileGroundLevel(Tilemap tilemap, int height, int x, int y)
+    {
+        grid.GetGridObject(x,y).SetSubTileGroundLevel(height);
+        OnNewSubTile?.Invoke(this, new OnNewSubTileEventArgs(){
+            tileTilemap = tilemap,
+            pos = new Vector2Int(x,y),
+            fieldType = grid.GetGridObject(x,y).GetFieldType(),
+            buildHeight = height
+        });
+    }
+
     public void SetMainEffectOfCell(MainTileEffect effect, int x, int y)
     {
         grid.GetGridObject(x, y).SetTileEffect(effect);
@@ -202,6 +221,7 @@ public class GridBuildingSystem : MonoBehaviour
         private GameObject highlight;
         private FieldType type = FieldType.none;
         private MainTileEffect tileEffect;
+        private int groundLevel;
 
         public SubTileGridObject(Grid<SubTileGridObject> grid, int x, int y)
         {
@@ -249,6 +269,11 @@ public class GridBuildingSystem : MonoBehaviour
             this.type = type;
         }
 
+        public FieldType GetFieldType()
+        {
+            return type;
+        }
+
         public void ClearTransform()
         {
             transform = null;
@@ -275,6 +300,16 @@ public class GridBuildingSystem : MonoBehaviour
         public MainTileEffect GetTileEffect()
         {
             return tileEffect;
+        }
+
+        public void SetSubTileGroundLevel(int height)
+        {
+            groundLevel = height;
+        }
+
+        public int GetSubTileGroundLevel()
+        {
+            return groundLevel;
         }
 
         public override string ToString()

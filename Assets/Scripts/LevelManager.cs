@@ -34,11 +34,12 @@ public class LevelManager : MonoBehaviour
     {
         ChangeLevelPhase(LevelPhase.build);
 
-        SetStartingPositionOfCamera();
+        StartCoroutine(SetStartingPositionOfCamera());
     }
 
-    private void SetStartingPositionOfCamera()
+    private IEnumerator SetStartingPositionOfCamera()
     {
+        yield return new WaitForEndOfFrame();
         Vector3 StartingTilePos = FindObjectOfType<TileGrid>().GetStartTileCenterPosition();
         Camera.main.transform.position = new Vector3(StartingTilePos.x, StartingTilePos.y, Camera.main.transform.position.z);
     }

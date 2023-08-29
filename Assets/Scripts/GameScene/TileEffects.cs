@@ -12,10 +12,12 @@ public class TileEffects : MonoBehaviour
 {
     [Header("BloodyTile")]
     [SerializeField] private int bloodyBonusDamage = 2;
+    [Header("Heights")]
+    [SerializeField] private float extraRangePerHeight = 1f;
     
-    public void ApplyTileBonus(Transform trans, MainTileEffect mainEffect)
+    public void ApplyTileBonus(Transform trans, GridBuildingSystem.SubTileGridObject subTileGridObject)
     {
-        switch(mainEffect)
+        switch(subTileGridObject.GetTileEffect())
         {
             case MainTileEffect.bloody: 
                 Minion minion = trans.GetComponent<Minion>();
@@ -25,6 +27,21 @@ public class TileEffects : MonoBehaviour
                 }
                 break;
             case MainTileEffect.none: break;
+        }
+
+        ApplySubTileHeight(trans, subTileGridObject);
+    }
+
+    private void ApplySubTileHeight(Transform trans, GridBuildingSystem.SubTileGridObject subTileGridObject)
+    {
+        Tower tower = trans.GetComponent<Tower>();
+        if(tower != null)
+        {
+            tower.AddRange(subTileGridObject.GetSubTileGroundLevel()*extraRangePerHeight);
+        }
+        else if(subTileGridObject.GetFieldType() == GridBuildingSystem.FieldType.building)
+        {
+            Debug.LogError("Can't find tower component, but placed object is a building");
         }
     }
 }
