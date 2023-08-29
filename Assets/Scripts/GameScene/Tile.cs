@@ -267,6 +267,11 @@ public class Tile : MonoBehaviour
         return tileEffect;
     }
 
+    public Tilemap GetTilemap()
+    {
+        return tileMap;
+    }
+
     public class TileNode
     {
         public bool entry = false;

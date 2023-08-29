@@ -3065,6 +3065,7 @@ GameObject:
   - component: {fileID: 1377023755}
   - component: {fileID: 1377023756}
   - component: {fileID: 1377023757}
+  - component: {fileID: 1377023758}
   m_Layer: 0
   m_Name: GameTilesGrid
   m_TagString: Untagged
@@ -3151,6 +3152,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodyBonusDamage: 4
+--- !u!114 &1377023758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377023752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd9145b50754084dae97c0cf494bc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingLevel:
+  - {fileID: 11400000, guid: 79f7ec03754e18a498d0e3f176de08d6, type: 2}
+  - {fileID: 11400000, guid: ea026175d13266b49abeded822ec7fd8, type: 2}
+  - {fileID: 11400000, guid: 32f32751ea88bd04fad2eafd77692740, type: 2}
 --- !u!224 &1450383451 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1470002354973837129, guid: 75863397a460933448cfb30e42f38bd8, type: 3}
