@@ -8,13 +8,15 @@ public class BossTile : Tile
     [SerializeField] private GameObject spawners;
     [SerializeField] private GameObject fog;
     [SerializeField] private TileSpawnManager tileSpawnManager;
-    private void Awake() 
+    protected override void Awake() 
     {
         // Deactivate visuals
         spawners.SetActive(false);
 
         // subscribe to placement tiles, and then enable when tile connected 
         tileGrid = FindObjectOfType<TileGrid>();
+
+        base.Awake();
     }
 
     private void TileGrid_OnTileBuild()

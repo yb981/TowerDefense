@@ -14,7 +14,7 @@ public class TileBuilding : MonoBehaviour
     [SerializeField] private int StartX;
     [SerializeField] private int StartY;
     [Header("BossTile")]
-    [SerializeField] private Transform bossTile;
+    [SerializeField] private Transform bossTilePrefab;
     [SerializeField] private int maxRangeFromStart;
     [SerializeField] private int minRangeFromStart;
 
@@ -91,7 +91,6 @@ public class TileBuilding : MonoBehaviour
 
     private void CreateInitialTilesInGrid()
     {
-        Debug.Log("starting coroutine to place first tiles");
         StartCoroutine(CreateInitialTilesEndOfFrame());
     }
 
@@ -100,15 +99,11 @@ public class TileBuilding : MonoBehaviour
         yield return null;
 
         //Transform instantiatedStart = Instantiate(startTilePrefab, tileGrid.GetWorldPosition(StartX, StartY), Quaternion.identity);
-        Debug.Log("next: placing start tile");
         tileGridComponent.SetStartTile(StartX, StartY);
         tileGridComponent.TryPlacingSoloTile(startTilePrefab, StartX, StartY);
 
         //tileGridComponent.PlaceNewTile(instantiatedStart, StartX, StartY);
-        Debug.Log("done");
-        Debug.Log("next: build castle");
         castle.BuildCastle();
-        Debug.Log("done");
 
         // Random Boss Coords
         PlaceNewBossTile();
@@ -128,7 +123,7 @@ public class TileBuilding : MonoBehaviour
 
             newPos = FindRandomPosition(randomTilePosition, minRangeFromStart, maxRangeFromStart);
             safetyExit--;
-        } while (!tileGridComponent.TryPlacingSoloTile(bossTile, newPos.x, newPos.y) && safetyExit >= 0);
+        } while (!tileGridComponent.TryPlacingSoloTile(bossTilePrefab, newPos.x, newPos.y) && safetyExit >= 0);
     }
 
     private Vector2Int FindRandomPosition(Vector2Int StartPosition, int minRange, int maxRange)

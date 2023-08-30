@@ -45,7 +45,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GridLayout tileVisualGrid;
     private SubTileVisuals subTileVisuals;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         subTileVisuals = GetComponent<SubTileVisuals>();
         // Set Random height

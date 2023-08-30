@@ -1449,6 +1449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3772694589048596949}
   - component: {fileID: 321400184695678080}
+  - component: {fileID: 3710706731965751782}
   m_Layer: 0
   m_Name: BossTile
   m_TagString: Untagged
@@ -1499,11 +1500,24 @@ MonoBehaviour:
     - row: 02000000020000000200000001000000010000000100000001000000020000000200000002000000
     - row: 02000000020000000200000001000000010000000100000001000000020000000200000002000000
   openingsForInit: 01010101
+  tileEffect: 1
   tileMap: {fileID: 90588963106108153}
   tileVisualGrid: {fileID: 90588964023135570}
   spawners: {fileID: 1869549621487589175}
   fog: {fileID: 1644251907219575390}
   tileSpawnManager: {fileID: 4204373306522692053}
+--- !u!114 &3710706731965751782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2270977783230137834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd9145b50754084dae97c0cf494bc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2552660900626412624
 GameObject:
   m_ObjectHideFlags: 0
