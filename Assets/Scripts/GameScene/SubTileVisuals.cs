@@ -7,26 +7,47 @@ using UnityEngine.Tilemaps;
 public class SubTileVisuals : MonoBehaviour
 {
 
-    [SerializeField] private TileBase[] buildingLevel;
+    private TileBase[] buildingLevel;
+    private TileBase[] groundTiles;
     private Tile tile;
+    private SubTileVisualStorage subTileVisualStorage;
 
-    private void Awake() 
+    private void Awake()
     {
         tile = GetComponent<Tile>();
         tile.OnNewSubTile += Tile_OnNewSubTile;
+
+        subTileVisualStorage = FindObjectOfType<SubTileVisualStorage>();
+    }
+
+    private void GetTileSet()
+    {
+        MainTileEffect mainTileEffect = tile.GetTileEffect();
+        buildingLevel = subTileVisualStorage.GetBuildingLevel(mainTileEffect);
+        groundTiles = subTileVisualStorage.GetGroundVariations(mainTileEffect);
     }
 
     private void Tile_OnNewSubTile(object sender, Tile.OnNewSubTileEventArgs e)
     {
-        if(e.fieldType == GridBuildingSystem.FieldType.building)
+        if(buildingLevel == null) GetTileSet();
+        if (e.fieldType == GridBuildingSystem.FieldType.building)
         {
-            e.tileTilemap.SetTile(new Vector3Int(e.pos.x % 10,e.pos.y % 10,0),buildingLevel[e.buildHeight]);
+            e.tileTilemap.SetTile(new Vector3Int(e.pos.x % 10, e.pos.y % 10, 0), buildingLevel[e.buildHeight]);
+        }else if(e.fieldType == GridBuildingSystem.FieldType.unit)
+        {
+            e.tileTilemap.SetTile(new Vector3Int(e.pos.x % 10, e.pos.y % 10, 0), GetRandomTile(groundTiles));
         }
+    }
+
+    private TileBase GetRandomTile(TileBase[] tiles)
+    {
+        int randomNr = UnityEngine.Random.Range(0,tiles.Length);
+        return tiles[randomNr];
     }
 
     public int GetNumberOfLevelHeights()
     {
-        Debug.Log("returning buildingLevel Length");
+        if(buildingLevel == null) GetTileSet();
         return buildingLevel.Length;
     }
 }

@@ -2786,6 +2786,7 @@ GameObject:
   - component: {fileID: 1250279305}
   - component: {fileID: 1250279306}
   - component: {fileID: 1250279308}
+  - component: {fileID: 1250279309}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -2913,6 +2914,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa5c917f93435644a4286ac4521be91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1250279309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250279300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ed5f39b9f2baf40836b800fadb81c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music: {fileID: 0}
 --- !u!114 &1345216296 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7259557609489185213, guid: 98f7c06995c51cc45a4f23d9c8edd299, type: 3}
@@ -3070,6 +3084,7 @@ GameObject:
   - component: {fileID: 1377023755}
   - component: {fileID: 1377023756}
   - component: {fileID: 1377023757}
+  - component: {fileID: 1377023758}
   m_Layer: 0
   m_Name: GameTilesGrid
   m_TagString: Untagged
@@ -3157,6 +3172,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodyBonusDamage: 4
   extraRangePerHeight: 1
+--- !u!114 &1377023758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377023752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b75eb221da9c0042bdeed2649e0b2c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingLevel:
+  - {fileID: 11400000, guid: 79f7ec03754e18a498d0e3f176de08d6, type: 2}
+  - {fileID: 11400000, guid: ea026175d13266b49abeded822ec7fd8, type: 2}
+  - {fileID: 11400000, guid: 32f32751ea88bd04fad2eafd77692740, type: 2}
+  normalGroundVariations:
+  - {fileID: 11400000, guid: f8ed7314b89c78d4da77cf82c2a86043, type: 2}
+  - {fileID: 11400000, guid: e3c64e136bce8cf449ca1a15456c3166, type: 2}
+  bloodyBuildingLevel:
+  - {fileID: 11400000, guid: ce67172bde4dff341ac25484f742c220, type: 2}
+  - {fileID: 11400000, guid: d67ee8dd0709076458419eb29b7014c0, type: 2}
+  - {fileID: 11400000, guid: b897a961a8fae854294362972fa2194f, type: 2}
+  bloodyGroundVariations:
+  - {fileID: 11400000, guid: 74dac4a1889bffc49b7ea9a77a7d8b27, type: 2}
+  - {fileID: 11400000, guid: ffb13aac82434994fb34e617719010da, type: 2}
+  - {fileID: 11400000, guid: c6dadc325d24e104d9ba542b248ee5c0, type: 2}
+  - {fileID: 11400000, guid: 7723b0484489f734cae4d9e3a0bc9983, type: 2}
+  - {fileID: 11400000, guid: f01085987a77e3b48b553573b046baf4, type: 2}
 --- !u!224 &1450383451 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1470002354973837129, guid: 75863397a460933448cfb30e42f38bd8, type: 3}

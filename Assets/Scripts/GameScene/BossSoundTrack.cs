@@ -7,7 +7,7 @@ public class BossSoundTrack : MonoBehaviour
 {
     [SerializeField] private AudioClip music;
 
-    private void Start() 
+    private void Start()
     {
         SpawnerBoss.OnBossSpawned += SpawnerBoss_OnBossSpawned;
         MonsterBoss.OnBossDied += MonsterBoss_OnBossDied;
@@ -21,5 +21,11 @@ public class BossSoundTrack : MonoBehaviour
     private void MonsterBoss_OnBossDied()
     {
         SoundManager.Instance.StopMusic();
+    }
+
+    private void OnDisable()
+    {
+        SpawnerBoss.OnBossSpawned -= SpawnerBoss_OnBossSpawned;
+        MonsterBoss.OnBossDied -= MonsterBoss_OnBossDied;
     }
 }

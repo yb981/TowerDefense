@@ -95,22 +95,27 @@ public class Tile : MonoBehaviour
         {
             for (int j = 0; j < buildTileData.rows[i].row.Length; j++)
             {
-
+                int height = 0;
                 if (buildTileData.rows[i].row[j] == GridBuildingSystem.FieldType.building)
                 {
-                    int randomHeight = GetRandomHeight();
+                    height = GetRandomHeight();
 
-                    gridBuildingSystem.SetSubTileGroundLevel(tileMap, randomHeight, j, i);
-                    subTileHeights[j, i] = randomHeight;
-
-                    OnNewSubTile?.Invoke(this, new OnNewSubTileEventArgs()
-                    {
-                        tileTilemap = tileMap,
-                        pos = new Vector2Int(j, i),
-                        fieldType = buildTileData.rows[i].row[j],
-                        buildHeight = randomHeight
-                    });
+                    gridBuildingSystem.SetSubTileGroundLevel(tileMap, height, j, i);
+                    subTileHeights[j, i] = height;
                 }
+                else if(buildTileData.rows[i].row[j] == GridBuildingSystem.FieldType.unit)
+                {
+                    // apply different unit tiles
+                }
+
+                OnNewSubTile?.Invoke(this, new OnNewSubTileEventArgs()
+                {
+                    tileTilemap = tileMap,
+                    pos = new Vector2Int(j, i),
+                    fieldType = buildTileData.rows[i].row[j],
+                    buildHeight = height
+                });
+
             }
         }
     }
