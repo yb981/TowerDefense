@@ -256,6 +256,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultMovementSpeed: 2
+  attackRange: 0
+  attackSpeed: 0
+  attackDamage: 0
   monsterStatsSO: {fileID: 11400000, guid: 088086b81ab37f642b275f02a6258f59, type: 2}
 --- !u!114 &-941785521197295909
 MonoBehaviour:
@@ -408,7 +411,7 @@ SpriteRenderer:
   m_SortingLayerID: -1682160259
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eb53fddbcc9bad14682fda931330dfaf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8a1e370fe70869f4b8d549c3a3dfb256, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

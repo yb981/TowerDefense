@@ -60,16 +60,20 @@ PrefabInstance:
       value: TankMonster
       objectReference: {fileID: 0}
     - target: {fileID: 8103143980289736411, guid: 849d61f2da1174b4d91a688007374227, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71560cb114f544e40bad53d79aab1a20, type: 3}
+    - target: {fileID: 8103143980289736411, guid: 849d61f2da1174b4d91a688007374227, type: 3}
       propertyPath: m_Color.b
-      value: 0.17795478
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8103143980289736411, guid: 849d61f2da1174b4d91a688007374227, type: 3}
       propertyPath: m_Color.g
-      value: 0.36066937
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8103143980289736411, guid: 849d61f2da1174b4d91a688007374227, type: 3}
       propertyPath: m_Color.r
-      value: 0.4056604
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 849d61f2da1174b4d91a688007374227, type: 3}

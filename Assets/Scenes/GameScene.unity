@@ -1462,7 +1462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bea2863a87061e4ca6ef724e9776a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseCursorOnDrag: {fileID: 2800000, guid: 5d62be945b8181d49baf9ccbbfb72a9d, type: 3}
+  mouseCursorOnDrag: {fileID: 0}
   panSpeed: 10
   panPadding: 5
   scrollSpeed: 5

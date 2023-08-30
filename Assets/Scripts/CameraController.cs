@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse2))
         {
             mouseWheelDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Cursor.SetCursor(mouseCursorOnDrag, new Vector2(mouseCursorOnDrag.width / 2, mouseCursorOnDrag.height / 2), CursorMode.Auto);
+            SetCursorSpriteDrag();
         }
 
         if (Input.GetKey(KeyCode.Mouse2))
@@ -53,6 +53,12 @@ public class CameraController : MonoBehaviour
         {
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
+    }
+
+    private void SetCursorSpriteDrag()
+    {
+        if(mouseCursorOnDrag == null) return;
+        Cursor.SetCursor(mouseCursorOnDrag, new Vector2(mouseCursorOnDrag.width / 2, mouseCursorOnDrag.height / 2), CursorMode.Auto);
     }
 
     private void ResetCameraZoom()
