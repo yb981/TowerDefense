@@ -15,7 +15,9 @@ public class WaypointAlgorithm
     {
         Transform startNode = tileGrid.GetGridObject(start).GetTransform();
         Transform finalNode = tileGrid.GetGridObject(destination).GetTransform();
-
+        Debug.Log("start node: "+startNode);
+        Debug.Log("final node: "+finalNode);
+        
         return AStar(startNode.GetComponent<Tile>(), finalNode.GetComponent<Tile>());
     }
 

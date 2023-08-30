@@ -483,6 +483,7 @@ MonoBehaviour:
   - {fileID: 3772694589048596949, guid: 9f7e8a9781c1021418a18d8e58d23c9d, type: 3}
   - {fileID: 3772694589048596949, guid: a1eb83619c1c61346ac16281b14797fd, type: 3}
   - {fileID: 3772694589048596949, guid: 965af27a83e00e8449eceedbf92f0b1e, type: 3}
+  - {fileID: 3772694589048596949, guid: 5be1437a15969c248bc1b39c5144a6f3, type: 3}
 --- !u!224 &267973802 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 491600588584743672, guid: 2a9e89717ad70b842896735bc3307105, type: 3}
@@ -3121,8 +3122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22670d0768896dd40a590fe9e498d8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 15
-  height: 15
+  width: 17
+  height: 17
   cellSize: 10
 --- !u!114 &1377023755
 MonoBehaviour:
@@ -3152,9 +3153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testTile: {fileID: 3772694589048596949, guid: 965af27a83e00e8449eceedbf92f0b1e, type: 3}
-  startTile: {fileID: 3772694589048596949, guid: b2a5882b56fc9104690cc8dca3402bce, type: 3}
-  StartX: 7
-  StartY: 7
+  startTilePrefab: {fileID: 3772694589048596949, guid: b2a5882b56fc9104690cc8dca3402bce, type: 3}
+  StartX: 8
+  StartY: 1
   bossTile: {fileID: 3772694589048596949, guid: bda94de202b5f8c4089ec0b08b8bed31, type: 3}
   maxRangeFromStart: 3
   minRangeFromStart: 4
@@ -3201,6 +3202,51 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c6dadc325d24e104d9ba542b248ee5c0, type: 2}
   - {fileID: 11400000, guid: 7723b0484489f734cae4d9e3a0bc9983, type: 2}
   - {fileID: 11400000, guid: f01085987a77e3b48b553573b046baf4, type: 2}
+--- !u!1 &1445734055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1445734057}
+  - component: {fileID: 1445734056}
+  m_Layer: 0
+  m_Name: Castle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1445734056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445734055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f1c38288c3fcc5439502f47122ee6fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castlePrefab: {fileID: 3772694589048596949, guid: 5eeef5baa717f40429840a15c8f9de52, type: 3}
+--- !u!4 &1445734057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445734055}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 700.31885, y: 325.29837, z: -7.082696}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1450383451 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1470002354973837129, guid: 75863397a460933448cfb30e42f38bd8, type: 3}

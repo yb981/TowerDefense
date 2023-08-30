@@ -53,12 +53,14 @@ public class Tile : MonoBehaviour
         {
             Debug.LogError("cant find subtile Visuals");
         }
+
+        InitNodes();
     }
 
     private void Start()
     {
         //AddRotationTilesToList();
-        InitNodes();
+        
         tileGrid = FindObjectOfType<TileGrid>();
         //subTileHeights = new int[tileGrid.GetCellSize(), tileGrid.GetCellSize()];
         SetSubTilesHeights();

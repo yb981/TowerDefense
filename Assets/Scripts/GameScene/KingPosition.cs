@@ -5,7 +5,7 @@ using UnityEngine;
 public class KingPosition : MonoBehaviour
 {
 
-    private void Start() 
+    private void Awake() 
     {
         PlaceKing();
     }

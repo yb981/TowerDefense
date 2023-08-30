@@ -63,7 +63,7 @@ public class TileGrid : MonoBehaviour
         tileSpawnManager?.InitializeSpawners();
     }
 
-     private void SetSubTiles(Transform instantiatedTile, int x, int y)
+    private void SetSubTiles(Transform instantiatedTile, int x, int y)
     {
         Tile tile = instantiatedTile.GetComponent<Tile>();
         BuildTileData buildArea = tile.GetBuildArea();
@@ -314,6 +314,11 @@ public class TileGrid : MonoBehaviour
         Debug.Log("found " + allOpenEndTiles.Count + " open tiles");
 
         return allOpenEndTiles;
+    }
+
+    public Vector3 GetWorldPositionOfCell(int x, int y)
+    {
+        return tileGrid.GetWorldPosition(x,y);
     }
 
     public Tile GetTileOfPosition(Vector3 location)

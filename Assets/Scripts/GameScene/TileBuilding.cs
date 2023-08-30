@@ -10,13 +10,15 @@ public class TileBuilding : MonoBehaviour
     [Header("test")]
     [SerializeField] private Transform testTile;
     [Header("StartTile")]
-    [SerializeField] private Transform startTile;
+    [SerializeField] private Transform startTilePrefab;
     [SerializeField] private int StartX;
     [SerializeField] private int StartY;
     [Header("BossTile")]
     [SerializeField] private Transform bossTile;
     [SerializeField] private int maxRangeFromStart;
     [SerializeField] private int minRangeFromStart;
+
+    private Castle castle;
     private TileGrid tileGridComponent;
     private Transform ghostObject;
     private bool building;
@@ -30,9 +32,11 @@ public class TileBuilding : MonoBehaviour
         TileSelection tileSelection = FindObjectOfType<TileSelection>();
         tileSelection.OnTileSelected += TileSelection_OnTileSelected;
 
+        castle = FindObjectOfType<Castle>();
+
         MonsterBoss.OnBossDied += MonsterBoss_OnBossDied;
 
-        CreateTilesInGrid();
+        CreateInitialTilesInGrid();
     }
 
     private void MonsterBoss_OnBossDied()
@@ -85,17 +89,26 @@ public class TileBuilding : MonoBehaviour
     }
 
 
-    private void CreateTilesInGrid()
+    private void CreateInitialTilesInGrid()
     {
-        Transform startT = Instantiate(startTile, tileGrid.GetWorldPosition(StartX, StartY), Quaternion.identity);
-        StartCoroutine(CreateStartTileEndOfFrameAndBossTile(startT, StartX, StartY));
+        Debug.Log("starting coroutine to place first tiles");
+        StartCoroutine(CreateInitialTilesEndOfFrame());
     }
 
-    private IEnumerator CreateStartTileEndOfFrameAndBossTile(Transform tile, int x, int y)
+    private IEnumerator CreateInitialTilesEndOfFrame()
     {
         yield return null;
-        tileGridComponent.SetStartTile(StartX,StartY);
-        tileGridComponent.PlaceNewTile(tile, StartX, StartY);
+
+        //Transform instantiatedStart = Instantiate(startTilePrefab, tileGrid.GetWorldPosition(StartX, StartY), Quaternion.identity);
+        Debug.Log("next: placing start tile");
+        tileGridComponent.SetStartTile(StartX, StartY);
+        tileGridComponent.TryPlacingSoloTile(startTilePrefab, StartX, StartY);
+
+        //tileGridComponent.PlaceNewTile(instantiatedStart, StartX, StartY);
+        Debug.Log("done");
+        Debug.Log("next: build castle");
+        castle.BuildCastle();
+        Debug.Log("done");
 
         // Random Boss Coords
         PlaceNewBossTile();
@@ -109,24 +122,24 @@ public class TileBuilding : MonoBehaviour
         // loop until free tile
         int safetyExit = 20;
         do
-        {   
+        {
             List<TileGrid.GridTileObject> allOpenEndTiles = tileGridComponent.GetAllOpenEnds();
-            Vector2Int randomTilePosition = allOpenEndTiles[UnityEngine.Random.Range(0,allOpenEndTiles.Count)].GetPosition();
+            Vector2Int randomTilePosition = allOpenEndTiles[UnityEngine.Random.Range(0, allOpenEndTiles.Count)].GetPosition();
 
             newPos = FindRandomPosition(randomTilePosition, minRangeFromStart, maxRangeFromStart);
             safetyExit--;
-        } while (!tileGridComponent.TryPlacingSoloTile(bossTile ,newPos.x, newPos.y) && safetyExit >= 0);
+        } while (!tileGridComponent.TryPlacingSoloTile(bossTile, newPos.x, newPos.y) && safetyExit >= 0);
     }
 
     private Vector2Int FindRandomPosition(Vector2Int StartPosition, int minRange, int maxRange)
     {
-        int randomX = UnityEngine.Random.Range(0,maxRange);
-        int randomY = UnityEngine.Random.Range(minRange-randomX,maxRange-randomX);
+        int randomX = UnityEngine.Random.Range(0, maxRange);
+        int randomY = UnityEngine.Random.Range(minRange - randomX, maxRange - randomX);
 
         // Random Sign
         randomX *= (int)((UnityEngine.Random.Range(0, 2) - 0.5) * 2);
         randomY *= (int)((UnityEngine.Random.Range(0, 2) - 0.5) * 2);
 
-        return new Vector2Int(StartPosition.x+randomX, StartPosition.y+randomY);
+        return new Vector2Int(StartPosition.x + randomX, StartPosition.y + randomY);
     }
 }
