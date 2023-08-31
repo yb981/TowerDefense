@@ -16,7 +16,7 @@ public class TileSelection : MonoBehaviour
     [SerializeField] TileSelectionOption[] tileSelectionOptions;
     [SerializeField] Transform child;
 
-    [Header("All tiles")]
+    [Header("All selectable tiles")]
     [SerializeField] private Transform[] tilePrefabs;
 
     private void Start() 
@@ -35,7 +35,7 @@ public class TileSelection : MonoBehaviour
     {
         foreach (TileSelectionOption options in tileSelectionOptions)
         {
-            TileBlueprint tileBlueprint = new TileBlueprint(RandomPrefab(),RandomMainTileEffect());
+            TileBlueprint tileBlueprint = new TileBlueprint(RandomTilePrefab(),RandomMainTileEffect());
             options.SetTilePrefab(tileBlueprint);
         }
     }
@@ -46,7 +46,7 @@ public class TileSelection : MonoBehaviour
         return (MainTileEffect) Enum.GetValues(typeof(MainTileEffect)).GetValue(randomEntry);
     }
 
-    private Transform RandomPrefab()
+    private Transform RandomTilePrefab()
     {
         return tilePrefabs[UnityEngine.Random.Range(0,tilePrefabs.Length)];
     }

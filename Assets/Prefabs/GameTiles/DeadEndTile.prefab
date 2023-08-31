@@ -1352,6 +1352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8c3e0765da70b4ea377b184de448c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileName: Dead End
   buildTileData:
     rows:
     - row: 02000000020000000200000002000000020000000200000002000000020000000200000002000000

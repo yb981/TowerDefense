@@ -1487,6 +1487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb845c5785f88c4bb6e600675d6853b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileName: Boss
   buildTileData:
     rows:
     - row: 02000000020000000200000001000000010000000100000001000000020000000200000002000000

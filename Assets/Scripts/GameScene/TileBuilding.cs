@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class TileBuilding : MonoBehaviour
 {
-
     [Header("test")]
     [SerializeField] private Transform testTile;
     [Header("StartTile")]

@@ -23,6 +23,7 @@ public class Tile : MonoBehaviour
         public GridBuildingSystem.FieldType fieldType;
     };
 
+    [SerializeField] private string tileName;
     [SerializeField] private BuildTileData buildTileData;
     /*     [SerializeField] private GridBuildingSystem.FieldType[,] buildArea  = 
                                                             { {GridBuildingSystem.FieldType.unit, GridBuildingSystem.FieldType.unit}, 
@@ -342,6 +343,11 @@ public class Tile : MonoBehaviour
     public int[,] GetHeightMap()
     {
         return subTileHeights;
+    }
+
+    public string GetTileName()
+    {
+        return tileName;
     }
 
     public class TileNode

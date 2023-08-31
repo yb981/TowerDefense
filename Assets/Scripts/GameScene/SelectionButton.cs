@@ -35,6 +35,6 @@ public class SelectionButton : MonoBehaviour
     private void SetButtonVisual()
     {
         TextMeshProUGUI buttonText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        buttonText.text = tilePrefab.name;
+        buttonText.text = tilePrefab.GetComponent<Tile>().GetTileName();
     }
 }
