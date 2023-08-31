@@ -10,8 +10,13 @@ public enum MainTileEffect
 
 public class TileEffects : MonoBehaviour
 {
+
+   
     [Header("BloodyTile")]
     [SerializeField] private int bloodyBonusDamage = 2;
+
+    private static string BLOODY_BONUS = "Unit bonus damage";
+
     [Header("Heights")]
     [SerializeField] private float extraRangePerHeight = 1f;
     
@@ -43,5 +48,15 @@ public class TileEffects : MonoBehaviour
         {
             Debug.LogError("Can't find tower component, but placed object is a building");
         }
+    }
+
+    public string GetMainTileEffectText(MainTileEffect mainTileEffect)
+    {
+        switch(mainTileEffect)
+        {
+            case MainTileEffect.none:   return "-";
+            case MainTileEffect.bloody: return BLOODY_BONUS + ": " + bloodyBonusDamage;
+        }
+        return "-";
     }
 }

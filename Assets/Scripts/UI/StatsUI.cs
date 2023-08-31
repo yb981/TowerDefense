@@ -32,6 +32,7 @@ public class StatsUI : MonoBehaviour
     private void LevelManager_OnLevelPhasePostPlay()
     {
         UpdateWaveText();
+        UpdateSpawnText();
     }
 
     private void UpdateAllTexts()
