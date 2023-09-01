@@ -108,6 +108,7 @@ public class TooltipUI : MonoBehaviour
         Transform[] children = GetComponentsInChildren<Transform>(true);
         foreach (Transform child in children)
         {
+            if(child == transform) continue;
             child.gameObject.SetActive(false);
         }
     }

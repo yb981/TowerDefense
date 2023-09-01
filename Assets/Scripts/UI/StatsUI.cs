@@ -11,17 +11,29 @@ public class StatsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tmpWave;
     [SerializeField] private TextMeshProUGUI tmpScore;
     [SerializeField] private TextMeshProUGUI tmpSpawns;
+    private TileGrid tileGridComponent;
+    private SpawnManager spawnManager;
     private static string CURRENT_WAVE = "Current Wave: ";
-    private static string SPAWNS = "x spawn";
+    private static string SPAWNS = " spawning";
     private static string SCORE = "Score: ";
-    
+    private int spawnNumber = 0;
 
     void Start()
     {
         LevelManager.instance.OnLevelPhasePostPlay += LevelManager_OnLevelPhasePostPlay;
+        LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;
         PlayerStats.OnScoreChanged += PlayerStats_OnScoreChanged;
 
-        UpdateAllTexts();
+        spawnManager = FindObjectOfType<SpawnManager>();
+
+        tileGridComponent = FindObjectOfType<TileGrid>();
+
+        Invoke("UpdateAllTexts",0.5f);
+    }
+
+    private void LevelManager_OnLevelPhaseBuild()
+    {
+        UpdateSpawnText();
     }
 
     private void PlayerStats_OnScoreChanged()
@@ -32,11 +44,12 @@ public class StatsUI : MonoBehaviour
     private void LevelManager_OnLevelPhasePostPlay()
     {
         UpdateWaveText();
-        UpdateSpawnText();
+        
     }
 
     private void UpdateAllTexts()
     {
+
         UpdateWaveText();
         UpdateScoreText();
         UpdateSpawnText();
@@ -49,7 +62,8 @@ public class StatsUI : MonoBehaviour
 
     private void UpdateSpawnText()
     {
-        tmpSpawns.text = waveManager.GetCurrentWave() + SPAWNS;
+        spawnNumber = tileGridComponent.GetAllOpenEnds().Count * spawnManager.GetSpawnsPerSpawnerThisWave();
+        tmpSpawns.text = spawnNumber + SPAWNS;
     }
 
     private void UpdateScoreText()

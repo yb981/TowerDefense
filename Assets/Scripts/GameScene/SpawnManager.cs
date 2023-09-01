@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float spawnTime = 1f;
     [SerializeField] private int startSpawnAmount;
     [SerializeField] private int additionalSpawnsPerWave;
+    private int monstersToSpawnThisWave;
 
     WaveManager waveManager;
 
@@ -50,10 +51,10 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnMonsters()
     {
-        int currentWave = waveManager.GetCurrentWave();
-        int monstersToSpawn = startSpawnAmount + (currentWave - 1) * additionalSpawnsPerWave;
-        monsterAlive = monstersToSpawn;
-        for (int i = 0; i < monstersToSpawn; i++)
+        monstersToSpawnThisWave = GetSpawnsPerSpawnerThisWave();
+        monsterAlive = monstersToSpawnThisWave;
+
+        for (int i = 0; i < monstersToSpawnThisWave; i++)
         {
             OnSpawnEnemies?.Invoke(this, new OnSpawnEnemiesEventArgs()
             {
@@ -85,4 +86,8 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    public int GetSpawnsPerSpawnerThisWave()
+    {
+        return startSpawnAmount + (waveManager.GetCurrentWave() - 1) * additionalSpawnsPerWave;
+    }
 }

@@ -61,9 +61,6 @@ public class TileBuilding : MonoBehaviour
     {
         while (building)
         {
-            // Update Position
-            // TODO only update position if can build in that area
-            // there is an entry point from existing tile
             tileGrid.GetXY(UtilsClass.GetMouseWorldPosition(), out int x, out int y);
             if (ghostObject.transform.position != tileGrid.GetWorldPosition(x, y))
             {
@@ -97,11 +94,9 @@ public class TileBuilding : MonoBehaviour
     {
         yield return null;
 
-        //Transform instantiatedStart = Instantiate(startTilePrefab, tileGrid.GetWorldPosition(StartX, StartY), Quaternion.identity);
         tileGridComponent.SetStartTile(StartX, StartY);
         tileGridComponent.TryPlacingSoloTile(startTilePrefab, StartX, StartY);
 
-        //tileGridComponent.PlaceNewTile(instantiatedStart, StartX, StartY);
         castle.BuildCastle();
 
         // Random Boss Coords
