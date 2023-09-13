@@ -97,6 +97,9 @@ public class TileBuilding : MonoBehaviour
         tileGridComponent.SetStartTile(StartX, StartY);
         tileGridComponent.TryPlacingSoloTile(startTilePrefab, StartX, StartY);
 
+        Vector3 startingTilePos = tileGrid.GetCellCenter(StartX,StartY);
+        Camera.main.GetComponent<CameraController>().SetCameraPosition(new Vector3(startingTilePos.x, startingTilePos.y, Camera.main.transform.position.z));
+
         castle.BuildCastle();
 
         // Random Boss Coords

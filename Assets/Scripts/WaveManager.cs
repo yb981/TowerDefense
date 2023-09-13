@@ -8,10 +8,11 @@ public class WaveManager : MonoBehaviour
    
     public static WaveManager Instance { private set; get;}
 
-   SpawnManager spawnManager;
+    private SpawnManager spawnManager;
     private int currentWave = 1;
     private int monstersDied = 0;
     private int monstersSpawned = 0;
+    [SerializeField] private int moneyPerWave = 10;
 
     private void Awake() 
     {
@@ -44,12 +45,17 @@ public class WaveManager : MonoBehaviour
         spawnManager.StartSpawn();
     }
 
-
     private void EndWave()
     {
         LevelManager.instance.EndWave();
+        WaveRewards();
         currentWave++;
         ResetVariables();
+    }
+
+    private void WaveRewards()
+    {
+        PlayerStats.Instance.AddCredits(moneyPerWave);
     }
 
     private void ResetVariables()

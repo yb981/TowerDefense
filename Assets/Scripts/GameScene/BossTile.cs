@@ -48,7 +48,6 @@ public class BossTile : Tile
             if(node.connectionTile != null) return true;
         }
 
-        Debug.Log("no nodes connected to tile");
         return false;
     }
 

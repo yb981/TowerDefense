@@ -179,6 +179,7 @@ public class Monster : Unit
 
     protected override void Die()
     {
+        if(!isAlive) return;
         isAlive = false;
         OnMonsterDied?.Invoke();
         RewardPlayer();

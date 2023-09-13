@@ -21,6 +21,7 @@ public class TileGrid : MonoBehaviour
     private Transform buildTile;
 
     private GridTileObject currentObject;
+    private List<GridTileObject> allOpenEndTiles = new List<GridTileObject>();
 
     private void Awake()
     {
@@ -54,6 +55,7 @@ public class TileGrid : MonoBehaviour
         SetSubTiles(instantiatedTile, x, y);
         SetConnectionNodes(instantiatedTile, x, y);
         SetSpawners(instantiatedTile);
+        UpdateOpenEnds();
         OnTileBuilt?.Invoke();
     }
 
@@ -283,7 +285,7 @@ public class TileGrid : MonoBehaviour
         return true;
     }
 
-    public List<GridTileObject> GetAllOpenEnds()
+    private List<GridTileObject> UpdateOpenEnds()
     {
         List<GridTileObject> allTiles = new List<GridTileObject>();
         // All Tiles
@@ -292,11 +294,12 @@ public class TileGrid : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 GridTileObject current = tileGrid.GetGridObject(i, j);
-                if (current.GetTransform() != null) allTiles.Add(current);
+                
+                if (current.GetTransform() != null && TileConnected(i,j)) allTiles.Add(current);
             }
         }
 
-        List<GridTileObject> allOpenEndTiles = new List<GridTileObject>();
+        allOpenEndTiles = new List<GridTileObject>();
         // Only pick open end tiles
         foreach (GridTileObject current in allTiles)
         {
@@ -311,8 +314,23 @@ public class TileGrid : MonoBehaviour
             }
         }
 
-        Debug.Log("found " + allOpenEndTiles.Count + " open tiles");
+        return allOpenEndTiles;
+    }
 
+    public bool TileConnected(int x, int y)
+    {
+        if(x == StartX && y == StartY) return true;
+        Tile currentTile = tileGrid.GetGridObject(x,y).GetTransform().GetComponent<Tile>();
+        bool connected = false;
+        foreach ( var node in currentTile.GetOpeningNodes())
+        {
+            if(node.entry && node.connectionTile != null) connected = true;
+        }
+        return connected;
+    }
+
+    public List<GridTileObject> GetAllOpenEnds()
+    {
         return allOpenEndTiles;
     }
 
@@ -344,11 +362,6 @@ public class TileGrid : MonoBehaviour
     public Grid<GridTileObject> GetTileGrid()
     {
         return tileGrid;
-    }
-
-    public Vector3 GetStartTileCenterPosition()
-    {
-        return tileGrid.GetCellCenter(StartX, StartY);
     }
 
     public void SetStartTile(int x, int y)

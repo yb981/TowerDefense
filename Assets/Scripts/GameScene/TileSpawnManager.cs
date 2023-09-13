@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class TileSpawnManager : MonoBehaviour
     private TileGrid tileGrid;
     private WaypointAlgorithm waypointAlgorithm;
     private King king;
+    List<Spawner> activeSpawners = new List<Spawner>();
 
     private void Awake()
     {
@@ -29,5 +31,20 @@ public class TileSpawnManager : MonoBehaviour
 
             spawner.SetSpawnerWaypoints(waypoints);
         }
+    }
+
+    public void UpdateActiveSpawner()
+    {
+        activeSpawners = new List<Spawner>();
+        foreach(Spawner spawner in spawners)
+        {
+            if(spawner is SpawnerBoss) continue;
+            if(spawner.SpawnerIsActive()) activeSpawners.Add(spawner);
+        }
+    }
+
+    public List<Spawner> GetActiveSpawners()
+    {
+        return activeSpawners;
     }
 }

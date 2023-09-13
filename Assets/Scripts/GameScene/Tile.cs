@@ -240,7 +240,6 @@ public class Tile : MonoBehaviour
             rotation += item.entry + ",";
         }
         rotation += "]";
-        Debug.Log(rotation);
     }
 
     private void RotateBuildAreaClockwise()

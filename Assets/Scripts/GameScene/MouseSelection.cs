@@ -28,8 +28,6 @@ public class MouseSelection : MonoBehaviour
             TileGrid.GridTileObject currentHover = tileGrid.GetGridObject(UtilsClass.GetMouseWorldPosition());
             if(currentHover != null)
             {
-                Debug.Log(tooltipUI);
-                Debug.Log(currentHover);
                 tooltipUI.NewHoverTile(currentHover);
             }
         }

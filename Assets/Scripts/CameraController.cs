@@ -34,6 +34,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public void SetCameraPosition(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+    }
+
     private void MousewheelMovement()
     {
         if (Input.GetKeyDown(KeyCode.Mouse2))

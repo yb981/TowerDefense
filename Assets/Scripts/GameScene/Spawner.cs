@@ -39,6 +39,21 @@ public class Spawner : MonoBehaviour
                                         (Grid<GridSpawnAreaObject> g, int w, int h) => new GridSpawnAreaObject(g, w, h));
     }
 
+    public bool SpawnerIsActive()
+    {
+        Tile currentTile = tileGrid.GetTileOfPosition(transform.position);
+        Tile.TileNode currentNode;
+        switch (spawnLocation)
+        {
+            case direction.North: currentNode = currentTile.GetNorthNode(); break;
+            case direction.South: currentNode = currentTile.GetSouthNode(); break;
+            case direction.West: currentNode = currentTile.GetWestNode(); break;
+            case direction.East: currentNode = currentTile.GetEastNode(); break;
+            default: currentNode = null; break;
+        }
+        return (currentNode.connectionTile == null && currentNode.entry);        
+    }
+
     private void TrySpawningEnemy(Transform enemy)
     {
         Tile currentTile = tileGrid.GetTileOfPosition(transform.position);
@@ -56,7 +71,6 @@ public class Spawner : MonoBehaviour
 
     public void SpawnEnemy(Transform enemy)
     {
-        WaveManager.Instance.AddMonsterSpawnAmount(1);
         Transform instantiatedEnemy = Instantiate(enemy, GetRandomSpawnPoint(), Quaternion.identity);
 
         Stack<Vector3> waypointsCopy = new Stack<Vector3>(waypointsFromSpawner);

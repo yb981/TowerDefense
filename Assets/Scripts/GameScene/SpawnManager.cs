@@ -27,15 +27,28 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float spawnTime = 1f;
     [SerializeField] private int startSpawnAmount;
     [SerializeField] private int additionalSpawnsPerWave;
-    private int monstersToSpawnThisWave;
+    private int activeSpawnersThisWave;
+    private int activeSpawners = 0;
 
-    WaveManager waveManager;
-
-    private int monsterAlive = 0;
+    private WaveManager waveManager;
+    private TileGrid tileGridComponent;
 
     private void Start()
     {
         waveManager = GetComponent<WaveManager>();
+        tileGridComponent = FindObjectOfType<TileGrid>();
+        LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;
+    }
+
+    private void LevelManager_OnLevelPhaseBuild()
+    {
+        activeSpawnersThisWave = 0;
+        TileSpawnManager[] spawners = FindObjectsOfType<TileSpawnManager>();
+        foreach(TileSpawnManager spawner in spawners)
+        {
+            spawner.UpdateActiveSpawner();
+            activeSpawnersThisWave += spawner.GetActiveSpawners().Count;
+        }
     }
 
     public void StartSpawn()
@@ -51,8 +64,13 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnMonsters()
     {
-        monstersToSpawnThisWave = GetSpawnsPerSpawnerThisWave();
-        monsterAlive = monstersToSpawnThisWave;
+        // TODO
+        // Add correct number of spawning monsters // potentially rework
+        int monstersToSpawnThisWave = GetSpawnsPerSpawnerThisWave();
+        int totalSpawnsThisWave = GetSpawnsTotalThisWave();
+        if(waveManager.GetCurrentWave() == 1) totalSpawnsThisWave = monstersToSpawnThisWave;
+
+        WaveManager.Instance.SetMonsterSpawnAmount(totalSpawnsThisWave);
 
         for (int i = 0; i < monstersToSpawnThisWave; i++)
         {
@@ -89,5 +107,11 @@ public class SpawnManager : MonoBehaviour
     public int GetSpawnsPerSpawnerThisWave()
     {
         return startSpawnAmount + (waveManager.GetCurrentWave() - 1) * additionalSpawnsPerWave;
+    }
+
+    public int GetSpawnsTotalThisWave()
+    {
+        Debug.Log(activeSpawnersThisWave);
+        return GetSpawnsPerSpawnerThisWave() * activeSpawnersThisWave;
     }
 }

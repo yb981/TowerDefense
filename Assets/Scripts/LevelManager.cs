@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     }
 
     [SerializeField] private SceneFader sceneFader;
+    [SerializeField] private float changePhaseDelay = 1f; 
 
     private LevelPhase levelPhase;
     
@@ -34,14 +35,7 @@ public class LevelManager : MonoBehaviour
     {
         ChangeLevelPhase(LevelPhase.build);
 
-        StartCoroutine(SetStartingPositionOfCamera());
-    }
-
-    private IEnumerator SetStartingPositionOfCamera()
-    {
-        yield return new WaitForEndOfFrame();
-        Vector3 StartingTilePos = FindObjectOfType<TileGrid>().GetStartTileCenterPosition();
-        Camera.main.transform.position = new Vector3(StartingTilePos.x, StartingTilePos.y, Camera.main.transform.position.z);
+        Invoke("SetStartingPositionOfCamera",0.2f);
     }
 
     private void ChangeLevelPhase(LevelPhase newPhase)

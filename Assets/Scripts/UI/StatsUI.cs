@@ -49,7 +49,6 @@ public class StatsUI : MonoBehaviour
 
     private void UpdateAllTexts()
     {
-
         UpdateWaveText();
         UpdateScoreText();
         UpdateSpawnText();
@@ -62,7 +61,7 @@ public class StatsUI : MonoBehaviour
 
     private void UpdateSpawnText()
     {
-        spawnNumber = tileGridComponent.GetAllOpenEnds().Count * spawnManager.GetSpawnsPerSpawnerThisWave();
+        spawnNumber = spawnManager.GetSpawnsTotalThisWave();
         tmpSpawns.text = spawnNumber + SPAWNS;
     }
 
