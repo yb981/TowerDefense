@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StatsUI : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class StatsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tmpWave;
     [SerializeField] private TextMeshProUGUI tmpScore;
     [SerializeField] private TextMeshProUGUI tmpSpawns;
+    [SerializeField] private Image bossIcon;
     private TileGrid tileGridComponent;
     private SpawnManager spawnManager;
     private static string CURRENT_WAVE = "Current Wave: ";
@@ -21,17 +23,16 @@ public class StatsUI : MonoBehaviour
     void Start()
     {
         LevelManager.instance.OnLevelPhasePostPlay += LevelManager_OnLevelPhasePostPlay;
-        LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;
         PlayerStats.OnScoreChanged += PlayerStats_OnScoreChanged;
 
-        spawnManager = FindObjectOfType<SpawnManager>();
+        SpawnManager.OnSpawnsUpdated += SpawnManager_OnSpawnUpdated;
 
         tileGridComponent = FindObjectOfType<TileGrid>();
 
         Invoke("UpdateAllTexts",0.5f);
     }
 
-    private void LevelManager_OnLevelPhaseBuild()
+    private void SpawnManager_OnSpawnUpdated(object sender, EventArgs e)
     {
         UpdateSpawnText();
     }
@@ -44,7 +45,7 @@ public class StatsUI : MonoBehaviour
     private void LevelManager_OnLevelPhasePostPlay()
     {
         UpdateWaveText();
-        
+        SpawnTextWaiting();
     }
 
     private void UpdateAllTexts()
@@ -61,8 +62,19 @@ public class StatsUI : MonoBehaviour
 
     private void UpdateSpawnText()
     {
-        spawnNumber = spawnManager.GetSpawnsTotalThisWave();
+        spawnNumber = SpawnManager.Instance.GetSpawnsTotalThisWave();
         tmpSpawns.text = spawnNumber + SPAWNS;
+
+        if(SpawnManager.Instance.GetBossSpawning())
+        {
+            bossIcon.enabled = true;
+        }
+    }
+
+    private void SpawnTextWaiting()
+    {
+        tmpSpawns.text = "-" + SPAWNS;
+        bossIcon.enabled = false; 
     }
 
     private void UpdateScoreText()

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-
+    public static SpawnManager Instance { get; private set;}
+    public static event EventHandler OnSpawnsUpdated;
     public static event EventHandler<OnSpawnEnemiesEventArgs> OnSpawnEnemies;
     public class OnSpawnEnemiesEventArgs : EventArgs
     {
@@ -29,9 +30,15 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int additionalSpawnsPerWave;
     private int activeSpawnersThisWave;
     private int activeSpawners = 0;
+    private bool bossSpawning = false;
 
     private WaveManager waveManager;
     private TileGrid tileGridComponent;
+
+    private void Awake() 
+    {
+        Instance = this;    
+    }
 
     private void Start()
     {
@@ -42,18 +49,24 @@ public class SpawnManager : MonoBehaviour
 
     private void LevelManager_OnLevelPhaseBuild()
     {
+        GetSpawnersAndSpawnAmount();
+    }
+
+    private void GetSpawnersAndSpawnAmount()
+    {
         activeSpawnersThisWave = 0;
         TileSpawnManager[] spawners = FindObjectsOfType<TileSpawnManager>();
         foreach(TileSpawnManager spawner in spawners)
         {
             spawner.UpdateActiveSpawner();
+            
             activeSpawnersThisWave += spawner.GetActiveSpawners().Count;
         }
+        OnSpawnsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public void StartSpawn()
     {
-
         StartNextWave();
     }
 
@@ -64,13 +77,7 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnMonsters()
     {
-        // TODO
-        // Add correct number of spawning monsters // potentially rework
-        int monstersToSpawnThisWave = GetSpawnsPerSpawnerThisWave();
-        int totalSpawnsThisWave = GetSpawnsTotalThisWave();
-        if(waveManager.GetCurrentWave() == 1) totalSpawnsThisWave = monstersToSpawnThisWave;
-
-        WaveManager.Instance.SetMonsterSpawnAmount(totalSpawnsThisWave);
+        int monstersToSpawnThisWave = CalculateSpawns();
 
         for (int i = 0; i < monstersToSpawnThisWave; i++)
         {
@@ -81,7 +88,24 @@ public class SpawnManager : MonoBehaviour
 
             yield return new WaitForSeconds(spawnTime);
         }
+        bossSpawning = false;
 
+    }
+
+    private int CalculateSpawns()
+    {
+        int monstersToSpawnThisWave = GetSpawnsPerSpawnerThisWave();
+        int totalSpawnsThisWave = GetSpawnsTotalThisWave();
+
+        // Handle First Wave exception
+        if(waveManager.GetCurrentWave() == 1) totalSpawnsThisWave = monstersToSpawnThisWave;
+
+
+
+        // wavemanager needs to be informed how many monster spawn totally, to know when round over
+        WaveManager.Instance.SetMonsterSpawnAmount(totalSpawnsThisWave);
+
+        return monstersToSpawnThisWave;
     }
 
     private Transform RandomEnemy()
@@ -111,7 +135,23 @@ public class SpawnManager : MonoBehaviour
 
     public int GetSpawnsTotalThisWave()
     {
-        Debug.Log(activeSpawnersThisWave);
-        return GetSpawnsPerSpawnerThisWave() * activeSpawnersThisWave;
+        int totalSpawnsThisWave = GetSpawnsPerSpawnerThisWave() * activeSpawnersThisWave;
+        // Consider Boss
+        if(bossSpawning)
+        {
+            totalSpawnsThisWave++;
+        }
+
+        return totalSpawnsThisWave;
+    }
+
+    public void SetBossSpawning()
+    {
+        bossSpawning = true;
+    }
+
+    public bool GetBossSpawning()
+    {
+        return bossSpawning;
     }
 }

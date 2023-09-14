@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
 
     public void EndTileBuild()
     {
-        if(levelPhase == LevelPhase.tilebuild)     ChangeLevelPhase(LevelPhase.build);
+        if(levelPhase == LevelPhase.tilebuild)     StartCoroutine(DelayedPhaseTransition(LevelPhase.build, 0.1f));
     }
 
     public void StartWave()

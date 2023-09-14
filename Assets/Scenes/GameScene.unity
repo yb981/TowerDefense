@@ -2994,6 +2994,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c394a8154eb4bfc4f84efdaccd47ff38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1129518049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1129518050}
+  - component: {fileID: 1129518053}
+  - component: {fileID: 1129518052}
+  - component: {fileID: 1129518051}
+  m_Layer: 5
+  m_Name: BossIcon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1129518050
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129518049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1560335808}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 239.1, y: 27.6}
+  m_SizeDelta: {x: 323.4375, y: 333.20312}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1129518051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129518049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 10, y: -10}
+  m_UseGraphicAlpha: 1
+--- !u!114 &1129518052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129518049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 2f0fdc0cb3ff9284eaf5c0fb23e8c97d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1129518053
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129518049}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1153565642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3164,6 +3256,7 @@ GameObject:
   - component: {fileID: 1212168940}
   - component: {fileID: 1212168942}
   - component: {fileID: 1212168941}
+  - component: {fileID: 1212168943}
   m_Layer: 5
   m_Name: Spawns Icon
   m_TagString: Untagged
@@ -3229,6 +3322,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212168939}
   m_CullTransparentMesh: 1
+--- !u!114 &1212168943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212168939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 3, y: -3}
+  m_UseGraphicAlpha: 1
 --- !u!224 &1226220156 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 555690232816419928, guid: 01e8f0fd946cd8342b0684c5c8b99222, type: 3}
@@ -3421,6 +3529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneFader: {fileID: 1345216296}
+  changePhaseDelay: 1
 --- !u!114 &1250279303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3433,6 +3542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dface5fb7d281643a9105bc7155ee89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moneyPerWave: 10
 --- !u!114 &1250279304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3891,6 +4001,7 @@ RectTransform:
   m_Children:
   - {fileID: 53675902}
   - {fileID: 1212168940}
+  - {fileID: 1129518050}
   m_Father: {fileID: 1738531204}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4508,6 +4619,7 @@ MonoBehaviour:
   tmpWave: {fileID: 1241121881}
   tmpScore: {fileID: 864850562}
   tmpSpawns: {fileID: 53675903}
+  bossIcon: {fileID: 1129518052}
 --- !u!1001 &1786369986
 PrefabInstance:
   m_ObjectHideFlags: 0
