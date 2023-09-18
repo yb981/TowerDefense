@@ -89,7 +89,6 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(spawnTime);
         }
         bossSpawning = false;
-
     }
 
     private int CalculateSpawns()
@@ -141,13 +140,14 @@ public class SpawnManager : MonoBehaviour
         {
             totalSpawnsThisWave++;
         }
-
+        
         return totalSpawnsThisWave;
     }
 
     public void SetBossSpawning()
     {
         bossSpawning = true;
+        OnSpawnsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetBossSpawning()

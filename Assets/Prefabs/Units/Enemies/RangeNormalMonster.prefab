@@ -75,6 +75,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangeNormalMonster
       objectReference: {fileID: 0}
+    - target: {fileID: 5560534505928417354, guid: 849d61f2da1174b4d91a688007374227, type: 3}
+      propertyPath: m_Radius
+      value: 0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 7362388665937026327, guid: 849d61f2da1174b4d91a688007374227, type: 3}
       propertyPath: monsterStatsSO
       value: 

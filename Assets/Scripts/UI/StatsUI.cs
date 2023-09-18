@@ -73,7 +73,7 @@ public class StatsUI : MonoBehaviour
 
     private void SpawnTextWaiting()
     {
-        tmpSpawns.text = "-" + SPAWNS;
+        tmpSpawns.text = "---";
         bossIcon.enabled = false; 
     }
 

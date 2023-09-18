@@ -40,7 +40,6 @@ public class TileBuilding : MonoBehaviour
 
     private void MonsterBoss_OnBossDied()
     {
-        Debug.Log("tileBuilding recieved event, boss died");
         PlaceNewBossTile();
     }
 
@@ -52,7 +51,7 @@ public class TileBuilding : MonoBehaviour
     private void StartBuilding(TileBlueprint tileBlueprint)
     {
         building = true;
-        ghostObject = Instantiate(tileBlueprint.tilePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        ghostObject = Instantiate(tileBlueprint.tilePrefab, new Vector3(0, 0, 0), Quaternion.identity, transform);
         ghostObject.GetComponent<Tile>().SetTileEffect(tileBlueprint.mainTileEffect);
         StartCoroutine("BuildingTiles");
     }
@@ -103,9 +102,8 @@ public class TileBuilding : MonoBehaviour
         castle.BuildCastle();
 
         // Random Boss Coords
-        PlaceNewBossTile();
+        Invoke("PlaceNewBossTile",1f);
     }
-
 
     public void PlaceNewBossTile()
     {

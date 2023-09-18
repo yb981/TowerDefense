@@ -8,7 +8,7 @@ public class BossTile : Tile
     [SerializeField] private GameObject spawners;
     [SerializeField] private GameObject fog;
     [SerializeField] private TileSpawnManager tileSpawnManager;
-    private bool firstCall = true;
+    private bool firstConnected = true;
     
     protected override void Awake() 
     {
@@ -23,22 +23,18 @@ public class BossTile : Tile
 
     private void TileGrid_OnTileBuild()
     {
-        if(firstCall)
+        // first call + check if any tile connected
+        if(firstConnected && TileConnected())
         {
-            // check if any tile connected
-            if(TileConnected())
-            {
-                fog.SetActive(false);
-                spawners.SetActive(true);
-                // Need to initialize here, because before there was no connection
-                tileSpawnManager.InitializeSpawners();
+            fog.SetActive(false);
+            spawners.SetActive(true);
+            // Need to initialize here, because before there was no connection
+            tileSpawnManager.InitializeSpawners();
 
-                SpawnManager.Instance.SetBossSpawning();
-                firstCall = false;
-            }
-            
+            SpawnManager.Instance.SetBossSpawning();
+            firstConnected = false;
+            Debug.Log("boss connected");
         }
-
     }
 
     private bool TileConnected()

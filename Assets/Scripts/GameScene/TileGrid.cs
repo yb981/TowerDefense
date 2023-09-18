@@ -85,7 +85,7 @@ public class TileGrid : MonoBehaviour
                 if (buildArea.rows[i].row[j] == GridBuildingSystem.FieldType.building)
                 {
                     // Set Random height
-                    int height = heightMap[i,j];
+                    int height = heightMap[j,i];
                     gridBuildingSystem.SetSubTileGroundLevel(tilemap, height, j + originX, i + originY);
                 }
             }
@@ -231,19 +231,23 @@ public class TileGrid : MonoBehaviour
 
     public bool TryPlacingSoloTile(Transform tilePrefab, int x, int y)
     {
-        Debug.Log("trying to build Solotile at: " + x + "," + y);
-
         currentObject = tileGrid.GetGridObject(x, y);
         if (currentObject != null)
         {
             if (NoTilesAdjustent(x, y))
             {
-                Transform instantiatedTile = Instantiate(tilePrefab, tileGrid.GetWorldPosition(x, y), Quaternion.identity);
-                PlaceNewTile(instantiatedTile, x, y);
+                Transform instantiatedTile = Instantiate(tilePrefab, tileGrid.GetWorldPosition(x, y), Quaternion.identity, transform);
+                StartCoroutine(DelayedPlaceNewTile(instantiatedTile,x,y));
                 return true;
             }
         }
         return false;
+    }
+
+    private IEnumerator DelayedPlaceNewTile(Transform instantiatedTile, int x, int y)
+    {
+        yield return null;
+        PlaceNewTile(instantiatedTile, x, y);
     }
 
     private bool NoTilesAdjustent(int x, int y)

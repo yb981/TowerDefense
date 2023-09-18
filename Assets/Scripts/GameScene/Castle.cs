@@ -31,6 +31,6 @@ public class Castle : MonoBehaviour
 
     private void BuildCastleTile(int x, int y)
     {
-        tileGrid.PlaceNewTile(Instantiate(castlePrefab,tileGrid.GetWorldPositionOfCell(x,y),Quaternion.identity),x,y);
+        tileGrid.PlaceNewTile(Instantiate(castlePrefab,tileGrid.GetWorldPositionOfCell(x,y),Quaternion.identity,transform),x,y);
     }
 }

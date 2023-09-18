@@ -92,8 +92,8 @@ public class Tile : MonoBehaviour
 
     private void SetSubTilesHeights()
     {
-        GridBuildingSystem gridBuildingSystem = FindObjectOfType<GridBuildingSystem>();
-
+        //GridBuildingSystem gridBuildingSystem = FindObjectOfType<GridBuildingSystem>();
+        string heightsPrint = "";
         for (int i = 0; i < buildTileData.rows.Length; i++)
         {
             for (int j = 0; j < buildTileData.rows[i].row.Length; j++)
@@ -102,14 +102,16 @@ public class Tile : MonoBehaviour
                 if (buildTileData.rows[i].row[j] == GridBuildingSystem.FieldType.building)
                 {
                     height = GetRandomHeight();
+                    
 
-                    gridBuildingSystem.SetSubTileGroundLevel(tileMap, height, j, i);
+                    //gridBuildingSystem.SetSubTileGroundLevel(tileMap, height, j, i);
                     subTileHeights[j, i] = height;
                 }
                 else if(buildTileData.rows[i].row[j] == GridBuildingSystem.FieldType.unit)
                 {
                     // apply different unit tiles
                 }
+                heightsPrint += height;
 
                 OnNewSubTile?.Invoke(this, new OnNewSubTileEventArgs()
                 {
@@ -118,9 +120,11 @@ public class Tile : MonoBehaviour
                     fieldType = buildTileData.rows[i].row[j],
                     buildHeight = height
                 });
-
+                heightsPrint += ",";
             }
+            heightsPrint += "\n";
         }
+        Debug.Log(heightsPrint);
     }
 
     private int GetRandomHeight()

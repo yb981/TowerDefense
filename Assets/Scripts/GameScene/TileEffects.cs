@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,13 @@ public enum MainTileEffect
 
 public class TileEffects : MonoBehaviour
 {
-
+    public event EventHandler<OnNewTileBonusEventArgs> OnNewTileBonus;
+    public class OnNewTileBonusEventArgs : EventArgs
+    {
+        public Transform bonusObject;
+        public string bonusType;
+        public string bonusAmount;
+    }
    
     [Header("BloodyTile")]
     [SerializeField] private int bloodyBonusDamage = 2;
@@ -35,19 +42,23 @@ public class TileEffects : MonoBehaviour
         }
 
         ApplySubTileHeight(trans, subTileGridObject);
+
+
     }
 
     private void ApplySubTileHeight(Transform trans, GridBuildingSystem.SubTileGridObject subTileGridObject)
     {
         Tower tower = trans.GetComponent<Tower>();
-        if(tower != null)
+        if(tower == null) return;
+        float additionalRange = subTileGridObject.GetSubTileGroundLevel()*extraRangePerHeight;
+
+        tower.AddRange(additionalRange);
+        Debug.Log("Additional Range: "+additionalRange);
+
+        OnNewTileBonus?.Invoke(this, new OnNewTileBonusEventArgs()
         {
-            tower.AddRange(subTileGridObject.GetSubTileGroundLevel()*extraRangePerHeight);
-        }
-        else if(subTileGridObject.GetFieldType() == GridBuildingSystem.FieldType.building)
-        {
-            Debug.LogError("Can't find tower component, but placed object is a building");
-        }
+            bonusObject = trans, bonusType = "Range", bonusAmount = additionalRange.ToString()
+        });
     }
 
     public string GetMainTileEffectText(MainTileEffect mainTileEffect)
