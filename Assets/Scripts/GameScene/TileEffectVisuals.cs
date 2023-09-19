@@ -14,6 +14,7 @@ public class TileEffectVisuals : MonoBehaviour
 
     private void TileEffects_OnNewTileBonus(object sender, TileEffects.OnNewTileBonusEventArgs e)
     {
+        if(String.Equals(e.bonusAmount,"0")) return;
         TextSpawnerUI.Instance.CreateWorldPopUpText(e.bonusType + " +" + e.bonusAmount, e.bonusObject.position);
     }
 }

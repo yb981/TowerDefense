@@ -36,6 +36,7 @@ public class TileEffects : MonoBehaviour
                 if(minion != null)
                 {
                     minion.AddDamage(bloodyBonusDamage);
+                    TriggerEventOnBonus(trans,"Extra Damage", bloodyBonusDamage);
                 }
                 break;
             case MainTileEffect.none: break;
@@ -55,10 +56,7 @@ public class TileEffects : MonoBehaviour
         tower.AddRange(additionalRange);
         Debug.Log("Additional Range: "+additionalRange);
 
-        OnNewTileBonus?.Invoke(this, new OnNewTileBonusEventArgs()
-        {
-            bonusObject = trans, bonusType = "Range", bonusAmount = additionalRange.ToString()
-        });
+        TriggerEventOnBonus(trans,"Range", additionalRange);
     }
 
     public string GetMainTileEffectText(MainTileEffect mainTileEffect)
@@ -69,5 +67,13 @@ public class TileEffects : MonoBehaviour
             case MainTileEffect.bloody: return BLOODY_BONUS + ": " + bloodyBonusDamage;
         }
         return "-";
+    }
+
+    private void TriggerEventOnBonus(Transform trans, string bonusType, float amount)
+    {
+        OnNewTileBonus?.Invoke(this, new OnNewTileBonusEventArgs()
+        {
+            bonusObject = trans, bonusType = bonusType, bonusAmount = amount.ToString()
+        });
     }
 }
