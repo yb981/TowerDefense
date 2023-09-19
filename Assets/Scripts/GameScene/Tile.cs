@@ -35,7 +35,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private bool[] openingsForInit = new bool[4];
     [SerializeField] private MainTileEffect tileEffect = MainTileEffect.none;
     protected TileNode[] openingNodes = new TileNode[4];
-    protected int[,] subTileHeights = new int[10, 10];
+    protected int[,] subTileHeights;
 
     private int rotation;
     private List<Transform> rotationTiles = new List<Transform>();
@@ -61,9 +61,11 @@ public class Tile : MonoBehaviour
     private void Start()
     {
         //AddRotationTilesToList();
-        
+
         tileGrid = FindObjectOfType<TileGrid>();
-        //subTileHeights = new int[tileGrid.GetCellSize(), tileGrid.GetCellSize()];
+        int cellSize = tileGrid.GetCellSize();
+        subTileHeights = new int[cellSize,cellSize];
+        
         SetSubTilesHeights();
     }
 

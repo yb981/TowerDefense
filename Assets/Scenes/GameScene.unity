@@ -884,11 +884,10 @@ MonoBehaviour:
   - {fileID: 1450383452}
   child: {fileID: 809460500}
   tilePrefabs:
-  - {fileID: 3772694589048596949, guid: 214b22ad013806947bfdf07837141c62, type: 3}
-  - {fileID: 3772694589048596949, guid: 9f7e8a9781c1021418a18d8e58d23c9d, type: 3}
-  - {fileID: 3772694589048596949, guid: a1eb83619c1c61346ac16281b14797fd, type: 3}
-  - {fileID: 3772694589048596949, guid: 965af27a83e00e8449eceedbf92f0b1e, type: 3}
-  - {fileID: 3772694589048596949, guid: 5be1437a15969c248bc1b39c5144a6f3, type: 3}
+  - {fileID: 3772694589048596949, guid: c1fe52e3e4775964a9bba919557c0004, type: 3}
+  - {fileID: 3772694589048596949, guid: ea25fa3def2287b45afe898a5eb44857, type: 3}
+  - {fileID: 3772694589048596949, guid: f83ccdd59d4f6c743b9c1454242423c5, type: 3}
+  - {fileID: 3772694589048596949, guid: 4be7bb31fd0a8934d921a02efcb839a4, type: 3}
 --- !u!224 &267973802 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 491600588584743672, guid: 2a9e89717ad70b842896735bc3307105, type: 3}
@@ -3833,7 +3832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 17
   height: 17
-  cellSize: 10
+  cellSize: 4
 --- !u!114 &1377023755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3861,11 +3860,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d1664babe6f9148b10fad1a0ceed8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testTile: {fileID: 3772694589048596949, guid: 965af27a83e00e8449eceedbf92f0b1e, type: 3}
-  startTilePrefab: {fileID: 3772694589048596949, guid: b2a5882b56fc9104690cc8dca3402bce, type: 3}
+  testTile: {fileID: 3772694589048596949, guid: 4be7bb31fd0a8934d921a02efcb839a4, type: 3}
+  startTilePrefab: {fileID: 3772694589048596949, guid: 6d9962be901e64741bca5007cbf97df3, type: 3}
   StartX: 8
   StartY: 1
-  bossTilePrefab: {fileID: 3772694589048596949, guid: bda94de202b5f8c4089ec0b08b8bed31, type: 3}
+  bossTilePrefab: {fileID: 3772694589048596949, guid: 3674e5742cdcdaf47a8267f9b7e0fa9e, type: 3}
   maxRangeFromStart: 3
   minRangeFromStart: 4
 --- !u!114 &1377023757
@@ -3997,7 +3996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c38288c3fcc5439502f47122ee6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castlePrefab: {fileID: 3772694589048596949, guid: 5eeef5baa717f40429840a15c8f9de52, type: 3}
+  castlePrefab: {fileID: 3772694589048596949, guid: c458525c0225ad14e9adfd32b5582e4b, type: 3}
 --- !u!4 &1445734057
 Transform:
   m_ObjectHideFlags: 0

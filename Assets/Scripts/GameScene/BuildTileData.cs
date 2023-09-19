@@ -12,6 +12,6 @@ public class BuildTileData
         public GridBuildingSystem.FieldType[] row;
     }
 
-    public values[] rows = new values[10];
+    public values[] rows = new values[4];
 
 }
