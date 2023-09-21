@@ -3996,7 +3996,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1c38288c3fcc5439502f47122ee6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castlePrefab: {fileID: 3772694589048596949, guid: c458525c0225ad14e9adfd32b5582e4b, type: 3}
+  castleFrontPrefab: {fileID: 3772694589048596949, guid: c458525c0225ad14e9adfd32b5582e4b, type: 3}
+  castleVerticalLeftPrefab: {fileID: 3772694589048596949, guid: 26e2d7bf4f8780b46a79c681486d600e, type: 3}
+  castleVerticalRightPrefab: {fileID: 3772694589048596949, guid: b36878c0fca23a2499c2883e91251f3f, type: 3}
+  castleTopRightPrefab: {fileID: 3772694589048596949, guid: 63d3270110e28b14c9dacb10159dfe8b, type: 3}
+  castleBottomRightPrefab: {fileID: 3772694589048596949, guid: 012fa282c24dd3048994babd8da07cb3, type: 3}
+  castleTopLeftPrefab: {fileID: 3772694589048596949, guid: 3748fdb82898cd84194ca684ae7e38e6, type: 3}
+  castleBottomLeftPrefab: {fileID: 3772694589048596949, guid: d805ac432271bd5479bb7f435c1ce967, type: 3}
 --- !u!4 &1445734057
 Transform:
   m_ObjectHideFlags: 0
