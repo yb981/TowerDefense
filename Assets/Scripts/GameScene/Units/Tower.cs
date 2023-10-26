@@ -60,9 +60,10 @@ public class Tower : MonoBehaviour
 
     protected virtual void CreateProjectile()
     {
+        int currentDamage = damage*PlayerStats.Instance.GetBonusAttackDamage();
+
         Transform projectile = Instantiate(projectilePrefab,projectileSpawnPoint.position,Quaternion.identity);
-        projectile.GetComponent<Projectile>().Setup(target,projectileSpeed,damage);
-        
+        projectile.GetComponent<Projectile>().Setup(target,projectileSpeed,currentDamage);
     }
 
     protected virtual void FindEnemies()

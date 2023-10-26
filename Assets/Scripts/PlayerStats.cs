@@ -14,6 +14,9 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int credits;
     [SerializeField] private int score;
 
+    private float attackSpeedBonus = 0;
+    private int attackDamageBonus = 0;
+
     private void Awake() 
     {
         if(Instance == null) Instance = this;    
@@ -51,5 +54,26 @@ public class PlayerStats : MonoBehaviour
     {
         score = 0;
         OnScoreChanged?.Invoke();
+    }
+
+    // Boni
+    public void AddBonusAttackDamage(int additionalDamage)
+    {
+        attackDamageBonus += additionalDamage;
+    }
+
+    public int GetBonusAttackDamage()
+    {
+        return attackDamageBonus;
+    }
+
+    public void AddBonusAttackSpeed(float additionalSpeed)
+    {
+        attackSpeedBonus += additionalSpeed;
+    }
+
+    public float GetBonusAttackSpeed()
+    {
+        return attackSpeedBonus;
     }
 }

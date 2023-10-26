@@ -32,7 +32,7 @@ public class ShopButtonUI : MonoBehaviour
         UpdateMoneyControlVariable();
     }
 
-    private void GridBuildingSystem_OnBuilt()
+    private void GridBuildingSystem_OnBuilt(Transform builtTransform)
     {
         if(!enoughMoney)
         {

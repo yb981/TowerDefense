@@ -11,6 +11,7 @@ public class TileSelection : MonoBehaviour
     public class OnTileSelectedEventArgs : EventArgs
     {
         public TileBlueprint tileBlueprint;
+        public BonusEffect bonusEffect;
     }
 
     [SerializeField] TileSelectionOption[] tileSelectionOptions;
@@ -18,6 +19,9 @@ public class TileSelection : MonoBehaviour
 
     [Header("All selectable tiles")]
     [SerializeField] private Transform[] tilePrefabs;
+
+    [Header("All selectable Boni")]
+    [SerializeField] private BonusEffectSO[] boniSOs;
 
     private void Start() 
     {
@@ -37,6 +41,7 @@ public class TileSelection : MonoBehaviour
         {
             TileBlueprint tileBlueprint = new TileBlueprint(RandomTilePrefab(),RandomMainTileEffect());
             options.SetTilePrefab(tileBlueprint);
+            options.SetBonus(RandomBonusEffect());
         }
     }
 
@@ -51,10 +56,20 @@ public class TileSelection : MonoBehaviour
         return tilePrefabs[UnityEngine.Random.Range(0,tilePrefabs.Length)];
     }
 
-    public void Selected(TileBlueprint newTileBlueprint)
+    private BonusEffect RandomBonusEffect()
+    {
+        BonusEffectSO randomEffectSO = boniSOs[UnityEngine.Random.Range(0,boniSOs.Length)];
+        Rarity randomRarity = (Rarity) UnityEngine.Random.Range(0,Enum.GetValues(typeof(Rarity)).Length);
+        BonusEffect newBonusEffect = new BonusEffect(randomEffectSO,randomRarity);
+        Debug.Log("Rarity: "+ randomRarity);
+        return newBonusEffect;
+    }
+
+    public void Selected(TileBlueprint newTileBlueprint, BonusEffect newEffectBonus)
     {
         OnTileSelected?.Invoke(this, new OnTileSelectedEventArgs{
-            tileBlueprint = newTileBlueprint
+            tileBlueprint = newTileBlueprint,
+            bonusEffect = newEffectBonus
         });
         Hide();
     }

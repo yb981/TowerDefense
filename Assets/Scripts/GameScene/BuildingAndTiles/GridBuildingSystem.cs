@@ -8,7 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public event Action OnBuilt;
+    public delegate void BuiltAction(Transform builtTransform);
+    public event BuiltAction OnBuilt;
     public static EventHandler OnStartBuilding;
     public static event Action OnEndBuilding;
     public static event EventHandler<OnNewSubTileEventArgs> OnNewSubTile;
@@ -132,9 +133,9 @@ public class GridBuildingSystem : MonoBehaviour
             SubTileGridObject gridObject = grid.GetGridObject(x, y);
             if (gridObject.CanBuild(currentBlueprint.GetBuildType()))
             {
-                Build(x, y);
+                Transform newBuilt = Build(x, y);
                 DoPayment();
-                OnBuilt?.Invoke();
+                OnBuilt?.Invoke(newBuilt);
                 StopBuilding();
             }
             else
@@ -144,12 +145,13 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
-    private void Build(int x, int y)
+    private Transform Build(int x, int y)
     {
         SubTileGridObject gridObject = grid.GetGridObject(x, y);
         Transform unitOrTower = Instantiate(currentBlueprint.GetTransform(), grid.GetCellCenter(x, y), Quaternion.identity);
         tileEffects.ApplyTileBonus(unitOrTower,gridObject);
         gridObject.SetTransfrom(unitOrTower);
+        return unitOrTower;
     }
 
     private void DoPayment()
