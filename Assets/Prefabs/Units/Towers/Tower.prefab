@@ -82,6 +82,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7780838058985694600, guid: d7dac346d327e664d8234d6ee104829d, type: 3}
   range: 10
   shootingSpeed: 1
+  shootingTreshold: 1
   projectileSpeed: 12
   damage: 2
 --- !u!1 &5188261962558498394

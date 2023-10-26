@@ -9,6 +9,7 @@ public class PlayerStats : MonoBehaviour
 
     public static event Action OnCreditsChanged;
     public static event Action OnScoreChanged;
+    public static event Action BonusChanged;
 
     [SerializeField] private int lives;
     [SerializeField] private int credits;
@@ -60,6 +61,7 @@ public class PlayerStats : MonoBehaviour
     public void AddBonusAttackDamage(int additionalDamage)
     {
         attackDamageBonus += additionalDamage;
+        BonusChanged?.Invoke();
     }
 
     public int GetBonusAttackDamage()
@@ -70,6 +72,7 @@ public class PlayerStats : MonoBehaviour
     public void AddBonusAttackSpeed(float additionalSpeed)
     {
         attackSpeedBonus += additionalSpeed;
+        BonusChanged?.Invoke();
     }
 
     public float GetBonusAttackSpeed()

@@ -40,8 +40,7 @@ public class TileSelection : MonoBehaviour
         foreach (TileSelectionOption options in tileSelectionOptions)
         {
             TileBlueprint tileBlueprint = new TileBlueprint(RandomTilePrefab(),RandomMainTileEffect());
-            options.SetTilePrefab(tileBlueprint);
-            options.SetBonus(RandomBonusEffect());
+            options.SetupSelection(tileBlueprint,RandomBonusEffect());
         }
     }
 
@@ -61,7 +60,6 @@ public class TileSelection : MonoBehaviour
         BonusEffectSO randomEffectSO = boniSOs[UnityEngine.Random.Range(0,boniSOs.Length)];
         Rarity randomRarity = (Rarity) UnityEngine.Random.Range(0,Enum.GetValues(typeof(Rarity)).Length);
         BonusEffect newBonusEffect = new BonusEffect(randomEffectSO,randomRarity);
-        Debug.Log("Rarity: "+ randomRarity);
         return newBonusEffect;
     }
 

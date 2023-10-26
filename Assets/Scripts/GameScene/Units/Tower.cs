@@ -10,8 +10,12 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private float range = 40f;
     [SerializeField] private float shootingSpeed = 1f;
+    [SerializeField] private float shootingTreshold = 1f;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private int damage;
+
+    private int additionalDamage = 0;
+    private float additionalShootingSpeed = 0;
 
     private Transform target;
     private bool playing;
@@ -21,9 +25,11 @@ public class Tower : MonoBehaviour
     {
         LevelManager.instance.OnLevelPhasePlay += LevelManager_OnLevelPhasePlay;    
         LevelManager.instance.OnLevelPhaseBuild += LevelManager_OnLevelPhaseBuild;    
+        PlayerStats.BonusChanged += PlayerStats_BonusChanged;
         playing = false;
 
-        shootTimer = shootingSpeed;
+        UpdateBonusValues();
+        shootTimer = shootingTreshold;
     }
 
     private void LevelManager_OnLevelPhaseBuild()
@@ -36,6 +42,11 @@ public class Tower : MonoBehaviour
         playing = true;
     }
 
+    protected void PlayerStats_BonusChanged()
+    {
+        UpdateBonusValues();
+    }
+
     protected virtual void Update()
     {
         if(playing){
@@ -46,11 +57,11 @@ public class Tower : MonoBehaviour
 
     protected virtual void Shoot()
     {
-        shootTimer += Time.deltaTime;
-        Mathf.Clamp(shootTimer, 0, shootingSpeed);
+        shootTimer += Time.deltaTime * (shootingSpeed+additionalShootingSpeed);
+        Mathf.Clamp(shootTimer, 0, shootingTreshold);
         if(target != null)
         {
-            if(shootTimer >= shootingSpeed)
+            if(shootTimer >= shootingTreshold)
             {
                 CreateProjectile();
                 shootTimer = 0;
@@ -60,7 +71,7 @@ public class Tower : MonoBehaviour
 
     protected virtual void CreateProjectile()
     {
-        int currentDamage = damage*PlayerStats.Instance.GetBonusAttackDamage();
+        int currentDamage = damage*additionalDamage;
 
         Transform projectile = Instantiate(projectilePrefab,projectileSpawnPoint.position,Quaternion.identity);
         projectile.GetComponent<Projectile>().Setup(target,projectileSpeed,currentDamage);
@@ -85,6 +96,12 @@ public class Tower : MonoBehaviour
                 target = enemy.GetComponent<Transform>();
             }
         }
+    }
+
+    private void UpdateBonusValues()
+    {
+        additionalDamage = PlayerStats.Instance.GetBonusAttackDamage();
+        additionalShootingSpeed = PlayerStats.Instance.GetBonusAttackSpeed();
     }
 
     public float GetRange()

@@ -126,7 +126,6 @@ public class Tile : MonoBehaviour
             }
             heightsPrint += "\n";
         }
-        Debug.Log(heightsPrint);
     }
 
     private int GetRandomHeight()

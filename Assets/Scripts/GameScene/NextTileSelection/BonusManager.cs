@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class BonusManager : MonoBehaviour
 {
+
+    private TileSelection tileSelection;
+
+    private void Start() 
+    {
+        tileSelection = FindObjectOfType<TileSelection>();
+        tileSelection.OnTileSelected += TileSelection_OnTileSelected;
+    }
+
+    private void TileSelection_OnTileSelected(object sender, TileSelection.OnTileSelectedEventArgs e)
+    {
+        ApplyNewBonus(e.bonusEffect);
+    }
+
     public void ApplyNewBonus(BonusEffect bonus)
     {
         switch(bonus.GetBonusType())
