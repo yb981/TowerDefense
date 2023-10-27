@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bonusName: Attack Damage
   bonusType: 1
-  rarityValues: 01000000020000000300000004000000
+  rarityValues:
+  - 1
+  - 2
+  - 3
+  - 5

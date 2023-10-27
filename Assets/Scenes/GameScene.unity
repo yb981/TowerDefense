@@ -888,9 +888,6 @@ MonoBehaviour:
   - {fileID: 3772694589048596949, guid: ea25fa3def2287b45afe898a5eb44857, type: 3}
   - {fileID: 3772694589048596949, guid: f83ccdd59d4f6c743b9c1454242423c5, type: 3}
   - {fileID: 3772694589048596949, guid: 4be7bb31fd0a8934d921a02efcb839a4, type: 3}
-  boniSOs:
-  - {fileID: 11400000, guid: dd24a36f42b6abb0f871a5c26d2630ff, type: 2}
-  - {fileID: 11400000, guid: 2b9dc84c1e3f1a53e84b5f6441b88881, type: 2}
 --- !u!224 &267973802 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 491600588584743672, guid: 2a9e89717ad70b842896735bc3307105, type: 3}
@@ -2323,6 +2320,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39256b117c7a8082a8681a11bcd0a136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boniSOs:
+  - {fileID: 11400000, guid: b801b4bf26c2963158c44b9dc112f798, type: 2}
+  - {fileID: 11400000, guid: 9e82d4ac06aa7b371b6e7c7c9f3af474, type: 2}
+  rarityChances: 320000001e000000140000000a000000
 --- !u!1 &824048825
 GameObject:
   m_ObjectHideFlags: 0

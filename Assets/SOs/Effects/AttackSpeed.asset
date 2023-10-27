@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0f1993edb4ea6cdad4e586c0ebe3c9, type: 3}
   m_Name: AttackSpeed
   m_EditorClassIdentifier: 
-  bonusName: AttackSpeed
+  bonusName: Attack Speed
   bonusType: 0
-  rarityValues: 01000000020000000300000004000000
+  rarityValues:
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.5

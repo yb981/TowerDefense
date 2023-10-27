@@ -21,7 +21,7 @@ public enum Rarity
 public class BonusEffectSO : ScriptableObject {
     [SerializeField] private string bonusName;
     [SerializeField] private BonusType bonusType;
-    [SerializeField] private int[] rarityValues = new int[Enum.GetValues(typeof(Rarity)).Length];
+    [SerializeField] private float[] rarityValues = new float[Enum.GetValues(typeof(Rarity)).Length];
 
     public string GetName()
     {
@@ -33,7 +33,7 @@ public class BonusEffectSO : ScriptableObject {
         return bonusType;
     }
 
-    public int[] GetRarityValues()
+    public float[] GetRarityValues()
     {
         return rarityValues;
     }

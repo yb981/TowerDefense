@@ -1,11 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
 public class BonusManager : MonoBehaviour
 {
 
+    public static BonusManager Instance {private set; get;}
+
+    [Header("All selectable Boni")]
+    [SerializeField] private BonusEffectSO[] boniSOs;
+
+    [SerializeField] private int[] rarityChances = new int[Enum.GetValues(typeof(Rarity)).Length];
+
     private TileSelection tileSelection;
+
+    private void Awake() 
+    {
+        if(Instance != null) Debug.LogError("2 BnousManagers alive");
+        Instance = this;     
+    }
 
     private void Start() 
     {
@@ -34,6 +49,33 @@ public class BonusManager : MonoBehaviour
 
     private void ApplyAttackDamage(BonusEffect bonus)
     {
-        PlayerStats.Instance.AddBonusAttackDamage(bonus.GetEffectValue());
+        PlayerStats.Instance.AddBonusAttackDamage((int) bonus.GetEffectValue());
+    }
+
+    private Rarity CalculateRandomRarity()
+    {
+        int raritySum = rarityChances.Sum();
+        int random = UnityEngine.Random.Range(1,raritySum);
+        
+        int count = 0;
+        for(int i = 0 ; i < rarityChances.Length ; i++)
+        {
+            count += rarityChances[i];
+            if(random <= count)
+            {
+                return (Rarity) Enum.GetValues(typeof(Rarity)).GetValue(i);
+            }
+        }
+        
+        return Rarity.legendary;
+    }
+
+    public BonusEffect GetRandomBonusEffect()
+    {
+        BonusEffectSO randomEffectSO = boniSOs[UnityEngine.Random.Range(0,boniSOs.Length)];
+        Rarity randomRarity = CalculateRandomRarity();
+        BonusEffect randomBonusEffect = new BonusEffect(randomEffectSO,randomRarity);
+
+        return randomBonusEffect;
     }
 }

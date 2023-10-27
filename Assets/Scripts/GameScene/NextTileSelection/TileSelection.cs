@@ -20,9 +20,6 @@ public class TileSelection : MonoBehaviour
     [Header("All selectable tiles")]
     [SerializeField] private Transform[] tilePrefabs;
 
-    [Header("All selectable Boni")]
-    [SerializeField] private BonusEffectSO[] boniSOs;
-
     private void Start() 
     {
         LevelManager.instance.OnLevelPhasePostPlay += LevelManager_OnLevelPhasePostPlay;
@@ -57,9 +54,7 @@ public class TileSelection : MonoBehaviour
 
     private BonusEffect RandomBonusEffect()
     {
-        BonusEffectSO randomEffectSO = boniSOs[UnityEngine.Random.Range(0,boniSOs.Length)];
-        Rarity randomRarity = (Rarity) UnityEngine.Random.Range(0,Enum.GetValues(typeof(Rarity)).Length);
-        BonusEffect newBonusEffect = new BonusEffect(randomEffectSO,randomRarity);
+        BonusEffect newBonusEffect = BonusManager.Instance.GetRandomBonusEffect();
         return newBonusEffect;
     }
 

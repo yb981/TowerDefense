@@ -7,7 +7,7 @@ public class BonusEffect
     private BonusEffectSO bonusEffectSO;
     private BonusType bonusType;
     private Rarity rarity;
-    private int effectValue;
+    private float effectValue;
 
     public BonusEffect(BonusEffectSO bonusEffectSO, Rarity rarity)
     {
@@ -32,7 +32,7 @@ public class BonusEffect
         return rarity;
     }
 
-    public int GetEffectValue()
+    public float GetEffectValue()
     {
         return effectValue;
     }
